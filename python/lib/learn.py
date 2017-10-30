@@ -27,7 +27,7 @@ class Teacher:
     def prediction_for_file(self, file, time):
         predict = ["", -1]
         for fileB, times in self.index[file].items():
-            if fileB != "count":
+            if fileB != "count" and fileB not in self.learnIndex[str(time)][0]:  # TODO: can make it faster
                 curPredict = self.p(file, fileB, int(time))
                 if curPredict > predict[1]:
                     predict = [fileB, curPredict]
