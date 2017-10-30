@@ -1,2 +1,1 @@
-# gitAlso
-JetBrains git also
+# Git also
