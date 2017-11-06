@@ -1,50 +1,42 @@
-from lib import createIndex
-from lib import getIndex
-from lib import createLearnIndex
-from lib import learn
-from lib import getLearnIndex
+from git_also import index
+from git_also import data_set
+from git_also import learn
+from math import sqrt
+import pylab
+from mpl_toolkits.mplot3d import Axes3D
+import numpy
 
 start = 1483228800
 end = 1488326400
 
-def create_index():
-    creator = createIndex.IndexCreator("pandas")
-    creator.get_files()
-    creator.print("allIndex.json")
+
+def count_by_time(array, time):
+    l = -1
+    r = len(array)
+    while r - l > 1:
+        m = (l + r) // 2
+        if array[m] <= time:
+            l = m
+        else:
+            r = m
+    return l + 1
 
 
-def get_index():
-    getter = getIndex.IndexGetter("pandas", "allIndex.json")
-    return getter.get()
+def get_probability(index, first_file, second_file, time, n, max_by_commit):
+    intersection = count_by_time(index[first_file][second_file], time)
+    A = count_by_time(index[first_file]["count"], time)
+    B = count_by_time(index[second_file]["count"], time)
+    union = A + B - intersection
+    return (intersection * sqrt(A * B)) / (union * max(n, max_by_commit))
 
+def main():
+    print("Started")
+    pandas_index = index.get_index("pandas")
+    ds = data_set.get_data_set("pandas")
+    teach = learn.Teacher(pandas_index, ds, get_probability)
 
-def create_learn_index(index, times, startLearnTime, endLearnTime):
-    getter = createLearnIndex.LearnIndexCreator("pandas", index)
-    getter.create(times, startLearnTime, endLearnTime)
-
-
-def get_learn_index():
-    getter = getLearnIndex.LearnIndexGetter("pandas", "learnIndex.json")
-    return getter.get()
-
-
-def teach(index, learnIndex, times):
-    teacher = learn.Teacher(index, learnIndex)
-    counter = 0
-    nice = 0
-    for ts in times:
-        if start <= ts <= end:
-            predict = teacher.prediction(str(ts))
-            if predict:
-                counter += 1
-                if predict[0] == predict[1]:
-                    nice += 1
-    print(nice / counter)
+    print("Finished")
 
 
 if __name__ == "__main__":
-    print("Started")
-    index, times = get_index()
-    learnIndex = get_learn_index()
-    teach(index, learnIndex, times)
-    print("Finished")
+    main()
