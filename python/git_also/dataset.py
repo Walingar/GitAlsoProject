@@ -22,40 +22,40 @@ def _get_remote_files(files, count_remote_files, time):
     return remote_files
 
 
-def _create_data_set(commits, count_remote_files):
-    data_set = []
+def _create_dataset(commits, count_remote_files):
+    dataset = []
     for time, files in commits.items():
         remote_files = _get_remote_files(files, count_remote_files, time)
-        data_set.append(
+        dataset.append(
             [
                 list(filter(lambda x: x not in remote_files, commits[time])),
                 int(time),
                 list(remote_files)
             ]
         )
-    return data_set
+    return dataset
 
 
-def print_data_set(repository_name, data_set):
-    with open("data/data_set/" + repository_name + "/data_set.ds", 'w') as file_out:
-        for commit in data_set:
+def print_dataset(repository_name, dataset):
+    with open("data/dataset/" + repository_name + "/dataset.ds", 'w') as file_out:
+        for commit in dataset:
             print(*commit[0], sep=", ", end="; ", file=file_out)
             print(commit[1], end="; ", file=file_out)
             print(*commit[2], sep=", ", file=file_out)
 
 
-def create_data_set(index, start_learn_time, end_learn_time, count_remote_files=1):
+def create_dataset(index, start_learn_time, end_learn_time, count_remote_files=1):
     commits = _create_dict_of_commits(index, start_learn_time, end_learn_time)
-    return _create_data_set(commits, count_remote_files)
+    return _create_dataset(commits, count_remote_files)
 
 
-def get_data_set(repository_name):
-    data_set = []
-    with open("data/data_set/" + repository_name + "/data_set.ds") as file_in:
+def get_dataset(repository_name):
+    dataset = []
+    with open("data/dataset/" + repository_name + "/dataset.ds") as file_in:
         for commit in file_in:
             files, time, remote_files = commit.strip().split(';')
             time = int(time.strip())
             files = files.strip().split(', ')
             remote_files = remote_files.strip().split(', ')
-            data_set.append([files, time, remote_files])
-    return data_set
+            dataset.append([files, time, remote_files])
+    return dataset
