@@ -3,6 +3,7 @@ from git_also.make_decision import get_probability
 from git_also import evaluate
 from git_also import memoize
 from random import randrange as rand
+from collections import Counter
 
 
 class Estimator:
@@ -12,12 +13,13 @@ class Estimator:
 
     def _predict_for_dataset(self, evaluator, n, min_prob):
         scores = 0
+        types = Counter()
         for commit in self.dataset:
             predict = self.predict(commit[0], commit[1], n)
             if predict[1] < min_prob / 100:
                 predict = ("", -1)
-            scores += evaluator.get_score(predict, commit[2])[1][0]
-        return scores
+            scores += evaluator.get_score(predict, commit[2], types)
+        return tuple([scores, types])
 
     @memoize.memoize
     def predict(self, files, time, n):
@@ -44,7 +46,7 @@ class Estimator:
                                        time, n, max_by_commit)
                 if prob > predict[1]:
                     predict = [second_file, prob]
-        return predict
+        return tuple(predict)
 
     def _full_search(self, evaluator, n_max, min_prob_max):
         max_scores = -1
@@ -70,7 +72,7 @@ class Estimator:
         for i in range(number_of_points):
             n = rand(n_min, n_max)
             for min_prob in range(0, min_prob_max):
-                scores = self._predict_for_dataset(evaluator, n, min_prob)
+                scores = self._predict_for_dataset(evaluator, n, min_prob)[0]
                 print("-" * 10)
                 print(n, min_prob, scores)
                 if scores > max_scores:
