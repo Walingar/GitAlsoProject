@@ -14,7 +14,7 @@ def _ensure_file_count(index, first_file, date):
     index[first_file]["count"].append(date)
 
 
-def _add_files_to_indexes(index, first_file, second_file, date):
+def _add_files_to_indices(index, first_file, second_file, date):
     index \
         .setdefault(first_file, {"count": []}) \
         .setdefault(second_file, [])
@@ -33,8 +33,8 @@ def create_index(repository_name):
             first_file = files.pop()
             _ensure_file_count(index, first_file, commit.committed_date)
             for second_file in files:
-                _add_files_to_indexes(index, first_file, second_file, commit.committed_date)
-                _add_files_to_indexes(index, second_file, first_file, commit.committed_date)
+                _add_files_to_indices(index, first_file, second_file, commit.committed_date)
+                _add_files_to_indices(index, second_file, first_file, commit.committed_date)
     for first_file, files in index.items():
         for second_file, times in files.items():
             times.sort()
