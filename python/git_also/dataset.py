@@ -56,6 +56,6 @@ def get_dataset(repository_name):
             files, time, remote_files = commit.strip().split(';')
             time = int(time.strip())
             files = files.strip().split(', ')
-            remote_files = remote_files.strip().split(', ')
+            remote_files = list(filter(lambda x: x != "", remote_files.strip().split(', ')))
             dataset.append([files, time, remote_files])
     return dataset
