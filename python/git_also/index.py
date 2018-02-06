@@ -1,12 +1,5 @@
-import git
 import json
-
-
-def _print_number_of_completed(counter, periodicity=100):
-    if int(counter / periodicity) == counter / periodicity:
-        print(counter)
-    counter += 1
-    return counter
+import git_also.git_log_parse as git
 
 
 def _ensure_file_count(index, first_file, date):
@@ -23,18 +16,20 @@ def _add_files_to_indices(index, first_file, second_file, date):
 
 def create_index(repository_name):
     index = {}
-    repository = git.Repo("data/repositories/" + repository_name)
-    print("Repository has gotten")
-    counter = 0
-    for commit in list(repository.iter_commits()):
-        files = list(commit.stats.files)
-        counter = _print_number_of_completed(counter)
+    commits = git.parse_git_log_file("data/repository/" + repository_name + "/git_log_for_index.txt")
+    files_with_time = git.create_files_indices(commits)
+    commits = git.prepare_git_log_file(commits)
+    print("Commits have gotten")
+    for time, files in sorted(commits.items(), key=lambda x: x[0]):
+        print(time)
         while len(files) != 0:
             first_file = files.pop()
-            _ensure_file_count(index, first_file, commit.committed_date)
+            _ensure_file_count(index, files_with_time[first_file][time], time)
             for second_file in files:
-                _add_files_to_indices(index, first_file, second_file, commit.committed_date)
-                _add_files_to_indices(index, second_file, first_file, commit.committed_date)
+                _add_files_to_indices(index, files_with_time[first_file][time], files_with_time[second_file][time],
+                                      time)
+                _add_files_to_indices(index, files_with_time[second_file][time], files_with_time[first_file][time],
+                                      time)
     for first_file, files in index.items():
         for second_file, times in files.items():
             times.sort()
@@ -50,12 +45,5 @@ def get_index(repository_name):
     file_with_index = open("data/index/" + repository_name + "/index.json")
     print("Log with index has gotten")
     index = json.load(file_with_index)
-    index_answer = {}
-    for first_file, files in index.items():
-        if first_file[-2:] == "py":
-            index_answer[first_file] = {}
-            for second_file, times in files.items():
-                if second_file[-2:] == "py" or second_file == "count":
-                    index_answer[first_file][second_file] = times
 
-    return index_answer
+    return index

@@ -3,7 +3,8 @@ from git_also.evaluate import Evaluator
 from git_also.memoize import memoize
 from random import randrange as rand
 from collections import Counter
-from git_also.table_create import *
+from git_also.table import create_table
+from git_also.table import print_table
 
 
 class Estimator:
@@ -12,15 +13,15 @@ class Estimator:
 
         :param index: format: {first_file: {second_file: [meet_time]}}
         :param dataset: [{files in commit}, time, {remote files}]
-        :param get_probability: decision f(first_file, second_file, current_time, N, max_by_commit)
+        :param get_probability: decision f(index, first_file, second_file, current_time, N, max_by_commit)
         """
         self.index = index
         self.dataset = dataset
         self.get_probability = get_probability
         self.extreme_prob = 0.1
-        self.log = ""
+        self.log = set()
 
-    def predict_for_dataset(self, evaluator, n, min_prob):
+    def predict_for_dataset(self, evaluator, n, min_prob, count=3):
         """
 
         :param evaluator: class, which can give scores
@@ -31,18 +32,26 @@ class Estimator:
         types = Counter()
         predicted = []
         for commit in self.dataset:
+            print(commit[1])
             predict = self._predict(commit[0], commit[1], n)
+            predict.sort(key=lambda x: -x[1])
             ans_predict = []
+            cur_count = 0
             for file in predict:
                 if file[1] > min_prob / 100:
                     ans_predict.append(file)
+                    cur_count += 1
+                    if cur_count == count:
+                        break
             predicted.append([commit, ans_predict])
             evaluator.update_counter(commit[2], ans_predict, types)
-        if min_prob % 10 == 0:
-            self.log += create_confusion_matrix(min_prob, n, types)
-            create_html_file("log", self.log)
+        table = create_table(types)
+        if table not in self.log:
+            self.log.add(table)
+            print_table(min_prob, n, count, table)
         return tuple([predicted, types])
 
+    # TODO: check speed, try to update
     @memoize
     def _predict(self, files, time, n):
         """
@@ -102,15 +111,12 @@ class Estimator:
         print(ans_for_n_and_min_prob)
         return tuple([max_scores, ans_for_n_and_min_prob])
 
-    def _hill_climb(self, evaluator, n_min, n_max, min_prob_max, max_scores, ans_for_n_and_min_prob, height=0):
-        if abs(n_min - n_max) <= 2 or height >= 20:
-            return tuple([max_scores, ans_for_n_and_min_prob])
-        number_of_points = max(10, (n_max - n_min) // 100)
-        prev_scores = max_scores
+    def _hill_climb(self, evaluator, n_min, n_max, cur_n, neigh=10):
+        max_scores = -1
+        ans_for_n_and_min_prob = (1, 0)
 
-        for point in range(number_of_points):
-            n = rand(n_min, n_max)
-            for min_prob in range(0, min_prob_max):
+        for n in range(max(n_min, cur_n - neigh), min(n_max, cur_n + neigh)):
+            for min_prob in range(0, 100):
                 predict = self.predict_for_dataset(evaluator, n, min_prob)
                 scores = evaluator.get_score(predict[1])
                 print("-" * 10)
@@ -118,13 +124,10 @@ class Estimator:
                 if scores > max_scores:
                     max_scores = scores
                     ans_for_n_and_min_prob = (n, min_prob)
-        if prev_scores == scores:
-            return self._hill_climb(evaluator, 1, 10000, 100, max_scores, ans_for_n_and_min_prob, height + 1)
-        mid = (n_min + n_max) // 2
-        return self._hill_climb(evaluator,
-                                max(1, ans_for_n_and_min_prob[1] - mid),
-                                min(10000, ans_for_n_and_min_prob[1] + mid),
-                                100, max_scores, ans_for_n_and_min_prob, height + 1)
+        print(ans_for_n_and_min_prob)
+
+        # TODO: добавить ход против шерсти
+        return self._hill_climb(evaluator, n_min, n_max, ans_for_n_and_min_prob[0], neigh)
 
     def fit(self):
         evaluator = Evaluator(
@@ -136,6 +139,6 @@ class Estimator:
                 "score(A, '')": 0.1
             }
         )
-        n_max = 10000
+        n_max = 10
         min_prob_max = 100
-        return self._hill_climb(evaluator, 1, n_max, min_prob_max, -1, ("", 0))
+        return self._full_search(evaluator, n_max, min_prob_max)

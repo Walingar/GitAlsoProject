@@ -4,7 +4,7 @@ from random import randrange as rand
 def _create_dict_of_commits(index, start_learn_time, end_learn_time):
     commits = {}
     for first_file, files in index.items():
-        for time in files["count"]:
+        for time in files["count"][1:]:
             if start_learn_time <= time <= end_learn_time:
                 commits.setdefault(time, [])
                 commits[time].append(first_file)

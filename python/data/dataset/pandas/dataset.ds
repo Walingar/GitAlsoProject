@@ -1,260 +1,326 @@
-pandas/core/generic.py, pandas/core/internals.py, pandas/tests/frame/test_dtypes.py, pandas/tests/series/test_dtypes.py, pandas/tests/test_internals.py; 1483476838;
-pandas/core/generic.py, pandas/tests/frame/test_misc_api.py, pandas/tests/series/test_misc_api.py; 1483540617;
-pandas/core/generic.py, pandas/core/frame.py, pandas/core/series.py, pandas/tests/test_categorical.py, pandas/core/internals.py, pandas/core/categorical.py, pandas/tests/test_base.py, pandas/core/base.py, pandas/tests/frame/test_missing.py, pandas/tests/series/test_validate.py, pandas/tests/frame/test_validate.py, pandas/tests/test_internals.py, pandas/tests/test_util.py, pandas/tests/test_generic.py, pandas/util/validators.py, pandas/sparse/list.py, pandas/computation/tests/test_eval.py, pandas/computation/eval.py; 1483706001;
-pandas/core/generic.py, pandas/tests/frame/test_operators.py, pandas/core/frame.py, pandas/tests/test_window.py, pandas/core/series.py, pandas/tests/frame/test_constructors.py, pandas/tests/series/test_constructors.py, pandas/core/groupby.py, pandas/tests/groupby/test_groupby.py, pandas/tests/frame/test_indexing.py, pandas/tests/test_categorical.py, pandas/tests/frame/test_reshape.py, pandas/tests/frame/test_to_csv.py, pandas/tests/frame/test_analytics.py, pandas/tests/series/test_indexing.py, pandas/tests/test_panel4d.py, pandas/tests/indexes/test_multi.py, pandas/tests/plotting/test_frame.py, pandas/tests/test_panel.py, pandas/core/panel.py, pandas/io/pytables.py, pandas/tests/frame/test_axis_select_reindex.py, pandas/core/indexing.py, pandas/tests/frame/test_alter_axes.py, pandas/tests/test_multilevel.py, pandas/tests/series/test_analytics.py, pandas/tests/indexing/test_categorical.py, pandas/tests/indexing/test_indexing.py, pandas/tests/frame/test_sorting.py, pandas/tests/test_strings.py, pandas/tests/frame/test_block_internals.py, pandas/tests/frame/test_timeseries.py, pandas/tests/plotting/test_datetimelike.py, pandas/tests/frame/test_missing.py, pandas/tests/frame/test_apply.py, pandas/tests/frame/test_asof.py, pandas/tests/series/test_repr.py, pandas/tests/frame/test_combine_concat.py, pandas/tests/frame/test_nonunique_indexes.py, pandas/tests/frame/test_replace.py, pandas/tests/frame/test_subclass.py, pandas/tests/groupby/test_filters.py, pandas/tests/indexing/test_callable.py, pandas/tests/indexing/test_floats.py, pandas/tests/series/test_subclass.py, pandas/tests/test_internals.py, pandas/tests/test_panelnd.py, pandas/tests/test_generic.py, pandas/core/reshape.py, pandas/tests/formats/test_format.py, pandas/tests/frame/test_misc_api.py, pandas/io/tests/json/test_pandas.py, pandas/io/tests/parser/common.py, pandas/io/tests/parser/parse_dates.py, pandas/io/tests/test_excel.py, pandas/io/tests/test_html.py, pandas/io/tests/test_packers.py, pandas/io/tests/test_pytables.py, pandas/io/tests/test_sql.py, pandas/io/tests/test_stata.py, pandas/sparse/tests/test_indexing.py, pandas/sparse/tests/test_series.py, pandas/tools/tests/test_pivot.py, pandas/tools/tests/test_join.py, pandas/tools/tests/test_merge.py, pandas/tools/tests/test_merge_ordered.py, pandas/stats/tests/test_ols.py, pandas/tseries/tests/test_period.py, pandas/tests/indexes/test_datetimelike.py, pandas/tseries/tests/test_timedeltas.py, pandas/sparse/tests/test_frame.py, pandas/tools/tests/test_concat.py, pandas/tseries/tests/test_resample.py, pandas/io/tests/test_date_converters.py, pandas/tseries/tests/test_timeseries.py; 1484755830;
-pandas/core/generic.py, pandas/tests/frame/test_timeseries.py, pandas/tests/series/test_timeseries.py, pandas/tseries/resample.py, pandas/tseries/tests/test_resample.py; 1485038837;
-pandas/core/generic.py, pandas/tests/frame/test_asof.py; 1485434273;
-pandas/core/generic.py, pandas/tests/series/test_replace.py, pandas/tests/frame/test_replace.py; 1486067176;
-pandas/core/generic.py, pandas/tests/series/test_missing.py, pandas/tests/frame/test_missing.py; 1486394758;
-pandas/core/generic.py, pandas/compat/numpy/function.py, pandas/tests/test_generic.py; 1486564518;
-pandas/core/generic.py, pandas/core/internals.py, pandas/tests/series/test_missing.py, pandas/core/missing.py; 1487079217;
-pandas/core/generic.py, pandas/core/frame.py, pandas/tests/io/test_excel.py, pandas/io/excel.py; 1487267132;
-pandas/core/generic.py, pandas/tests/test_generic.py, pandas/indexes/base.py; 1487618304;
-pandas/core/generic.py, pandas/tests/frame/test_indexing.py, pandas/tests/indexes/period/test_period.py, pandas/tests/series/test_indexing.py, pandas/tests/indexes/test_multi.py, pandas/tests/indexes/common.py, pandas/tests/indexes/test_category.py, pandas/indexes/base.py; 1487966638;
-pandas/core/generic.py, pandas/io/html.py, pandas/io/parsers.py, pandas/io/json/normalize.py; 1488058736;
-pandas/core/generic.py, pandas/core/groupby.py, pandas/tests/io/test_pytables.py, pandas/tests/test_panel4d.py, pandas/io/pytables.py, pandas/tests/frame/test_block_internals.py, pandas/tests/frame/test_nonunique_indexes.py, pandas/tests/test_generic.py, pandas/tools/concat.py, pandas/tseries/resample.py; 1488278602;
-pandas/io/sql.py, pandas/core/frame.py; 1484834238;
-pandas/io/sql.py, pandas/core/frame.py, pandas/io/parsers.py, pandas/util/testing.py, pandas/io/pytables.py, pandas/core/indexing.py, pandas/tseries/offsets.py, pandas/io/excel.py, pandas/core/config_init.py, pandas/io/common.py, pandas/core/config.py, pandas/compat/numpy/function.py, pandas/io/packers.py, pandas/tseries/frequencies.py, pandas/io/stata.py, pandas/core/algorithms.py, pandas/compat/numpy/__init__.py, pandas/tseries/holiday.py, pandas/stats/moments.py, pandas/tests/sparse/test_libsparse.py, pandas/tests/test_generic.py, pandas/tools/merge.py, pandas/tseries/index.py, pandas/indexes/numeric.py, pandas/formats/format.py, pandas/indexes/range.py, pandas/tseries/timedeltas.py, pandas/tools/plotting.py, pandas/tseries/interval.py, pandas/types/generic.py, pandas/sparse/frame.py, pandas/computation/expr.py, pandas/io/gbq.py, pandas/sparse/series.py, pandas/tseries/resample.py, pandas/util/print_versions.py, pandas/msgpack/__init__.py, pandas/util/terminal.py; 1487181551;
-pandas/io/sql.py, pandas/tests/io/test_sql.py; 1487336960;
-pandas/io/sql.py, pandas/core/frame.py, pandas/core/groupby.py, pandas/tests/frame/test_combine_concat.py, pandas/indexes/base.py, pandas/indexes/multi.py, pandas/core/reshape.py, pandas/formats/format.py, pandas/util/doctools.py; 1487967421;
-setup.py, pandas/tests/frame/test_indexing.py, pandas/tests/indexes/test_base.py, pandas/tests/indexes/test_numeric.py, pandas/util/testing.py, pandas/core/indexing.py, pandas/tests/indexes/common.py, pandas/tests/indexing/test_indexing.py, pandas/core/api.py, pandas/indexes/base.py, pandas/indexes/numeric.py, pandas/indexes/api.py, pandas/types/generic.py, pandas/tests/types/test_generic.py, pandas/api/tests/test_api.py; 1484660711;
-setup.py, pandas/api/tests/test_api.py, pandas/rpy/__init__.py, pandas/rpy/base.py, pandas/rpy/common.py, pandas/rpy/mass.py, pandas/rpy/tests/__init__.py, pandas/rpy/tests/test_common.py, pandas/rpy/vars.py; 1485087309;
-setup.py, pandas/tests/indexes/datetimes/test_datetime.py, pandas/tests/indexes/datetimes/test_ops.py, pandas/tests/indexes/datetimes/test_setops.py, pandas/tests/indexes/datetimes/test_construction.py, pandas/tests/indexes/datetimes/test_indexing.py, pandas/tests/indexes/datetimes/test_astype.py, pandas/tests/indexes/datetimes/test_misc.py, pandas/tests/indexes/datetimes/test_missing.py, pandas/tests/indexes/test_datetimelike.py, pandas/tseries/tests/test_base.py, pandas/tseries/tests/test_timeseries.py, pandas/tests/indexes/datetimes/__init__.py; 1486084472;
-setup.py, pandas/tests/scalar/test_timestamp.py, pandas/tests/scalar/test_timedelta.py, pandas/tests/scalar/__init__.py; 1486084750;
-setup.py, pandas/io/json/normalize.py, pandas/io/json/__init__.py, pandas/io/{ => json}/json.py; 1486422206;
-setup.py, pandas/tests/indexes/datetimes/test_tools.py, pandas/tests/indexes/datetimes/test_ops.py, pandas/tests/indexes/datetimes/test_date_range.py, pandas/tests/indexes/datetimes/test_setops.py, pandas/tools/tests/test_pivot.py; 1486513281;
-setup.py, pandas/util/print_versions.py, pandas/api/tests/test_api.py, pandas/stats/api.py, pandas/stats/common.py, pandas/stats/fama_macbeth.py, pandas/stats/interface.py, pandas/stats/math.py, pandas/stats/misc.py, pandas/stats/ols.py, pandas/stats/plm.py, pandas/stats/tests/__init__.py, pandas/stats/tests/common.py, pandas/stats/tests/test_fama_macbeth.py, pandas/stats/tests/test_math.py, pandas/stats/tests/test_ols.py, pandas/stats/tests/test_var.py, pandas/stats/var.py; 1486658543;
-setup.py, pandas/tests/indexes/datetimes/test_ops.py, pandas/tests/indexes/datetimes/test_setops.py, pandas/{tseries/tests => tests/tseries}/__init__.py, pandas/{tseries/tests => tests/tseries}/test_bin_groupby.py, pandas/{tseries/tests => tests/tseries}/test_converter.py, pandas/{tseries/tests => tests/tseries}/test_frequencies.py, pandas/{tseries/tests => tests/tseries}/test_holiday.py, pandas/{tseries/tests => tests/tseries}/test_offsets.py, pandas/{tseries/tests => tests/tseries}/test_resample.py, pandas/{tseries/tests => tests/tseries}/test_timezones.py, pandas/tseries/tests/test_timeseries_legacy.py; 1486683016;
-setup.py, pandas/tests/indexes/datetimes/test_ops.py, pandas/{api/tests => tests/api}/__init__.py, pandas/{api/tests => tests/api}/test_api.py, pandas/{computation/tests => tests/computation}/__init__.py, pandas/{computation/tests => tests/computation}/test_compat.py, pandas/{computation/tests => tests/computation}/test_eval.py, pandas/{io/tests => tests/io}/__init__.py, pandas/{io/tests => tests/io}/generate_legacy_storage_files.py, pandas/{io/tests => tests/io}/json/__init__.py, pandas/{io/tests => tests/io}/json/test_normalize.py, pandas/{io/tests => tests/io}/json/test_pandas.py, pandas/{io/tests => tests/io}/json/test_ujson.py, pandas/{io/tests => tests/io}/parser/__init__.py, pandas/{io/tests => tests/io}/parser/c_parser_only.py, pandas/{io/tests => tests/io}/parser/comment.py, pandas/{io/tests => tests/io}/parser/common.py, pandas/{io/tests => tests/io}/parser/compression.py, pandas/{io/tests => tests/io}/parser/converters.py, pandas/{io/tests => tests/io}/parser/dialect.py, pandas/{io/tests => tests/io}/parser/dtypes.py, pandas/{io/tests => tests/io}/parser/header.py, pandas/{io/tests => tests/io}/parser/index_col.py, pandas/{io/tests => tests/io}/parser/multithread.py, pandas/{io/tests => tests/io}/parser/na_values.py, pandas/{io/tests => tests/io}/parser/parse_dates.py, pandas/{io/tests => tests/io}/parser/python_parser_only.py, pandas/{io/tests => tests/io}/parser/quoting.py, pandas/{io/tests => tests/io}/parser/skiprows.py, pandas/{io/tests => tests/io}/parser/test_network.py, pandas/{io/tests => tests/io}/parser/test_parsers.py, pandas/{io/tests => tests/io}/parser/test_read_fwf.py, pandas/{io/tests => tests/io}/parser/test_textreader.py, pandas/{io/tests => tests/io}/parser/test_unsupported.py, pandas/{io/tests => tests/io}/parser/usecols.py, pandas/{io/tests => tests/io}/sas/test_sas.py, pandas/{io/tests => tests/io}/sas/test_sas7bdat.py, pandas/{io/tests => tests/io}/sas/test_xport.py, pandas/{io/tests => tests/io}/test_clipboard.py, pandas/{io/tests => tests/io}/test_common.py, pandas/{io/tests => tests/io}/test_date_converters.py, pandas/{io/tests => tests/io}/test_excel.py, pandas/{io/tests => tests/io}/test_feather.py, pandas/{io/tests => tests/io}/test_gbq.py, pandas/{io/tests => tests/io}/test_html.py, pandas/{io/tests => tests/io}/test_packers.py, pandas/{io/tests => tests/io}/test_pickle.py, pandas/{io/tests => tests/io}/test_pytables.py, pandas/{io/tests => tests/io}/test_s3.py, pandas/{io/tests => tests/io}/test_sql.py, pandas/{io/tests => tests/io}/test_stata.py, pandas/{sparse/tests => tests/msgpack}/__init__.py, pandas/tests/{test_msgpack => msgpack}/test_buffer.py, pandas/tests/{test_msgpack => msgpack}/test_case.py, pandas/tests/{test_msgpack => msgpack}/test_except.py, pandas/tests/{test_msgpack => msgpack}/test_extension.py, pandas/tests/{test_msgpack => msgpack}/test_format.py, pandas/tests/{test_msgpack => msgpack}/test_limits.py, pandas/tests/{test_msgpack => msgpack}/test_newspec.py, pandas/tests/{test_msgpack => msgpack}/test_obj.py, pandas/tests/{test_msgpack => msgpack}/test_pack.py, pandas/tests/{test_msgpack => msgpack}/test_read_size.py, pandas/tests/{test_msgpack => msgpack}/test_seq.py, pandas/tests/{test_msgpack => msgpack}/test_sequnpack.py, pandas/tests/{test_msgpack => msgpack}/test_subtype.py, pandas/tests/{test_msgpack => msgpack}/test_unpack.py, pandas/tests/{test_msgpack => msgpack}/test_unpack_raw.py, pandas/tests/{test_msgpack => sparse}/__init__.py, pandas/{sparse/tests => tests/sparse}/test_arithmetics.py, pandas/{sparse/tests => tests/sparse}/test_array.py, pandas/{sparse/tests => tests/sparse}/test_combine_concat.py, pandas/{sparse/tests => tests/sparse}/test_format.py, pandas/{sparse/tests => tests/sparse}/test_frame.py, pandas/{sparse/tests => tests/sparse}/test_groupby.py, pandas/{sparse/tests => tests/sparse}/test_indexing.py, pandas/{sparse/tests => tests/sparse}/test_libsparse.py, pandas/{sparse/tests => tests/sparse}/test_list.py, pandas/{sparse/tests => tests/sparse}/test_pivot.py, pandas/{sparse/tests => tests/sparse}/test_series.py, pandas/{tools/tests => tests/tools}/__init__.py, pandas/{tools/tests => tests/tools}/test_concat.py, pandas/{tools/tests => tests/tools}/test_hashing.py, pandas/{tools/tests => tests/tools}/test_join.py, pandas/{tools/tests => tests/tools}/test_merge.py, pandas/{tools/tests => tests/tools}/test_merge_asof.py, pandas/{tools/tests => tests/tools}/test_merge_ordered.py, pandas/{tools/tests => tests/tools}/test_pivot.py, pandas/{tools/tests => tests/tools}/test_tile.py, pandas/{tools/tests => tests/tools}/test_util.py; 1486911061;
-pandas/tests/frame/test_operators.py, pandas/core/frame.py, pandas/core/series.py, pandas/tests/groupby/test_groupby.py, pandas/tests/test_categorical.py, pandas/tests/indexes/test_multi.py, pandas/tests/test_panel.py, pandas/tests/test_multilevel.py, pandas/tests/series/test_analytics.py, pandas/tests/indexing/test_indexing.py, pandas/tests/frame/test_sorting.py, pandas/tests/series/test_sorting.py, pandas/core/reshape.py, pandas/tools/pivot.py, pandas/tests/frame/test_misc_api.py, pandas/sparse/frame.py, pandas/sparse/tests/test_series.py, pandas/tools/tests/test_pivot.py, pandas/tools/tests/test_join.py, pandas/stats/plm.py; 1484121753;
-pandas/tests/frame/test_operators.py, pandas/core/frame.py, pandas/tests/series/test_operators.py; 1485012668;
-pandas/tests/frame/test_operators.py, pandas/core/frame.py, pandas/tests/frame/test_constructors.py, pandas/tests/groupby/test_groupby.py, pandas/tests/frame/test_indexing.py, pandas/tests/test_categorical.py, pandas/tests/frame/test_to_csv.py, pandas/tests/frame/test_analytics.py, pandas/tests/test_algos.py, pandas/tests/indexes/test_base.py, pandas/tests/indexes/test_numeric.py, pandas/tests/series/test_indexing.py, pandas/tests/test_panel4d.py, pandas/tests/plotting/test_frame.py, pandas/tests/plotting/test_misc.py, pandas/tests/test_panel.py, pandas/tests/test_multilevel.py, pandas/tests/groupby/test_aggregate.py, pandas/tests/plotting/test_boxplot_method.py, pandas/tests/test_expressions.py, pandas/tests/series/test_missing.py, pandas/tests/indexing/test_indexing.py, pandas/tests/test_strings.py, pandas/tests/frame/test_query_eval.py, pandas/tests/test_base.py, pandas/tests/frame/test_timeseries.py, pandas/tests/plotting/test_series.py, pandas/tests/plotting/test_datetimelike.py, pandas/tests/test_nanops.py, pandas/tests/frame/test_missing.py, pandas/tests/frame/test_asof.py, pandas/tests/series/test_asof.py, pandas/tests/test_lib.py, pandas/tests/plotting/test_hist_method.py, pandas/tests/test_join.py, pandas/tests/series/test_timeseries.py, pandas/tests/test_common.py, pandas/tests/plotting/test_groupby.py, pandas/tests/groupby/test_categorical.py, pandas/tests/groupby/test_filters.py, pandas/tests/indexing/test_callable.py, pandas/tests/test_internals.py, pandas/tests/test_panelnd.py, pandas/tests/test_take.py, pandas/tests/test_testing.py, pandas/tests/test_util.py, pandas/tests/test_generic.py, pandas/formats/format.py, pandas/tests/formats/test_format.py, pandas/tools/plotting.py, pandas/tests/types/test_dtypes.py, pandas/tests/types/test_missing.py, pandas/tests/types/test_generic.py, pandas/tests/types/test_inference.py, pandas/tests/types/test_common.py, pandas/tests/frame/test_misc_api.py, pandas/tests/test_reshape.py, pandas/tests/types/test_cast.py, pandas/tests/test_stats.py, pandas/tests/types/test_io.py, pandas/tests/formats/test_printing.py, pandas/computation/tests/test_compat.py, pandas/computation/tests/test_eval.py, pandas/io/tests/json/test_pandas.py, pandas/io/tests/json/test_ujson.py, pandas/io/tests/parser/test_network.py, pandas/io/tests/test_excel.py, pandas/io/tests/test_feather.py, pandas/io/tests/test_gbq.py, pandas/io/tests/test_html.py, pandas/io/tests/test_pickle.py, pandas/io/tests/test_pytables.py, pandas/io/tests/test_sql.py, pandas/io/tests/test_stata.py, pandas/sparse/tests/test_libsparse.py, pandas/sparse/tests/test_series.py, pandas/tools/tests/test_util.py, pandas/api/tests/test_api.py, pandas/tseries/tests/test_timeseries_legacy.py, pandas/tools/tests/test_pivot.py, pandas/tools/tests/test_join.py, pandas/tools/tests/test_merge.py, pandas/tools/tests/test_merge_ordered.py, pandas/stats/tests/test_fama_macbeth.py, pandas/stats/tests/test_math.py, pandas/stats/tests/test_ols.py, pandas/stats/tests/test_var.py, pandas/tseries/tests/test_period.py, pandas/tseries/tests/test_util.py, pandas/tseries/tests/test_base.py, pandas/tseries/tests/test_daterange.py, pandas/tseries/tests/test_timedeltas.py, pandas/tseries/tests/test_timezones.py, pandas/tseries/tests/test_tslib.py, pandas/io/tests/parser/test_parsers.py, pandas/io/tests/parser/test_unsupported.py, pandas/sparse/tests/test_array.py, pandas/sparse/tests/test_combine_concat.py, pandas/sparse/tests/test_frame.py, pandas/sparse/tests/test_list.py, pandas/tests/types/test_concat.py, pandas/tools/tests/test_concat.py, pandas/tools/tests/test_merge_asof.py, pandas/tools/tests/test_tile.py, pandas/tseries/tests/test_converter.py, pandas/tseries/tests/test_holiday.py, pandas/tseries/tests/test_offsets.py, pandas/tseries/tests/test_resample.py, pandas/io/tests/json/test_normalize.py, pandas/io/tests/parser/test_textreader.py, pandas/io/tests/test_date_converters.py, pandas/io/tests/test_s3.py; 1486484009;
-pandas/tests/frame/test_operators.py, pandas/core/frame.py, pandas/tests/test_window.py, pandas/compat/__init__.py, pandas/core/series.py, pandas/tests/frame/test_constructors.py, pandas/tests/series/test_alter_axes.py, pandas/tests/series/test_constructors.py, pandas/tests/groupby/test_groupby.py, pandas/tests/frame/test_indexing.py, pandas/tests/test_categorical.py, pandas/tests/frame/test_reshape.py, pandas/tests/frame/test_to_csv.py, pandas/tests/frame/test_analytics.py, pandas/tests/test_algos.py, pandas/tests/indexes/datetimes/test_datetime.py, pandas/tests/indexes/test_base.py, pandas/tests/indexes/test_numeric.py, pandas/tests/series/test_indexing.py, pandas/tests/indexes/datetimes/test_tools.py, pandas/tests/test_panel4d.py, pandas/tests/indexes/test_multi.py, pandas/tests/plotting/test_misc.py, pandas/tests/test_panel.py, pandas/core/internals.py, pandas/util/testing.py, pandas/core/panel.py, pandas/core/window.py, pandas/tests/frame/test_axis_select_reindex.py, pandas/core/indexing.py, pandas/tests/frame/test_alter_axes.py, pandas/tests/test_multilevel.py, pandas/core/nanops.py, pandas/tests/groupby/test_aggregate.py, pandas/tests/series/test_analytics.py, pandas/tests/series/test_io.py, pandas/tests/indexes/datetimes/test_ops.py, pandas/io/json/json.py, pandas/tests/frame/test_dtypes.py, pandas/tests/test_expressions.py, pandas/tests/series/test_missing.py, pandas/tests/frame/test_mutate_columns.py, pandas/tests/indexing/test_indexing.py, pandas/tests/frame/test_sorting.py, pandas/tests/series/test_dtypes.py, pandas/tests/test_strings.py, pandas/io/common.py, pandas/tests/frame/test_query_eval.py, pandas/tests/indexes/datetimes/test_date_range.py, pandas/tests/indexes/datetimes/test_setops.py, pandas/core/config.py, pandas/compat/numpy/function.py, pandas/tests/series/test_operators.py, pandas/tests/frame/test_block_internals.py, pandas/io/json/normalize.py, pandas/core/base.py, pandas/tests/scalar/test_timestamp.py, pandas/tests/indexes/test_category.py, pandas/tests/frame/test_timeseries.py, pandas/tests/frame/test_convert_to.py, pandas/tests/indexes/datetimes/test_construction.py, pandas/tests/indexes/datetimes/test_datetimelike.py, pandas/tests/series/test_apply.py, pandas/tests/frame/test_quantile.py, pandas/tests/frame/test_missing.py, pandas/tests/frame/test_repr_info.py, pandas/tests/frame/test_apply.py, pandas/tests/frame/test_asof.py, pandas/tests/indexes/datetimes/test_indexing.py, pandas/tests/series/test_asof.py, pandas/tests/series/test_replace.py, pandas/tests/indexing/test_coercion.py, pandas/tests/indexing/test_indexing_slow.py, pandas/tests/test_join.py, pandas/tests/series/test_datetime_values.py, pandas/compat/pickle_compat.py, pandas/tests/series/test_repr.py, pandas/tests/frame/test_combine_concat.py, pandas/tests/series/test_timeseries.py, pandas/tests/test_common.py, pandas/io/sas/sasreader.py, pandas/__init__.py, pandas/tests/indexes/datetimes/test_astype.py, pandas/tests/series/test_combine_concat.py, pandas/util/decorators.py, pandas/tests/test_config.py, pandas/tests/frame/test_nonunique_indexes.py, pandas/tests/frame/test_replace.py, pandas/tests/frame/test_subclass.py, pandas/tests/groupby/test_categorical.py, pandas/tests/groupby/test_filters.py, pandas/tests/indexes/datetimes/test_misc.py, pandas/tests/indexes/datetimes/test_missing.py, pandas/tests/indexing/test_callable.py, pandas/tests/series/test_internals.py, pandas/tests/series/test_sorting.py, pandas/tests/series/test_subclass.py, pandas/tests/test_internals.py, pandas/tests/test_take.py, pandas/tests/test_testing.py, pandas/tests/test_util.py, pandas/util/depr_module.py, pandas/tests/test_generic.py, pandas/tseries/period.py, pandas/indexes/base.py, pandas/indexes/multi.py, pandas/formats/format.py, pandas/tests/formats/test_format.py, pandas/tests/formats/test_style.py, pandas/tests/types/test_dtypes.py, pandas/tests/types/test_missing.py, pandas/types/generic.py, pandas/tests/types/test_generic.py, pandas/tests/types/test_inference.py, pandas/tests/types/test_common.py, pandas/tests/frame/test_misc_api.py, pandas/tests/test_reshape.py, pandas/util/clipboard/windows.py, pandas/util/clipboard/__init__.py, pandas/util/clipboard/clipboards.py, pandas/_version.py, pandas/util/clipboard/exceptions.py, pandas/tests/types/test_cast.py, pandas/sparse/array.py, pandas/tests/test_stats.py, pandas/sparse/series.py, pandas/tests/formats/test_printing.py, pandas/computation/tests/test_eval.py, pandas/io/tests/parser/c_parser_only.py, pandas/io/tests/parser/compression.py, pandas/io/tests/parser/converters.py, pandas/io/tests/parser/parse_dates.py, pandas/io/tests/parser/python_parser_only.py, pandas/io/tests/test_clipboard.py, pandas/io/tests/test_feather.py, pandas/io/tests/test_gbq.py, pandas/io/tests/test_packers.py, pandas/io/tests/test_pickle.py, pandas/io/tests/test_pytables.py, pandas/sparse/tests/test_indexing.py, pandas/sparse/tests/test_libsparse.py, pandas/sparse/tests/test_series.py, pandas/api/tests/test_api.py, pandas/tseries/tests/test_timeseries_legacy.py, pandas/tools/tests/test_pivot.py, pandas/tools/tests/test_join.py, pandas/tools/tests/test_merge.py, pandas/stats/fama_macbeth.py, pandas/stats/ols.py, pandas/stats/tests/test_ols.py, pandas/tseries/tests/test_period.py, pandas/tests/indexes/test_datetimelike.py, pandas/tests/indexes/test_timedelta.py, pandas/tseries/tests/test_base.py, pandas/tseries/tests/test_daterange.py, pandas/tseries/tests/test_timedeltas.py, pandas/tseries/tests/test_timezones.py, pandas/tseries/tests/test_tslib.py, pandas/compat/chainmap.py, pandas/io/tests/parser/dtypes.py, pandas/io/tests/parser/test_parsers.py, pandas/io/tests/parser/test_unsupported.py, pandas/msgpack/exceptions.py, pandas/sparse/tests/test_arithmetics.py, pandas/sparse/tests/test_array.py, pandas/sparse/tests/test_combine_concat.py, pandas/sparse/tests/test_format.py, pandas/sparse/tests/test_frame.py, pandas/sparse/tests/test_groupby.py, pandas/sparse/tests/test_list.py, pandas/sparse/tests/test_pivot.py, pandas/tests/series/test_misc_api.py, pandas/tests/types/test_concat.py, pandas/tools/tests/test_concat.py, pandas/tools/tests/test_hashing.py, pandas/tools/tests/test_merge_asof.py, pandas/tools/tests/test_tile.py, pandas/tseries/tests/test_bin_groupby.py, pandas/tseries/tests/test_converter.py, pandas/tseries/tests/test_frequencies.py, pandas/tseries/tests/test_holiday.py, pandas/tseries/tests/test_offsets.py, pandas/tseries/tests/test_resample.py; 1486493445;
-pandas/tests/frame/test_operators.py, pandas/tests/test_window.py, pandas/tests/frame/test_constructors.py, pandas/tests/frame/test_analytics.py, pandas/tests/indexes/datetimes/test_tools.py, pandas/tests/test_panel4d.py, pandas/tests/indexes/test_multi.py, pandas/tests/plotting/test_frame.py, pandas/tests/test_panel.py, pandas/util/testing.py, pandas/tests/test_multilevel.py, pandas/tests/series/test_analytics.py, pandas/tests/plotting/test_boxplot_method.py, pandas/tests/tseries/test_offsets.py, pandas/tests/test_expressions.py, pandas/tests/series/test_missing.py, pandas/tests/frame/test_query_eval.py, pandas/tests/test_base.py, pandas/tests/plotting/test_datetimelike.py, pandas/tests/frame/test_quantile.py, pandas/tests/plotting/common.py, pandas/tests/series/test_quantile.py, pandas/tests/frame/test_missing.py, pandas/tests/indexing/test_coercion.py, pandas/util/decorators.py, pandas/tests/test_internals.py, pandas/tests/test_testing.py, pandas/tests/test_generic.py, pandas/tests/formats/test_format.py, pandas/tests/formats/test_style.py, pandas/tests/formats/test_printing.py, pandas/util/print_versions.py, pandas/tests/groupby/test_misc.py, pandas/computation/tests/test_compat.py, pandas/computation/tests/test_eval.py, pandas/io/tests/json/test_pandas.py, pandas/io/tests/json/test_ujson.py, pandas/io/tests/parser/c_parser_only.py, pandas/io/tests/parser/common.py, pandas/io/tests/parser/compression.py, pandas/io/tests/parser/converters.py, pandas/io/tests/parser/parse_dates.py, pandas/io/tests/parser/python_parser_only.py, pandas/io/tests/parser/test_network.py, pandas/io/tests/parser/test_read_fwf.py, pandas/io/tests/parser/usecols.py, pandas/io/tests/test_clipboard.py, pandas/io/tests/test_excel.py, pandas/io/tests/test_feather.py, pandas/io/tests/test_gbq.py, pandas/io/tests/test_html.py, pandas/io/tests/test_packers.py, pandas/io/tests/test_pickle.py, pandas/io/tests/test_pytables.py, pandas/io/tests/test_sql.py, pandas/io/tests/test_stata.py, pandas/sparse/tests/test_indexing.py, pandas/sparse/tests/test_libsparse.py, pandas/sparse/tests/test_series.py, pandas/tests/test_msgpack/test_unpack.py, pandas/tests/tseries/test_converter.py, pandas/tools/tests/test_util.py; 1486857379;
-pandas/core/ops.py, pandas/compat/numpy/__init__.py, pandas/tseries/index.py, pandas/tseries/tdi.py; 1485283911;
-pandas/core/frame.py, pandas/core/groupby.py, pandas/tests/groupby/test_groupby.py, pandas/tests/frame/test_analytics.py, asv_bench/benchmarks/groupby.py, asv_bench/benchmarks/frame_methods.py; 1485178838;
-pandas/core/frame.py, pandas/core/series.py, pandas/core/groupby.py, pandas/tests/groupby/test_groupby.py, pandas/core/panel.py, pandas/io/pytables.py, pandas/core/categorical.py, pandas/core/base.py, pandas/__init__.py, pandas/tools/merge.py, pandas/core/reshape.py, pandas/formats/format.py, pandas/tools/concat.py, pandas/tools/pivot.py, pandas/tools/plotting.py, pandas/io/gbq.py, pandas/tools/tests/test_pivot.py, pandas/tools/tests/test_join.py, pandas/tools/tests/test_merge.py, pandas/tools/tests/test_merge_ordered.py; 1486679779;
-pandas/core/frame.py, pandas/core/series.py, pandas/core/groupby.py, pandas/tests/groupby/test_groupby.py, pandas/core/sorting.py, pandas/tests/test_sorting.py, pandas/tests/groupby/test_filters.py, pandas/tools/merge.py, pandas/indexes/multi.py, pandas/core/reshape.py, pandas/tests/tools/test_merge.py, pandas/tests/groupby/test_value_counts.py, pandas/tests/groupby/test_misc.py; 1487111711;
-pandas/core/frame.py, pandas/tests/groupby/test_groupby.py, pandas/tests/indexes/test_multi.py, pandas/io/pytables.py, pandas/tests/test_multilevel.py, pandas/tests/frame/test_mutate_columns.py, pandas/core/algorithms.py, pandas/tests/frame/test_repr_info.py, pandas/tests/indexing/test_multiindex.py, asv_bench/benchmarks/indexing.py, pandas/tools/hashing.py, pandas/indexes/base.py, pandas/indexes/multi.py, pandas/types/cast.py, pandas/tests/tools/test_hashing.py, pandas/tests/tools/test_join.py, asv_bench/benchmarks/reindex.py; 1487172289;
-pandas/core/frame.py, pandas/tests/frame/test_alter_axes.py; 1487684317;
-pandas/core/frame.py, pandas/tests/frame/test_convert_to.py; 1488224638;
-pandas/core/frame.py, pandas/tests/io/test_gbq.py, pandas/util/decorators.py, pandas/io/gbq.py, pandas/util/print_versions.py; 1488228463;
-pandas/core/frame.py, pandas/util/decorators.py; 1488244873;
-pandas/core/frame.py, pandas/util/decorators.py; 1488256996;
-pandas/core/frame.py, pandas/tests/frame/test_analytics.py; 1488292070;
-pandas/tests/test_window.py, pandas/core/window.py; 1484914894;
-pandas/tests/test_window.py, pandas/core/window.py; 1485280907;
-pandas/tests/test_window.py, pandas/tests/io/test_pytables.py, pandas/tests/indexes/datetimes/test_ops.py, pandas/tests/io/test_sql.py, pandas/tests/io/test_clipboard.py; 1486918156;
-pandas/tests/test_window.py, pandas/core/window.py; 1487419734;
-pandas/core/series.py, pandas/tests/series/test_constructors.py; 1484496626;
-pandas/core/series.py, pandas/tests/series/test_alter_axes.py, pandas/tests/series/test_constructors.py, pandas/tests/io/test_pytables.py, pandas/tests/indexes/test_base.py, pandas/io/pytables.py, pandas/core/api.py, pandas/tests/api/test_api.py, pandas/compat/pickle_compat.py, pandas/tests/series/test_timeseries.py; 1488291428;
-pandas/tests/frame/test_constructors.py, pandas/tests/series/test_constructors.py, pandas/tests/groupby/test_groupby.py, pandas/tests/frame/test_indexing.py, pandas/tests/series/test_indexing.py, pandas/tests/indexes/datetimes/test_tools.py, pandas/tests/frame/test_alter_axes.py, pandas/tests/series/test_dtypes.py, pandas/tests/indexes/datetimes/test_date_range.py, pandas/tests/indexes/datetimes/test_setops.py, pandas/tests/series/test_operators.py, pandas/tests/frame/test_timeseries.py, pandas/tests/indexes/datetimes/test_construction.py, pandas/tests/indexes/datetimes/test_datetimelike.py, pandas/tests/frame/test_apply.py, pandas/tests/frame/test_combine_concat.py, pandas/tests/series/test_timeseries.py, pandas/tests/indexes/datetimes/test_astype.py, pandas/tests/series/test_combine_concat.py, pandas/tests/indexes/datetimes/test_misc.py, pandas/tests/indexes/datetimes/test_partial_slcing.py; 1486231204;
-pandas/core/groupby.py, pandas/tests/groupby/test_groupby.py, asv_bench/benchmarks/groupby.py; 1484140713;
-pandas/core/groupby.py, pandas/tests/groupby/test_groupby.py, pandas/compat/numpy/function.py; 1484756015;
-pandas/core/groupby.py, pandas/tests/groupby/test_groupby.py; 1485267575;
-pandas/core/groupby.py, pandas/tseries/tests/test_resample.py; 1485283536;
-pandas/core/groupby.py, pandas/tests/groupby/test_groupby.py; 1485371077;
-pandas/core/groupby.py, pandas/tests/groupby/test_groupby.py, pandas/tests/groupby/test_categorical.py, pandas/tests/test_generic.py, pandas/tests/formats/test_format.py; 1486685843;
-pandas/core/groupby.py, pandas/tests/groupby/test_groupby.py, pandas/tests/tseries/test_resample.py; 1487255232;
-pandas/core/groupby.py, pandas/core/categorical.py, asv_bench/benchmarks/groupby.py, pandas/tests/groupby/test_categorical.py, pandas/indexes/category.py; 1487789383;
-pandas/core/groupby.py, pandas/tests/groupby/test_transform.py, pandas/tests/groupby/test_filters.py; 1488228892;
-pandas/core/groupby.py, pandas/tests/groupby/test_aggregate.py, pandas/tests/groupby/test_transform.py, pandas/tests/tseries/test_resample.py; 1488228949;
-pandas/tests/groupby/test_groupby.py, pandas/tests/indexes/test_multi.py, pandas/indexes/multi.py; 1484328982;
-pandas/tests/groupby/test_groupby.py, pandas/tests/groupby/__init__.py; 1484338881;
-pandas/tests/groupby/test_groupby.py, pandas/tests/groupby/test_aggregate.py, pandas/tests/groupby/test_timegrouper.py, pandas/tests/groupby/test_transform.py, pandas/tests/groupby/test_categorical.py, pandas/tests/groupby/common.py, pandas/tests/groupby/test_misc.py; 1486517049;
-pandas/tests/frame/test_indexing.py, pandas/core/indexing.py; 1484260945;
-pandas/tests/test_categorical.py, pandas/tests/indexes/common.py, pandas/core/base.py, pandas/indexes/base.py, pandas/indexes/multi.py; 1485528164;
-pandas/tests/io/test_excel.py, pandas/tests/io/parser/common.py; 1486912176;
-pandas/tests/test_algos.py, pandas/tests/indexes/test_numeric.py, pandas/core/algorithms.py, pandas/indexes/base.py; 1485100137;
-pandas/tests/io/test_gbq.py, pandas/io/gbq.py; 1487078965;
-pandas/tests/indexes/datetimes/test_datetime.py, pandas/tests/series/test_missing.py, pandas/tests/indexes/datetimes/test_date_range.py, pandas/tests/scalar/test_timestamp.py, pandas/tests/indexes/datetimes/test_construction.py, pandas/tests/series/test_timeseries.py, pandas/tests/indexes/datetimes/test_misc.py, pandas/tests/indexes/test_timedelta.py, pandas/tseries/tests/test_tslib.py, pandas/tseries/tests/test_timeseries.py; 1486224216;
-pandas/tests/indexes/datetimes/test_datetime.py, pandas/tests/series/test_indexing.py, pandas/tests/series/test_missing.py, pandas/tests/indexes/datetimelike.py, pandas/tests/scalar/test_timestamp.py, pandas/tests/frame/test_timeseries.py, pandas/tests/indexes/datetimes/test_construction.py, pandas/tests/indexes/datetimes/test_datetimelike.py, pandas/tests/frame/test_missing.py, pandas/tests/series/test_timeseries.py, pandas/tests/indexes/datetimes/test_astype.py, pandas/tests/indexes/datetimes/test_misc.py, pandas/tests/indexes/test_datetimelike.py, pandas/sparse/tests/test_frame.py; 1486226536;
-pandas/tests/indexes/period/test_period.py, pandas/tests/indexes/timedeltas/test_timedelta.py, pandas/tests/indexes/datetimes/test_tools.py, pandas/tests/indexes/datetimes/test_ops.py, pandas/tests/indexes/datetimes/test_date_range.py, pandas/tests/scalar/test_timestamp.py, pandas/tests/scalar/test_timedelta.py, pandas/tests/indexes/timedeltas/test_timedelta_range.py, pandas/tests/indexes/timedeltas/test_construction.py, pandas/tests/indexes/timedeltas/test_ops.py, pandas/tests/indexes/timedeltas/test_tools.py, pandas/tests/indexes/timedeltas/test_astype.py, pandas/tests/indexes/timedeltas/test_indexing.py, pandas/tests/indexes/timedeltas/test_partial_slicing.py, pandas/tests/indexes/timedeltas/test_setops.py, pandas/tseries/tests/test_period.py, pandas/tseries/tests/test_util.py, pandas/tests/indexes/period/__init__.py, pandas/tests/indexes/test_datetimelike.py, pandas/tests/indexes/test_timedelta.py, pandas/tests/indexes/timedeltas/__init__.py, pandas/tseries/tests/test_base.py, pandas/tseries/tests/test_daterange.py, pandas/tseries/tests/test_timedeltas.py, pandas/tseries/tests/test_timezones.py, pandas/tseries/tests/test_tslib.py; 1486513274;
-pandas/tests/indexes/period/test_period.py, pandas/tests/scalar/test_period.py, pandas/tests/indexes/period/test_construction.py, pandas/tests/series/test_period.py, pandas/tests/frame/test_period.py, pandas/tests/indexes/period/test_asfreq.py, pandas/tests/indexes/period/test_partial_slicing.py, pandas/tests/indexes/period/test_setops.py, pandas/tests/indexes/period/test_tools.py, pandas/tseries/tests/test_period.py; 1486596967;
-pandas/tests/indexes/test_multi.py, pandas/core/indexing.py, pandas/tests/indexing/test_indexing.py; 1483487978;
-pandas/tests/indexes/test_multi.py, pandas/indexes/multi.py; 1485379203;
-pandas/tests/plotting/test_frame.py, pandas/tests/plotting/test_misc.py, pandas/tests/plotting/test_boxplot_method.py, pandas/tests/plotting/test_series.py, pandas/tests/plotting/test_hist_method.py, pandas/tests/plotting/test_groupby.py, pandas/tests/test_config.py, pandas/tests/test_testing.py, pandas/computation/tests/test_compat.py, pandas/computation/tests/test_eval.py, pandas/tests/test_msgpack/test_buffer.py, pandas/tests/test_msgpack/test_case.py, pandas/tests/test_msgpack/test_except.py, pandas/tests/test_msgpack/test_format.py, pandas/tests/test_msgpack/test_limits.py, pandas/tests/test_msgpack/test_pack.py, pandas/tests/test_msgpack/test_seq.py, pandas/tests/test_msgpack/test_sequnpack.py, pandas/tests/test_msgpack/test_subtype.py; 1484496542;
-pandas/io/parsers.py, pandas/io/tests/parser/test_unsupported.py, pandas/io/tests/parser/quoting.py; 1483654824;
-pandas/io/parsers.py, pandas/io/tests/parser/test_read_fwf.py; 1484054175;
-pandas/io/parsers.py, pandas/io/tests/parser/usecols.py; 1484121440;
-pandas/io/parsers.py, pandas/io/tests/parser/skiprows.py; 1484413388;
-pandas/io/parsers.py, pandas/tests/io/parser/parse_dates.py; 1488206689;
-pandas/util/testing.py, pandas/tseries/tests/test_timeseries.py; 1485287492;
-pandas/util/testing.py, pandas/util/_tester.py, pandas/conftest.py, pandas/__init__.py, pandas/tests/frame/common.py, pandas/tests/formats/test_format.py, pandas/io/tests/parser/test_network.py, pandas/io/tests/test_packers.py, pandas/io/tests/test_pickle.py, pandas/io/tests/test_sql.py, pandas/tools/tests/test_util.py, pandas/api/tests/test_api.py, pandas/util/nosetester.py; 1486740980;
-pandas/util/testing.py, pandas/util/_tester.py; 1486741868;
-pandas/util/testing.py, pandas/tests/computation/test_compat.py, pandas/tests/io/parser/test_network.py, pandas/tests/computation/test_eval.py; 1487254428;
-pandas/util/testing.py, pandas/tests/test_testing.py; 1488224696;
-pandas/core/indexing.py, pandas/tests/indexing/test_multiindex.py; 1487601797;
-pandas/tests/groupby/test_aggregate.py, pandas/types/cast.py, pandas/tests/types/test_cast.py; 1488210354;
-pandas/tests/series/test_analytics.py, pandas/core/categorical.py, pandas/core/algorithms.py; 1487966172;
-pandas/tests/plotting/test_boxplot_method.py, pandas/tools/plotting.py; 1484932377;
-pandas/tests/indexes/common.py, pandas/tseries/base.py, pandas/indexes/base.py, pandas/indexes/category.py; 1486232929;
-pandas/tests/indexes/datetimes/test_ops.py, pandas/tests/tseries/test_frequencies.py, pandas/tests/{tseries => groupby}/test_bin_groupby.py; 1486683331;
-pandas/tseries/offsets.py, pandas/tseries/tests/test_timedeltas.py, pandas/tseries/tests/test_timeseries.py; 1484413308;
-pandas/tests/test_expressions.py, pandas/tests/indexing/test_timedelta.py, pandas/tests/tseries/test_resample.py; 1487437497;
-pandas/io/excel.py, pandas/io/tests/test_excel.py; 1485017361;
-pandas/tests/indexing/test_datetime.py, pandas/tests/indexing/test_indexing.py, pandas/tests/indexing/test_chaining_and_caching.py, pandas/tests/indexing/test_timedelta.py, pandas/tests/indexing/test_multiindex.py, pandas/tests/indexing/test_floats.py, pandas/tests/indexing/test_panel.py, pandas/tests/indexing/common.py; 1486847154;
-pandas/tests/indexing/test_indexing.py, pandas/tseries/tdi.py; 1485442646;
-pandas/tests/test_strings.py, pandas/core/strings.py; 1485194802;
-pandas/tests/computation/test_compat.py, pandas/computation/__init__.py; 1487172032;
-pandas/tests/io/test_pickle.py, pandas/tests/io/test_packers.py; 1487343106;
-pandas/tests/scalar/test_period.py, pandas/tests/indexes/period/test_construction.py, pandas/tests/indexes/period/test_indexing.py, pandas/tests/indexes/period/test_ops.py, pandas/tests/indexes/period/test_setops.py, pandas/tests/scalar/test_period_asfreq.py; 1486598965;
-asv_bench/benchmarks/io_bench.py, pandas/io/tests/parser/common.py, pandas/io/tests/parser/dtypes.py, pandas/io/tests/parser/na_values.py; 1483386601;
-pandas/tests/test_base.py, pandas/core/base.py, pandas/compat/pickle_compat.py, pandas/tests/indexes/test_frozen.py, pandas/indexes/base.py, pandas/indexes/frozen.py, pandas/indexes/multi.py; 1487938431;
-pandas/io/packers.py, pandas/tests/io/test_packers.py; 1487968878;
-pandas/tests/plotting/test_datetimelike.py, pandas/tools/plotting.py, pandas/tseries/converter.py, pandas/tseries/plotting.py; 1487779233;
-pandas/io/stata.py, pandas/io/tests/test_stata.py; 1485345535;
-pandas/tests/io/parser/test_network.py, pandas/conftest.py; 1487126736;
-pandas/io/sas/sasreader.py, pandas/io/tests/sas/test_sas.py; 1483986759;
-pandas/types/common.py, pandas/tseries/tools.py, pandas/tests/types/test_dtypes.py, pandas/tests/types/test_inference.py, pandas/tseries/tests/test_converter.py, pandas/tseries/tests/test_timeseries.py; 1484264018;
-pandas/tools/hashing.py, pandas/tools/tests/test_hashing.py; 1484750126;
-pandas/tools/hashing.py, pandas/tools/tests/test_hashing.py; 1485526783;
-pandas/tests/groupby/test_categorical.py, pandas/indexes/category.py; 1484857184;
-pandas/types/concat.py, pandas/tests/tools/test_concat.py; 1487780652;
-pandas/formats/style.py, pandas/tests/formats/test_style.py; 1487344037;
-pandas/tools/merge.py, pandas/tools/tests/test_merge_asof.py; 1484660568;
-pandas/tools/merge.py, pandas/tools/tests/test_merge_asof.py; 1484755522;
-pandas/tseries/base.py, pandas/tseries/tests/test_timeseries.py; 1484413641;
-pandas/tseries/period.py, pandas/indexes/base.py, pandas/indexes/multi.py, pandas/indexes/category.py; 1487181636;
-pandas/tests/tools/test_concat.py, pandas/tests/tools/test_merge.py, pandas/tools/concat.py; 1487266847;
-pandas/tests/tools/test_concat.py, pandas/tests/tools/test_union_categoricals.py; 1487781034;
-asv_bench/benchmarks/plotting.py, pandas/tseries/converter.py, pandas/tseries/tests/test_converter.py; 1483988627;
-pandas/core/reshape.py, pandas/tests/test_reshape.py; 1486756146;
-pandas/formats/format.py, pandas/tests/formats/test_format.py; 1485040029;
-pandas/io/gbq.py, pandas/io/tests/test_gbq.py; 1483441590;
-pandas/io/gbq.py, pandas/io/tests/test_gbq.py; 1486660254;
-pandas/tseries/resample.py, pandas/tseries/tests/test_resample.py; 1486475871;
-pandas/computation/tests/test_eval.py, pandas/computation/eval.py; 1486659865;
-pandas/io/tests/json/test_pandas.py, pandas/io/json.py; 1484834003;
-pandas/io/tests/test_ga.py, pandas/io/ga.py; 1485358993;
-ci/ironcache/get.py, ci/ironcache/put.py; 1484843228;
-pandas/core/generic.py, pandas/core/internals.py, pandas/tests/series/test_dtypes.py, pandas/tests/test_internals.py; 1483476838; pandas/tests/frame/test_dtypes.py
-pandas/core/generic.py, pandas/tests/frame/test_misc_api.py; 1483540617; pandas/tests/series/test_misc_api.py
-pandas/core/generic.py, pandas/core/series.py, pandas/tests/test_categorical.py, pandas/core/internals.py, pandas/core/categorical.py, pandas/tests/test_base.py, pandas/core/base.py, pandas/tests/frame/test_missing.py, pandas/tests/series/test_validate.py, pandas/tests/frame/test_validate.py, pandas/tests/test_internals.py, pandas/tests/test_util.py, pandas/tests/test_generic.py, pandas/util/validators.py, pandas/sparse/list.py, pandas/computation/tests/test_eval.py, pandas/computation/eval.py; 1483706001; pandas/core/frame.py
-pandas/core/generic.py, pandas/tests/frame/test_operators.py, pandas/core/frame.py, pandas/tests/test_window.py, pandas/core/series.py, pandas/tests/frame/test_constructors.py, pandas/tests/series/test_constructors.py, pandas/core/groupby.py, pandas/tests/groupby/test_groupby.py, pandas/tests/frame/test_indexing.py, pandas/tests/test_categorical.py, pandas/tests/frame/test_reshape.py, pandas/tests/frame/test_to_csv.py, pandas/tests/frame/test_analytics.py, pandas/tests/series/test_indexing.py, pandas/tests/test_panel4d.py, pandas/tests/indexes/test_multi.py, pandas/tests/plotting/test_frame.py, pandas/tests/test_panel.py, pandas/core/panel.py, pandas/io/pytables.py, pandas/core/indexing.py, pandas/tests/frame/test_alter_axes.py, pandas/tests/test_multilevel.py, pandas/tests/series/test_analytics.py, pandas/tests/indexing/test_categorical.py, pandas/tests/indexing/test_indexing.py, pandas/tests/frame/test_sorting.py, pandas/tests/test_strings.py, pandas/tests/frame/test_block_internals.py, pandas/tests/frame/test_timeseries.py, pandas/tests/plotting/test_datetimelike.py, pandas/tests/frame/test_missing.py, pandas/tests/frame/test_apply.py, pandas/tests/frame/test_asof.py, pandas/tests/series/test_repr.py, pandas/tests/frame/test_combine_concat.py, pandas/tests/frame/test_nonunique_indexes.py, pandas/tests/frame/test_replace.py, pandas/tests/frame/test_subclass.py, pandas/tests/groupby/test_filters.py, pandas/tests/indexing/test_callable.py, pandas/tests/indexing/test_floats.py, pandas/tests/series/test_subclass.py, pandas/tests/test_internals.py, pandas/tests/test_panelnd.py, pandas/tests/test_generic.py, pandas/core/reshape.py, pandas/tests/formats/test_format.py, pandas/tests/frame/test_misc_api.py, pandas/io/tests/json/test_pandas.py, pandas/io/tests/parser/common.py, pandas/io/tests/parser/parse_dates.py, pandas/io/tests/test_excel.py, pandas/io/tests/test_html.py, pandas/io/tests/test_packers.py, pandas/io/tests/test_pytables.py, pandas/io/tests/test_sql.py, pandas/io/tests/test_stata.py, pandas/sparse/tests/test_indexing.py, pandas/sparse/tests/test_series.py, pandas/tools/tests/test_pivot.py, pandas/tools/tests/test_join.py, pandas/tools/tests/test_merge.py, pandas/tools/tests/test_merge_ordered.py, pandas/stats/tests/test_ols.py, pandas/tseries/tests/test_period.py, pandas/tests/indexes/test_datetimelike.py, pandas/tseries/tests/test_timedeltas.py, pandas/sparse/tests/test_frame.py, pandas/tools/tests/test_concat.py, pandas/tseries/tests/test_resample.py, pandas/io/tests/test_date_converters.py, pandas/tseries/tests/test_timeseries.py; 1484755830; pandas/tests/frame/test_axis_select_reindex.py
-pandas/core/generic.py, pandas/tests/frame/test_timeseries.py, pandas/tests/series/test_timeseries.py, pandas/tseries/tests/test_resample.py; 1485038837; pandas/tseries/resample.py
-pandas/core/generic.py; 1485434273; pandas/tests/frame/test_asof.py
-pandas/core/generic.py, pandas/tests/series/test_replace.py; 1486067176; pandas/tests/frame/test_replace.py
-pandas/tests/series/test_missing.py, pandas/tests/frame/test_missing.py; 1486394758; pandas/core/generic.py
-pandas/core/generic.py, pandas/compat/numpy/function.py; 1486564518; pandas/tests/test_generic.py
-pandas/core/generic.py, pandas/core/internals.py, pandas/core/missing.py; 1487079217; pandas/tests/series/test_missing.py
-pandas/core/generic.py, pandas/core/frame.py, pandas/io/excel.py; 1487267132; pandas/tests/io/test_excel.py
-pandas/core/generic.py, pandas/tests/test_generic.py; 1487618304; pandas/indexes/base.py
-pandas/tests/frame/test_indexing.py, pandas/tests/indexes/period/test_period.py, pandas/tests/series/test_indexing.py, pandas/tests/indexes/test_multi.py, pandas/tests/indexes/common.py, pandas/tests/indexes/test_category.py, pandas/indexes/base.py; 1487966638; pandas/core/generic.py
-pandas/core/generic.py, pandas/io/html.py, pandas/io/json/normalize.py; 1488058736; pandas/io/parsers.py
-pandas/core/generic.py, pandas/tests/io/test_pytables.py, pandas/tests/test_panel4d.py, pandas/io/pytables.py, pandas/tests/frame/test_block_internals.py, pandas/tests/frame/test_nonunique_indexes.py, pandas/tests/test_generic.py, pandas/tools/concat.py, pandas/tseries/resample.py; 1488278602; pandas/core/groupby.py
-pandas/core/frame.py; 1484834238; pandas/io/sql.py
-pandas/io/sql.py, pandas/core/frame.py, pandas/io/parsers.py, pandas/io/pytables.py, pandas/core/indexing.py, pandas/tseries/offsets.py, pandas/io/excel.py, pandas/core/config_init.py, pandas/io/common.py, pandas/core/config.py, pandas/compat/numpy/function.py, pandas/io/packers.py, pandas/tseries/frequencies.py, pandas/io/stata.py, pandas/core/algorithms.py, pandas/compat/numpy/__init__.py, pandas/tseries/holiday.py, pandas/stats/moments.py, pandas/tests/sparse/test_libsparse.py, pandas/tests/test_generic.py, pandas/tools/merge.py, pandas/tseries/index.py, pandas/indexes/numeric.py, pandas/formats/format.py, pandas/indexes/range.py, pandas/tseries/timedeltas.py, pandas/tools/plotting.py, pandas/tseries/interval.py, pandas/types/generic.py, pandas/sparse/frame.py, pandas/computation/expr.py, pandas/io/gbq.py, pandas/sparse/series.py, pandas/tseries/resample.py, pandas/util/print_versions.py, pandas/msgpack/__init__.py, pandas/util/terminal.py; 1487181551; pandas/util/testing.py
-pandas/tests/io/test_sql.py; 1487336960; pandas/io/sql.py
-pandas/io/sql.py, pandas/core/frame.py, pandas/core/groupby.py, pandas/tests/frame/test_combine_concat.py, pandas/indexes/base.py, pandas/indexes/multi.py, pandas/formats/format.py, pandas/util/doctools.py; 1487967421; pandas/core/reshape.py
-setup.py, pandas/tests/frame/test_indexing.py, pandas/tests/indexes/test_base.py, pandas/tests/indexes/test_numeric.py, pandas/util/testing.py, pandas/core/indexing.py, pandas/tests/indexes/common.py, pandas/tests/indexing/test_indexing.py, pandas/core/api.py, pandas/indexes/base.py, pandas/indexes/numeric.py, pandas/types/generic.py, pandas/tests/types/test_generic.py, pandas/api/tests/test_api.py; 1484660711; pandas/indexes/api.py
-setup.py, pandas/api/tests/test_api.py, pandas/rpy/__init__.py, pandas/rpy/base.py, pandas/rpy/common.py, pandas/rpy/mass.py, pandas/rpy/tests/__init__.py, pandas/rpy/tests/test_common.py; 1485087309; pandas/rpy/vars.py
-setup.py, pandas/tests/indexes/datetimes/test_datetime.py, pandas/tests/indexes/datetimes/test_ops.py, pandas/tests/indexes/datetimes/test_setops.py, pandas/tests/indexes/datetimes/test_construction.py, pandas/tests/indexes/datetimes/test_astype.py, pandas/tests/indexes/datetimes/test_misc.py, pandas/tests/indexes/datetimes/test_missing.py, pandas/tests/indexes/test_datetimelike.py, pandas/tseries/tests/test_base.py, pandas/tseries/tests/test_timeseries.py, pandas/tests/indexes/datetimes/__init__.py; 1486084472; pandas/tests/indexes/datetimes/test_indexing.py
-setup.py, pandas/tests/scalar/test_timedelta.py, pandas/tests/scalar/__init__.py; 1486084750; pandas/tests/scalar/test_timestamp.py
-setup.py, pandas/io/json/__init__.py, pandas/io/{ => json}/json.py; 1486422206; pandas/io/json/normalize.py
-setup.py, pandas/tests/indexes/datetimes/test_tools.py, pandas/tests/indexes/datetimes/test_ops.py, pandas/tests/indexes/datetimes/test_date_range.py, pandas/tools/tests/test_pivot.py; 1486513281; pandas/tests/indexes/datetimes/test_setops.py
-setup.py, pandas/api/tests/test_api.py, pandas/stats/api.py, pandas/stats/common.py, pandas/stats/fama_macbeth.py, pandas/stats/interface.py, pandas/stats/math.py, pandas/stats/misc.py, pandas/stats/ols.py, pandas/stats/plm.py, pandas/stats/tests/__init__.py, pandas/stats/tests/common.py, pandas/stats/tests/test_fama_macbeth.py, pandas/stats/tests/test_math.py, pandas/stats/tests/test_ols.py, pandas/stats/tests/test_var.py, pandas/stats/var.py; 1486658543; pandas/util/print_versions.py
-setup.py, pandas/tests/indexes/datetimes/test_ops.py, pandas/tests/indexes/datetimes/test_setops.py, pandas/{tseries/tests => tests/tseries}/__init__.py, pandas/{tseries/tests => tests/tseries}/test_bin_groupby.py, pandas/{tseries/tests => tests/tseries}/test_frequencies.py, pandas/{tseries/tests => tests/tseries}/test_holiday.py, pandas/{tseries/tests => tests/tseries}/test_offsets.py, pandas/{tseries/tests => tests/tseries}/test_resample.py, pandas/{tseries/tests => tests/tseries}/test_timezones.py, pandas/tseries/tests/test_timeseries_legacy.py; 1486683016; pandas/{tseries/tests => tests/tseries}/test_converter.py
-setup.py, pandas/tests/indexes/datetimes/test_ops.py, pandas/{api/tests => tests/api}/__init__.py, pandas/{api/tests => tests/api}/test_api.py, pandas/{computation/tests => tests/computation}/test_compat.py, pandas/{computation/tests => tests/computation}/test_eval.py, pandas/{io/tests => tests/io}/__init__.py, pandas/{io/tests => tests/io}/generate_legacy_storage_files.py, pandas/{io/tests => tests/io}/json/__init__.py, pandas/{io/tests => tests/io}/json/test_normalize.py, pandas/{io/tests => tests/io}/json/test_pandas.py, pandas/{io/tests => tests/io}/json/test_ujson.py, pandas/{io/tests => tests/io}/parser/__init__.py, pandas/{io/tests => tests/io}/parser/c_parser_only.py, pandas/{io/tests => tests/io}/parser/comment.py, pandas/{io/tests => tests/io}/parser/common.py, pandas/{io/tests => tests/io}/parser/compression.py, pandas/{io/tests => tests/io}/parser/converters.py, pandas/{io/tests => tests/io}/parser/dialect.py, pandas/{io/tests => tests/io}/parser/dtypes.py, pandas/{io/tests => tests/io}/parser/header.py, pandas/{io/tests => tests/io}/parser/index_col.py, pandas/{io/tests => tests/io}/parser/multithread.py, pandas/{io/tests => tests/io}/parser/na_values.py, pandas/{io/tests => tests/io}/parser/parse_dates.py, pandas/{io/tests => tests/io}/parser/python_parser_only.py, pandas/{io/tests => tests/io}/parser/quoting.py, pandas/{io/tests => tests/io}/parser/skiprows.py, pandas/{io/tests => tests/io}/parser/test_network.py, pandas/{io/tests => tests/io}/parser/test_parsers.py, pandas/{io/tests => tests/io}/parser/test_read_fwf.py, pandas/{io/tests => tests/io}/parser/test_textreader.py, pandas/{io/tests => tests/io}/parser/test_unsupported.py, pandas/{io/tests => tests/io}/parser/usecols.py, pandas/{io/tests => tests/io}/sas/test_sas.py, pandas/{io/tests => tests/io}/sas/test_sas7bdat.py, pandas/{io/tests => tests/io}/sas/test_xport.py, pandas/{io/tests => tests/io}/test_clipboard.py, pandas/{io/tests => tests/io}/test_common.py, pandas/{io/tests => tests/io}/test_date_converters.py, pandas/{io/tests => tests/io}/test_excel.py, pandas/{io/tests => tests/io}/test_feather.py, pandas/{io/tests => tests/io}/test_gbq.py, pandas/{io/tests => tests/io}/test_html.py, pandas/{io/tests => tests/io}/test_packers.py, pandas/{io/tests => tests/io}/test_pickle.py, pandas/{io/tests => tests/io}/test_pytables.py, pandas/{io/tests => tests/io}/test_s3.py, pandas/{io/tests => tests/io}/test_sql.py, pandas/{io/tests => tests/io}/test_stata.py, pandas/{sparse/tests => tests/msgpack}/__init__.py, pandas/tests/{test_msgpack => msgpack}/test_buffer.py, pandas/tests/{test_msgpack => msgpack}/test_case.py, pandas/tests/{test_msgpack => msgpack}/test_except.py, pandas/tests/{test_msgpack => msgpack}/test_extension.py, pandas/tests/{test_msgpack => msgpack}/test_format.py, pandas/tests/{test_msgpack => msgpack}/test_limits.py, pandas/tests/{test_msgpack => msgpack}/test_newspec.py, pandas/tests/{test_msgpack => msgpack}/test_obj.py, pandas/tests/{test_msgpack => msgpack}/test_pack.py, pandas/tests/{test_msgpack => msgpack}/test_read_size.py, pandas/tests/{test_msgpack => msgpack}/test_seq.py, pandas/tests/{test_msgpack => msgpack}/test_sequnpack.py, pandas/tests/{test_msgpack => msgpack}/test_subtype.py, pandas/tests/{test_msgpack => msgpack}/test_unpack.py, pandas/tests/{test_msgpack => msgpack}/test_unpack_raw.py, pandas/tests/{test_msgpack => sparse}/__init__.py, pandas/{sparse/tests => tests/sparse}/test_arithmetics.py, pandas/{sparse/tests => tests/sparse}/test_array.py, pandas/{sparse/tests => tests/sparse}/test_combine_concat.py, pandas/{sparse/tests => tests/sparse}/test_format.py, pandas/{sparse/tests => tests/sparse}/test_frame.py, pandas/{sparse/tests => tests/sparse}/test_groupby.py, pandas/{sparse/tests => tests/sparse}/test_indexing.py, pandas/{sparse/tests => tests/sparse}/test_libsparse.py, pandas/{sparse/tests => tests/sparse}/test_list.py, pandas/{sparse/tests => tests/sparse}/test_pivot.py, pandas/{sparse/tests => tests/sparse}/test_series.py, pandas/{tools/tests => tests/tools}/__init__.py, pandas/{tools/tests => tests/tools}/test_concat.py, pandas/{tools/tests => tests/tools}/test_hashing.py, pandas/{tools/tests => tests/tools}/test_join.py, pandas/{tools/tests => tests/tools}/test_merge.py, pandas/{tools/tests => tests/tools}/test_merge_asof.py, pandas/{tools/tests => tests/tools}/test_merge_ordered.py, pandas/{tools/tests => tests/tools}/test_pivot.py, pandas/{tools/tests => tests/tools}/test_tile.py, pandas/{tools/tests => tests/tools}/test_util.py; 1486911061; pandas/{computation/tests => tests/computation}/__init__.py
-pandas/tests/frame/test_operators.py, pandas/core/frame.py, pandas/core/series.py, pandas/tests/groupby/test_groupby.py, pandas/tests/test_categorical.py, pandas/tests/indexes/test_multi.py, pandas/tests/test_panel.py, pandas/tests/test_multilevel.py, pandas/tests/series/test_analytics.py, pandas/tests/indexing/test_indexing.py, pandas/tests/frame/test_sorting.py, pandas/tests/series/test_sorting.py, pandas/core/reshape.py, pandas/tools/pivot.py, pandas/sparse/frame.py, pandas/sparse/tests/test_series.py, pandas/tools/tests/test_pivot.py, pandas/tools/tests/test_join.py, pandas/stats/plm.py; 1484121753; pandas/tests/frame/test_misc_api.py
-pandas/tests/frame/test_operators.py, pandas/core/frame.py; 1485012668; pandas/tests/series/test_operators.py
-pandas/tests/frame/test_operators.py, pandas/core/frame.py, pandas/tests/frame/test_constructors.py, pandas/tests/groupby/test_groupby.py, pandas/tests/frame/test_indexing.py, pandas/tests/test_categorical.py, pandas/tests/frame/test_to_csv.py, pandas/tests/frame/test_analytics.py, pandas/tests/test_algos.py, pandas/tests/indexes/test_base.py, pandas/tests/indexes/test_numeric.py, pandas/tests/series/test_indexing.py, pandas/tests/test_panel4d.py, pandas/tests/plotting/test_frame.py, pandas/tests/plotting/test_misc.py, pandas/tests/test_panel.py, pandas/tests/test_multilevel.py, pandas/tests/groupby/test_aggregate.py, pandas/tests/plotting/test_boxplot_method.py, pandas/tests/test_expressions.py, pandas/tests/series/test_missing.py, pandas/tests/indexing/test_indexing.py, pandas/tests/test_strings.py, pandas/tests/frame/test_query_eval.py, pandas/tests/test_base.py, pandas/tests/frame/test_timeseries.py, pandas/tests/plotting/test_series.py, pandas/tests/plotting/test_datetimelike.py, pandas/tests/test_nanops.py, pandas/tests/frame/test_missing.py, pandas/tests/frame/test_asof.py, pandas/tests/series/test_asof.py, pandas/tests/test_lib.py, pandas/tests/plotting/test_hist_method.py, pandas/tests/test_join.py, pandas/tests/series/test_timeseries.py, pandas/tests/test_common.py, pandas/tests/plotting/test_groupby.py, pandas/tests/groupby/test_categorical.py, pandas/tests/groupby/test_filters.py, pandas/tests/indexing/test_callable.py, pandas/tests/test_internals.py, pandas/tests/test_panelnd.py, pandas/tests/test_take.py, pandas/tests/test_testing.py, pandas/tests/test_util.py, pandas/tests/test_generic.py, pandas/formats/format.py, pandas/tests/formats/test_format.py, pandas/tools/plotting.py, pandas/tests/types/test_dtypes.py, pandas/tests/types/test_missing.py, pandas/tests/types/test_generic.py, pandas/tests/types/test_inference.py, pandas/tests/types/test_common.py, pandas/tests/frame/test_misc_api.py, pandas/tests/test_reshape.py, pandas/tests/types/test_cast.py, pandas/tests/test_stats.py, pandas/tests/types/test_io.py, pandas/tests/formats/test_printing.py, pandas/computation/tests/test_compat.py, pandas/computation/tests/test_eval.py, pandas/io/tests/json/test_pandas.py, pandas/io/tests/json/test_ujson.py, pandas/io/tests/parser/test_network.py, pandas/io/tests/test_excel.py, pandas/io/tests/test_feather.py, pandas/io/tests/test_gbq.py, pandas/io/tests/test_html.py, pandas/io/tests/test_pickle.py, pandas/io/tests/test_pytables.py, pandas/io/tests/test_sql.py, pandas/sparse/tests/test_libsparse.py, pandas/sparse/tests/test_series.py, pandas/tools/tests/test_util.py, pandas/api/tests/test_api.py, pandas/tseries/tests/test_timeseries_legacy.py, pandas/tools/tests/test_pivot.py, pandas/tools/tests/test_join.py, pandas/tools/tests/test_merge.py, pandas/tools/tests/test_merge_ordered.py, pandas/stats/tests/test_fama_macbeth.py, pandas/stats/tests/test_math.py, pandas/stats/tests/test_ols.py, pandas/stats/tests/test_var.py, pandas/tseries/tests/test_period.py, pandas/tseries/tests/test_util.py, pandas/tseries/tests/test_base.py, pandas/tseries/tests/test_daterange.py, pandas/tseries/tests/test_timedeltas.py, pandas/tseries/tests/test_timezones.py, pandas/tseries/tests/test_tslib.py, pandas/io/tests/parser/test_parsers.py, pandas/io/tests/parser/test_unsupported.py, pandas/sparse/tests/test_array.py, pandas/sparse/tests/test_combine_concat.py, pandas/sparse/tests/test_frame.py, pandas/sparse/tests/test_list.py, pandas/tests/types/test_concat.py, pandas/tools/tests/test_concat.py, pandas/tools/tests/test_merge_asof.py, pandas/tools/tests/test_tile.py, pandas/tseries/tests/test_converter.py, pandas/tseries/tests/test_holiday.py, pandas/tseries/tests/test_offsets.py, pandas/tseries/tests/test_resample.py, pandas/io/tests/json/test_normalize.py, pandas/io/tests/parser/test_textreader.py, pandas/io/tests/test_date_converters.py, pandas/io/tests/test_s3.py; 1486484009; pandas/io/tests/test_stata.py
-pandas/tests/frame/test_operators.py, pandas/core/frame.py, pandas/tests/test_window.py, pandas/compat/__init__.py, pandas/core/series.py, pandas/tests/frame/test_constructors.py, pandas/tests/series/test_alter_axes.py, pandas/tests/series/test_constructors.py, pandas/tests/groupby/test_groupby.py, pandas/tests/frame/test_indexing.py, pandas/tests/test_categorical.py, pandas/tests/frame/test_reshape.py, pandas/tests/frame/test_to_csv.py, pandas/tests/frame/test_analytics.py, pandas/tests/test_algos.py, pandas/tests/indexes/datetimes/test_datetime.py, pandas/tests/indexes/test_base.py, pandas/tests/indexes/test_numeric.py, pandas/tests/series/test_indexing.py, pandas/tests/indexes/datetimes/test_tools.py, pandas/tests/test_panel4d.py, pandas/tests/indexes/test_multi.py, pandas/tests/plotting/test_misc.py, pandas/tests/test_panel.py, pandas/core/internals.py, pandas/util/testing.py, pandas/core/panel.py, pandas/core/window.py, pandas/tests/frame/test_axis_select_reindex.py, pandas/core/indexing.py, pandas/tests/frame/test_alter_axes.py, pandas/tests/test_multilevel.py, pandas/core/nanops.py, pandas/tests/groupby/test_aggregate.py, pandas/tests/series/test_analytics.py, pandas/tests/series/test_io.py, pandas/tests/indexes/datetimes/test_ops.py, pandas/io/json/json.py, pandas/tests/frame/test_dtypes.py, pandas/tests/test_expressions.py, pandas/tests/series/test_missing.py, pandas/tests/frame/test_mutate_columns.py, pandas/tests/indexing/test_indexing.py, pandas/tests/frame/test_sorting.py, pandas/tests/series/test_dtypes.py, pandas/tests/test_strings.py, pandas/io/common.py, pandas/tests/frame/test_query_eval.py, pandas/tests/indexes/datetimes/test_date_range.py, pandas/tests/indexes/datetimes/test_setops.py, pandas/core/config.py, pandas/compat/numpy/function.py, pandas/tests/series/test_operators.py, pandas/tests/frame/test_block_internals.py, pandas/io/json/normalize.py, pandas/core/base.py, pandas/tests/scalar/test_timestamp.py, pandas/tests/indexes/test_category.py, pandas/tests/frame/test_timeseries.py, pandas/tests/frame/test_convert_to.py, pandas/tests/indexes/datetimes/test_construction.py, pandas/tests/indexes/datetimes/test_datetimelike.py, pandas/tests/series/test_apply.py, pandas/tests/frame/test_quantile.py, pandas/tests/frame/test_missing.py, pandas/tests/frame/test_repr_info.py, pandas/tests/frame/test_apply.py, pandas/tests/frame/test_asof.py, pandas/tests/indexes/datetimes/test_indexing.py, pandas/tests/series/test_asof.py, pandas/tests/series/test_replace.py, pandas/tests/indexing/test_coercion.py, pandas/tests/indexing/test_indexing_slow.py, pandas/tests/test_join.py, pandas/tests/series/test_datetime_values.py, pandas/compat/pickle_compat.py, pandas/tests/series/test_repr.py, pandas/tests/frame/test_combine_concat.py, pandas/tests/series/test_timeseries.py, pandas/tests/test_common.py, pandas/io/sas/sasreader.py, pandas/__init__.py, pandas/tests/indexes/datetimes/test_astype.py, pandas/tests/series/test_combine_concat.py, pandas/util/decorators.py, pandas/tests/test_config.py, pandas/tests/frame/test_nonunique_indexes.py, pandas/tests/frame/test_replace.py, pandas/tests/frame/test_subclass.py, pandas/tests/groupby/test_categorical.py, pandas/tests/groupby/test_filters.py, pandas/tests/indexes/datetimes/test_misc.py, pandas/tests/indexes/datetimes/test_missing.py, pandas/tests/indexing/test_callable.py, pandas/tests/series/test_internals.py, pandas/tests/series/test_sorting.py, pandas/tests/series/test_subclass.py, pandas/tests/test_internals.py, pandas/tests/test_take.py, pandas/tests/test_testing.py, pandas/tests/test_util.py, pandas/util/depr_module.py, pandas/tests/test_generic.py, pandas/tseries/period.py, pandas/indexes/base.py, pandas/indexes/multi.py, pandas/formats/format.py, pandas/tests/formats/test_format.py, pandas/tests/formats/test_style.py, pandas/tests/types/test_dtypes.py, pandas/tests/types/test_missing.py, pandas/types/generic.py, pandas/tests/types/test_generic.py, pandas/tests/types/test_inference.py, pandas/tests/types/test_common.py, pandas/tests/frame/test_misc_api.py, pandas/tests/test_reshape.py, pandas/util/clipboard/windows.py, pandas/util/clipboard/__init__.py, pandas/util/clipboard/clipboards.py, pandas/_version.py, pandas/util/clipboard/exceptions.py, pandas/tests/types/test_cast.py, pandas/sparse/array.py, pandas/tests/test_stats.py, pandas/sparse/series.py, pandas/tests/formats/test_printing.py, pandas/computation/tests/test_eval.py, pandas/io/tests/parser/c_parser_only.py, pandas/io/tests/parser/compression.py, pandas/io/tests/parser/converters.py, pandas/io/tests/parser/parse_dates.py, pandas/io/tests/parser/python_parser_only.py, pandas/io/tests/test_clipboard.py, pandas/io/tests/test_feather.py, pandas/io/tests/test_gbq.py, pandas/io/tests/test_packers.py, pandas/io/tests/test_pytables.py, pandas/sparse/tests/test_indexing.py, pandas/sparse/tests/test_libsparse.py, pandas/sparse/tests/test_series.py, pandas/api/tests/test_api.py, pandas/tseries/tests/test_timeseries_legacy.py, pandas/tools/tests/test_pivot.py, pandas/tools/tests/test_join.py, pandas/tools/tests/test_merge.py, pandas/stats/fama_macbeth.py, pandas/stats/ols.py, pandas/stats/tests/test_ols.py, pandas/tseries/tests/test_period.py, pandas/tests/indexes/test_datetimelike.py, pandas/tests/indexes/test_timedelta.py, pandas/tseries/tests/test_base.py, pandas/tseries/tests/test_daterange.py, pandas/tseries/tests/test_timedeltas.py, pandas/tseries/tests/test_timezones.py, pandas/tseries/tests/test_tslib.py, pandas/compat/chainmap.py, pandas/io/tests/parser/dtypes.py, pandas/io/tests/parser/test_parsers.py, pandas/io/tests/parser/test_unsupported.py, pandas/msgpack/exceptions.py, pandas/sparse/tests/test_arithmetics.py, pandas/sparse/tests/test_array.py, pandas/sparse/tests/test_combine_concat.py, pandas/sparse/tests/test_format.py, pandas/sparse/tests/test_frame.py, pandas/sparse/tests/test_groupby.py, pandas/sparse/tests/test_list.py, pandas/sparse/tests/test_pivot.py, pandas/tests/series/test_misc_api.py, pandas/tests/types/test_concat.py, pandas/tools/tests/test_concat.py, pandas/tools/tests/test_hashing.py, pandas/tools/tests/test_merge_asof.py, pandas/tools/tests/test_tile.py, pandas/tseries/tests/test_bin_groupby.py, pandas/tseries/tests/test_converter.py, pandas/tseries/tests/test_frequencies.py, pandas/tseries/tests/test_holiday.py, pandas/tseries/tests/test_offsets.py, pandas/tseries/tests/test_resample.py; 1486493445; pandas/io/tests/test_pickle.py
-pandas/tests/frame/test_operators.py, pandas/tests/test_window.py, pandas/tests/frame/test_constructors.py, pandas/tests/frame/test_analytics.py, pandas/tests/indexes/datetimes/test_tools.py, pandas/tests/test_panel4d.py, pandas/tests/indexes/test_multi.py, pandas/tests/plotting/test_frame.py, pandas/tests/test_panel.py, pandas/util/testing.py, pandas/tests/test_multilevel.py, pandas/tests/series/test_analytics.py, pandas/tests/plotting/test_boxplot_method.py, pandas/tests/tseries/test_offsets.py, pandas/tests/test_expressions.py, pandas/tests/series/test_missing.py, pandas/tests/frame/test_query_eval.py, pandas/tests/test_base.py, pandas/tests/plotting/test_datetimelike.py, pandas/tests/frame/test_quantile.py, pandas/tests/plotting/common.py, pandas/tests/series/test_quantile.py, pandas/tests/frame/test_missing.py, pandas/tests/indexing/test_coercion.py, pandas/util/decorators.py, pandas/tests/test_internals.py, pandas/tests/test_testing.py, pandas/tests/test_generic.py, pandas/tests/formats/test_format.py, pandas/tests/formats/test_style.py, pandas/util/print_versions.py, pandas/tests/groupby/test_misc.py, pandas/computation/tests/test_compat.py, pandas/computation/tests/test_eval.py, pandas/io/tests/json/test_pandas.py, pandas/io/tests/json/test_ujson.py, pandas/io/tests/parser/c_parser_only.py, pandas/io/tests/parser/common.py, pandas/io/tests/parser/compression.py, pandas/io/tests/parser/converters.py, pandas/io/tests/parser/parse_dates.py, pandas/io/tests/parser/python_parser_only.py, pandas/io/tests/parser/test_network.py, pandas/io/tests/parser/test_read_fwf.py, pandas/io/tests/parser/usecols.py, pandas/io/tests/test_clipboard.py, pandas/io/tests/test_excel.py, pandas/io/tests/test_feather.py, pandas/io/tests/test_gbq.py, pandas/io/tests/test_html.py, pandas/io/tests/test_packers.py, pandas/io/tests/test_pickle.py, pandas/io/tests/test_pytables.py, pandas/io/tests/test_sql.py, pandas/io/tests/test_stata.py, pandas/sparse/tests/test_indexing.py, pandas/sparse/tests/test_libsparse.py, pandas/sparse/tests/test_series.py, pandas/tests/test_msgpack/test_unpack.py, pandas/tests/tseries/test_converter.py, pandas/tools/tests/test_util.py; 1486857379; pandas/tests/formats/test_printing.py
-pandas/core/ops.py, pandas/compat/numpy/__init__.py, pandas/tseries/tdi.py; 1485283911; pandas/tseries/index.py
-pandas/core/frame.py, pandas/core/groupby.py, pandas/tests/groupby/test_groupby.py, pandas/tests/frame/test_analytics.py, asv_bench/benchmarks/frame_methods.py; 1485178838; asv_bench/benchmarks/groupby.py
-pandas/core/frame.py, pandas/core/series.py, pandas/core/groupby.py, pandas/tests/groupby/test_groupby.py, pandas/core/panel.py, pandas/io/pytables.py, pandas/core/categorical.py, pandas/core/base.py, pandas/__init__.py, pandas/tools/merge.py, pandas/core/reshape.py, pandas/formats/format.py, pandas/tools/concat.py, pandas/tools/pivot.py, pandas/tools/plotting.py, pandas/tools/tests/test_pivot.py, pandas/tools/tests/test_join.py, pandas/tools/tests/test_merge.py, pandas/tools/tests/test_merge_ordered.py; 1486679779; pandas/io/gbq.py
-pandas/core/frame.py, pandas/core/series.py, pandas/core/groupby.py, pandas/tests/groupby/test_groupby.py, pandas/tests/test_sorting.py, pandas/tests/groupby/test_filters.py, pandas/tools/merge.py, pandas/indexes/multi.py, pandas/core/reshape.py, pandas/tests/tools/test_merge.py, pandas/tests/groupby/test_value_counts.py, pandas/tests/groupby/test_misc.py; 1487111711; pandas/core/sorting.py
-pandas/core/frame.py, pandas/tests/groupby/test_groupby.py, pandas/tests/indexes/test_multi.py, pandas/io/pytables.py, pandas/tests/test_multilevel.py, pandas/tests/frame/test_mutate_columns.py, pandas/core/algorithms.py, pandas/tests/frame/test_repr_info.py, pandas/tests/indexing/test_multiindex.py, asv_bench/benchmarks/indexing.py, pandas/tools/hashing.py, pandas/indexes/base.py, pandas/indexes/multi.py, pandas/tests/tools/test_hashing.py, pandas/tests/tools/test_join.py, asv_bench/benchmarks/reindex.py; 1487172289; pandas/types/cast.py
-pandas/core/frame.py; 1487684317; pandas/tests/frame/test_alter_axes.py
-pandas/tests/frame/test_convert_to.py; 1488224638; pandas/core/frame.py
-pandas/core/frame.py, pandas/util/decorators.py, pandas/io/gbq.py, pandas/util/print_versions.py; 1488228463; pandas/tests/io/test_gbq.py
-pandas/util/decorators.py; 1488244873; pandas/core/frame.py
-pandas/core/frame.py; 1488256996; pandas/util/decorators.py
-pandas/tests/frame/test_analytics.py; 1488292070; pandas/core/frame.py
-pandas/tests/test_window.py; 1484914894; pandas/core/window.py
-pandas/tests/test_window.py; 1485280907; pandas/core/window.py
-pandas/tests/io/test_pytables.py, pandas/tests/indexes/datetimes/test_ops.py, pandas/tests/io/test_sql.py, pandas/tests/io/test_clipboard.py; 1486918156; pandas/tests/test_window.py
-pandas/core/window.py; 1487419734; pandas/tests/test_window.py
-pandas/tests/series/test_constructors.py; 1484496626; pandas/core/series.py
-pandas/core/series.py, pandas/tests/series/test_alter_axes.py, pandas/tests/io/test_pytables.py, pandas/tests/indexes/test_base.py, pandas/io/pytables.py, pandas/core/api.py, pandas/tests/api/test_api.py, pandas/compat/pickle_compat.py, pandas/tests/series/test_timeseries.py; 1488291428; pandas/tests/series/test_constructors.py
-pandas/tests/frame/test_constructors.py, pandas/tests/series/test_constructors.py, pandas/tests/groupby/test_groupby.py, pandas/tests/frame/test_indexing.py, pandas/tests/indexes/datetimes/test_tools.py, pandas/tests/frame/test_alter_axes.py, pandas/tests/series/test_dtypes.py, pandas/tests/indexes/datetimes/test_date_range.py, pandas/tests/indexes/datetimes/test_setops.py, pandas/tests/series/test_operators.py, pandas/tests/frame/test_timeseries.py, pandas/tests/indexes/datetimes/test_construction.py, pandas/tests/indexes/datetimes/test_datetimelike.py, pandas/tests/frame/test_apply.py, pandas/tests/frame/test_combine_concat.py, pandas/tests/series/test_timeseries.py, pandas/tests/indexes/datetimes/test_astype.py, pandas/tests/series/test_combine_concat.py, pandas/tests/indexes/datetimes/test_misc.py, pandas/tests/indexes/datetimes/test_partial_slcing.py; 1486231204; pandas/tests/series/test_indexing.py
-pandas/core/groupby.py, pandas/tests/groupby/test_groupby.py; 1484140713; asv_bench/benchmarks/groupby.py
-pandas/tests/groupby/test_groupby.py, pandas/compat/numpy/function.py; 1484756015; pandas/core/groupby.py
-pandas/tests/groupby/test_groupby.py; 1485267575; pandas/core/groupby.py
-pandas/tseries/tests/test_resample.py; 1485283536; pandas/core/groupby.py
-pandas/core/groupby.py; 1485371077; pandas/tests/groupby/test_groupby.py
-pandas/core/groupby.py, pandas/tests/groupby/test_groupby.py, pandas/tests/test_generic.py, pandas/tests/formats/test_format.py; 1486685843; pandas/tests/groupby/test_categorical.py
-pandas/tests/groupby/test_groupby.py, pandas/tests/tseries/test_resample.py; 1487255232; pandas/core/groupby.py
-pandas/core/groupby.py, pandas/core/categorical.py, asv_bench/benchmarks/groupby.py, pandas/indexes/category.py; 1487789383; pandas/tests/groupby/test_categorical.py
-pandas/core/groupby.py, pandas/tests/groupby/test_filters.py; 1488228892; pandas/tests/groupby/test_transform.py
-pandas/tests/groupby/test_aggregate.py, pandas/tests/groupby/test_transform.py, pandas/tests/tseries/test_resample.py; 1488228949; pandas/core/groupby.py
-pandas/tests/groupby/test_groupby.py, pandas/tests/indexes/test_multi.py; 1484328982; pandas/indexes/multi.py
-pandas/tests/groupby/test_groupby.py; 1484338881; pandas/tests/groupby/__init__.py
-pandas/tests/groupby/test_groupby.py, pandas/tests/groupby/test_timegrouper.py, pandas/tests/groupby/test_transform.py, pandas/tests/groupby/test_categorical.py, pandas/tests/groupby/common.py, pandas/tests/groupby/test_misc.py; 1486517049; pandas/tests/groupby/test_aggregate.py
-pandas/core/indexing.py; 1484260945; pandas/tests/frame/test_indexing.py
-pandas/tests/indexes/common.py, pandas/core/base.py, pandas/indexes/base.py, pandas/indexes/multi.py; 1485528164; pandas/tests/test_categorical.py
-pandas/tests/io/parser/common.py; 1486912176; pandas/tests/io/test_excel.py
-pandas/tests/test_algos.py, pandas/tests/indexes/test_numeric.py, pandas/core/algorithms.py; 1485100137; pandas/indexes/base.py
-pandas/io/gbq.py; 1487078965; pandas/tests/io/test_gbq.py
-pandas/tests/indexes/datetimes/test_datetime.py, pandas/tests/series/test_missing.py, pandas/tests/indexes/datetimes/test_date_range.py, pandas/tests/scalar/test_timestamp.py, pandas/tests/indexes/datetimes/test_construction.py, pandas/tests/series/test_timeseries.py, pandas/tests/indexes/test_timedelta.py, pandas/tseries/tests/test_tslib.py, pandas/tseries/tests/test_timeseries.py; 1486224216; pandas/tests/indexes/datetimes/test_misc.py
-pandas/tests/series/test_indexing.py, pandas/tests/series/test_missing.py, pandas/tests/indexes/datetimelike.py, pandas/tests/scalar/test_timestamp.py, pandas/tests/frame/test_timeseries.py, pandas/tests/indexes/datetimes/test_construction.py, pandas/tests/indexes/datetimes/test_datetimelike.py, pandas/tests/frame/test_missing.py, pandas/tests/series/test_timeseries.py, pandas/tests/indexes/datetimes/test_astype.py, pandas/tests/indexes/datetimes/test_misc.py, pandas/tests/indexes/test_datetimelike.py, pandas/sparse/tests/test_frame.py; 1486226536; pandas/tests/indexes/datetimes/test_datetime.py
-pandas/tests/indexes/period/test_period.py, pandas/tests/indexes/timedeltas/test_timedelta.py, pandas/tests/indexes/datetimes/test_tools.py, pandas/tests/indexes/datetimes/test_ops.py, pandas/tests/indexes/datetimes/test_date_range.py, pandas/tests/scalar/test_timestamp.py, pandas/tests/scalar/test_timedelta.py, pandas/tests/indexes/timedeltas/test_timedelta_range.py, pandas/tests/indexes/timedeltas/test_construction.py, pandas/tests/indexes/timedeltas/test_ops.py, pandas/tests/indexes/timedeltas/test_tools.py, pandas/tests/indexes/timedeltas/test_astype.py, pandas/tests/indexes/timedeltas/test_indexing.py, pandas/tests/indexes/timedeltas/test_partial_slicing.py, pandas/tests/indexes/timedeltas/test_setops.py, pandas/tseries/tests/test_period.py, pandas/tseries/tests/test_util.py, pandas/tests/indexes/period/__init__.py, pandas/tests/indexes/test_datetimelike.py, pandas/tests/indexes/test_timedelta.py, pandas/tests/indexes/timedeltas/__init__.py, pandas/tseries/tests/test_base.py, pandas/tseries/tests/test_daterange.py, pandas/tseries/tests/test_timedeltas.py, pandas/tseries/tests/test_timezones.py; 1486513274; pandas/tseries/tests/test_tslib.py
-pandas/tests/scalar/test_period.py, pandas/tests/indexes/period/test_construction.py, pandas/tests/series/test_period.py, pandas/tests/frame/test_period.py, pandas/tests/indexes/period/test_asfreq.py, pandas/tests/indexes/period/test_partial_slicing.py, pandas/tests/indexes/period/test_setops.py, pandas/tests/indexes/period/test_tools.py, pandas/tseries/tests/test_period.py; 1486596967; pandas/tests/indexes/period/test_period.py
-pandas/tests/indexes/test_multi.py, pandas/tests/indexing/test_indexing.py; 1483487978; pandas/core/indexing.py
-pandas/indexes/multi.py; 1485379203; pandas/tests/indexes/test_multi.py
-pandas/tests/plotting/test_frame.py, pandas/tests/plotting/test_misc.py, pandas/tests/plotting/test_boxplot_method.py, pandas/tests/plotting/test_series.py, pandas/tests/plotting/test_hist_method.py, pandas/tests/plotting/test_groupby.py, pandas/tests/test_config.py, pandas/tests/test_testing.py, pandas/computation/tests/test_compat.py, pandas/computation/tests/test_eval.py, pandas/tests/test_msgpack/test_case.py, pandas/tests/test_msgpack/test_except.py, pandas/tests/test_msgpack/test_format.py, pandas/tests/test_msgpack/test_limits.py, pandas/tests/test_msgpack/test_pack.py, pandas/tests/test_msgpack/test_seq.py, pandas/tests/test_msgpack/test_sequnpack.py, pandas/tests/test_msgpack/test_subtype.py; 1484496542; pandas/tests/test_msgpack/test_buffer.py
-pandas/io/parsers.py, pandas/io/tests/parser/quoting.py; 1483654824; pandas/io/tests/parser/test_unsupported.py
-pandas/io/parsers.py; 1484054175; pandas/io/tests/parser/test_read_fwf.py
-pandas/io/tests/parser/usecols.py; 1484121440; pandas/io/parsers.py
-pandas/io/tests/parser/skiprows.py; 1484413388; pandas/io/parsers.py
-pandas/io/parsers.py; 1488206689; pandas/tests/io/parser/parse_dates.py
-pandas/util/testing.py; 1485287492; pandas/tseries/tests/test_timeseries.py
-pandas/util/_tester.py, pandas/conftest.py, pandas/__init__.py, pandas/tests/frame/common.py, pandas/tests/formats/test_format.py, pandas/io/tests/parser/test_network.py, pandas/io/tests/test_packers.py, pandas/io/tests/test_pickle.py, pandas/io/tests/test_sql.py, pandas/tools/tests/test_util.py, pandas/api/tests/test_api.py, pandas/util/nosetester.py; 1486740980; pandas/util/testing.py
-pandas/util/_tester.py; 1486741868; pandas/util/testing.py
-pandas/tests/computation/test_compat.py, pandas/tests/io/parser/test_network.py, pandas/tests/computation/test_eval.py; 1487254428; pandas/util/testing.py
-pandas/tests/test_testing.py; 1488224696; pandas/util/testing.py
-pandas/core/indexing.py; 1487601797; pandas/tests/indexing/test_multiindex.py
-pandas/tests/groupby/test_aggregate.py, pandas/tests/types/test_cast.py; 1488210354; pandas/types/cast.py
-pandas/tests/series/test_analytics.py, pandas/core/categorical.py; 1487966172; pandas/core/algorithms.py
-pandas/tests/plotting/test_boxplot_method.py; 1484932377; pandas/tools/plotting.py
-pandas/tests/indexes/common.py, pandas/indexes/base.py, pandas/indexes/category.py; 1486232929; pandas/tseries/base.py
-pandas/tests/tseries/test_frequencies.py, pandas/tests/{tseries => groupby}/test_bin_groupby.py; 1486683331; pandas/tests/indexes/datetimes/test_ops.py
-pandas/tseries/offsets.py, pandas/tseries/tests/test_timeseries.py; 1484413308; pandas/tseries/tests/test_timedeltas.py
-pandas/tests/test_expressions.py, pandas/tests/indexing/test_timedelta.py; 1487437497; pandas/tests/tseries/test_resample.py
-pandas/io/excel.py; 1485017361; pandas/io/tests/test_excel.py
-pandas/tests/indexing/test_datetime.py, pandas/tests/indexing/test_indexing.py, pandas/tests/indexing/test_chaining_and_caching.py, pandas/tests/indexing/test_multiindex.py, pandas/tests/indexing/test_floats.py, pandas/tests/indexing/test_panel.py, pandas/tests/indexing/common.py; 1486847154; pandas/tests/indexing/test_timedelta.py
-pandas/tests/indexing/test_indexing.py; 1485442646; pandas/tseries/tdi.py
-pandas/tests/test_strings.py; 1485194802; pandas/core/strings.py
-pandas/tests/computation/test_compat.py; 1487172032; pandas/computation/__init__.py
-pandas/tests/io/test_pickle.py; 1487343106; pandas/tests/io/test_packers.py
-pandas/tests/scalar/test_period.py, pandas/tests/indexes/period/test_construction.py, pandas/tests/indexes/period/test_ops.py, pandas/tests/indexes/period/test_setops.py, pandas/tests/scalar/test_period_asfreq.py; 1486598965; pandas/tests/indexes/period/test_indexing.py
-asv_bench/benchmarks/io_bench.py, pandas/io/tests/parser/common.py, pandas/io/tests/parser/dtypes.py; 1483386601; pandas/io/tests/parser/na_values.py
-pandas/tests/test_base.py, pandas/core/base.py, pandas/compat/pickle_compat.py, pandas/tests/indexes/test_frozen.py, pandas/indexes/base.py, pandas/indexes/multi.py; 1487938431; pandas/indexes/frozen.py
-pandas/tests/io/test_packers.py; 1487968878; pandas/io/packers.py
-pandas/tests/plotting/test_datetimelike.py, pandas/tseries/converter.py, pandas/tseries/plotting.py; 1487779233; pandas/tools/plotting.py
-pandas/io/tests/test_stata.py; 1485345535; pandas/io/stata.py
-pandas/tests/io/parser/test_network.py; 1487126736; pandas/conftest.py
-pandas/io/tests/sas/test_sas.py; 1483986759; pandas/io/sas/sasreader.py
-pandas/types/common.py, pandas/tseries/tools.py, pandas/tests/types/test_inference.py, pandas/tseries/tests/test_converter.py, pandas/tseries/tests/test_timeseries.py; 1484264018; pandas/tests/types/test_dtypes.py
-pandas/tools/tests/test_hashing.py; 1484750126; pandas/tools/hashing.py
-pandas/tools/tests/test_hashing.py; 1485526783; pandas/tools/hashing.py
-pandas/tests/groupby/test_categorical.py; 1484857184; pandas/indexes/category.py
-pandas/types/concat.py; 1487780652; pandas/tests/tools/test_concat.py
-pandas/tests/formats/test_style.py; 1487344037; pandas/formats/style.py
-pandas/tools/tests/test_merge_asof.py; 1484660568; pandas/tools/merge.py
-pandas/tools/merge.py; 1484755522; pandas/tools/tests/test_merge_asof.py
-pandas/tseries/base.py; 1484413641; pandas/tseries/tests/test_timeseries.py
-pandas/tseries/period.py, pandas/indexes/base.py, pandas/indexes/category.py; 1487181636; pandas/indexes/multi.py
-pandas/tests/tools/test_concat.py, pandas/tools/concat.py; 1487266847; pandas/tests/tools/test_merge.py
-pandas/tests/tools/test_union_categoricals.py; 1487781034; pandas/tests/tools/test_concat.py
-pandas/tseries/converter.py, pandas/tseries/tests/test_converter.py; 1483988627; asv_bench/benchmarks/plotting.py
-pandas/tests/test_reshape.py; 1486756146; pandas/core/reshape.py
-pandas/formats/format.py; 1485040029; pandas/tests/formats/test_format.py
-pandas/io/gbq.py; 1483441590; pandas/io/tests/test_gbq.py
-pandas/io/tests/test_gbq.py; 1486660254; pandas/io/gbq.py
-pandas/tseries/resample.py; 1486475871; pandas/tseries/tests/test_resample.py
-pandas/computation/tests/test_eval.py; 1486659865; pandas/computation/eval.py
-pandas/io/json.py; 1484834003; pandas/io/tests/json/test_pandas.py
-pandas/io/ga.py; 1485358993; pandas/io/tests/test_ga.py
-ci/ironcache/get.py; 1484843228; ci/ironcache/put.py
+356, 181; 1487336960; 
+668, 198, 1119, 1323; 1487618304; 
+725, 598; 1487343106; 
+642, 1095, 854, 519, 1295, 1332, 215, 1393, 1073, 283, 1139, 1428, 1327, 1094, 1392, 1146, 301, 1103, 1100, 1341, 1375, 668, 624, 733, 21, 540, 1170, 1128, 1246, 1149, 1429, 449, 1293, 11, 1102, 137, 338, 1242, 1304, 60, 586, 816, 658, 591, 1348, 1143, 284, 201, 436, 1248, 1299, 1437, 932, 1432, 1121, 1369, 1126, 67, 167, 1092, 267, 1090, 1267, 190, 1224, 1129, 458, 1222, 1363, 861, 703, 443, 666, 139, 1430, 1221, 1292, 1262, 1215, 1097, 1091, 64, 1093, 1431, 73, 1013, 416, 1087, 1130, 1438, 1138, 1088, 448, 1252, 1261, 725, 1228, 1119, 598, 993, 1402, 542, 457, 1443, 1096, 395, 634, 1427, 1397, 1390, 1330, 1213, 1148, 1105, 1333, 1391, 1433, 203, 484, 1217, 277, 1145, 1211, 1403, 1150, 1303, 532, 1101, 1445, 499, 1099, 22, 492, 1104, 1141, 43, 1212, 1227, 1108, 589, 1370, 1109, 1127, 1106, 166, 1394, 444, 672, 1140, 1441, 1439, 1089, 1144, 298, 1147, 1142, 159, 1137, 1229, 57, 1401, 1314, 1415, 1230, 783, 1098, 1291, 293, 17, 1376, 1334, 1270, 1251, 296, 209, 1265, 1434, 691, 1082, 1336, 5, 1107, 681; 1486493445; 
+655, 528, 878, 749, 770, 1075, 582, 568, 342, 836, 222, 887; 1484791304; 
+1295, 1234, 840, 1323; 1487780652; 
+658, 933, 489, 167, 559, 356, 286, 1433, 159; 1486918156; 
+750, 227, 225, 221, 856, 155, 357; 1485388045; 
+1055, 1389, 811; 1484862817; 
+1323, 1347; 1488227160; 
+1170, 1323; 1483986759; 
+221, 1323, 811, 1191, 682; 1487172032; 
+1121, 1129, 1323, 22; 1484328982; 
+1323, 687, 691; 1486659865; 
+1461, 12, 1323, 1403; 1488228892; 
+12, 337, 11, 338, 1121, 240, 1459, 1403, 22, 17; 1487111711; 
+1264, 139, 1191, 1487, 691; 1487254428; 
+867, 1080, 1420; 1487190052; 
+634, 155; 1485012518; 
+504, 1360, 1354, 524, 1409, 1362, 512; 1485785639; 
+854, 519, 1295, 1332, 215, 1264, 630, 1094, 729, 301, 1349, 1103, 1341, 1375, 562, 668, 733, 21, 1246, 63, 11, 1102, 137, 338, 1242, 1304, 586, 816, 831, 482, 591, 1348, 1143, 284, 629, 1126, 1335, 267, 1090, 1267, 190, 1224, 458, 1222, 861, 703, 356, 511, 1296, 1221, 1215, 1091, 64, 73, 1013, 416, 1290, 1087, 1130, 1088, 448, 598, 1402, 1345, 457, 395, 430, 1330, 877, 1333, 203, 484, 433, 1217, 277, 618, 1403, 1150, 1303, 206, 532, 649, 499, 22, 492, 1346, 456, 1347, 1191, 589, 271, 1370, 1109, 166, 444, 672, 533, 1089, 298, 1147, 159, 1401, 1314, 1415, 270, 663, 611, 1334, 1265, 691, 1336, 681; 1486484009; 
+1323, 222; 1484862764; 
+240, 277, 1323; 1486756146; 
+1396, 1397, 1323; 1484750126; 
+12, 1323, 22, 1270; 1484756015; 
+1416, 769; 1486396538; 
+862, 1323, 499, 378; 1485194802; 
+1422, 1408; 1485102057; 
+733, 731; 1487078965; 
+1146, 1102, 198; 1483540617; 
+1402, 22, 1401; 1486517049; 
+12, 953, 11, 1087, 1323, 22, 955; 1485178838; 
+562, 11, 198, 621, 1323, 155; 1487267132; 
+1467, 1469, 1465, 861; 1486598965; 
+878, 536, 1323, 535, 657; 1485358993; 
+26, 504, 1268, 1323, 155; 1484121440; 
+337, 1367, 1323, 1314; 1484755522; 
+167, 1300, 1323; 1487856195; 
+489, 423, 139; 1485287492; 
+61, 180, 671, 63, 55, 35, 60, 650, 56, 64, 62, 885, 59, 1041, 1330, 207, 433, 245, 1323, 206, 811, 58, 57, 652; 1486658543; 
+1125, 1120, 1119, 231, 1323, 859; 1486232929; 
+12, 447, 668, 198, 1473, 1105, 144, 1323, 532, 159, 1098; 1488278602; 
+733, 221, 1323, 731, 155; 1486660254; 
+728, 35, 153, 154, 151, 727, 152, 1083, 1330, 1323, 149, 150; 1485087309; 
+337, 1323, 1314; 1484660568; 
+1323, 1089, 209; 1484260945; 
+519, 423, 1013, 1323, 1338, 431, 1334; 1484264018; 
+1195, 489; 1487644755; 
+1461, 12, 448, 1323, 1401; 1488228949; 
+586, 1323, 860; 1485442646; 
+1428, 1429, 1437, 703, 423, 1431, 1150, 1147; 1486224216; 
+864, 7, 1126, 666, 865, 208, 1330, 144, 1323, 1150, 1140, 159, 1137, 17; 1488291428; 
+326, 1334; 1483442525; 
+751, 1323, 858; 1485085790; 
+447, 448, 1323; 1486475871; 
+552, 285; 1485121376; 
+26, 1261, 1323; 1488206689; 
+552, 1323, 858, 681; 1484915107; 
+642, 1125, 1360, 551, 1121, 1119, 1323, 492; 1485528164; 
+81, 762; 1488231781; 
+201, 198, 203, 1323, 1101, 1142; 1483476838; 
+552, 35, 1169, 483, 547; 1485797991; 
+1428, 1103, 1128, 1429, 1143, 1437, 1215, 1431, 1427, 1150, 1109, 1147; 1486226536; 
+385, 1130, 1119, 457, 1323; 1485100137; 
+440, 1111, 1134, 863, 702, 860; 1485283911; 
+861, 1447, 444; 1486596967; 
+668, 863, 651, 1046; 1485989740; 
+725, 1323, 724; 1487968878; 
+671, 733, 11, 67, 1044, 1041, 1425, 1323, 731, 1462, 155; 1488228463; 
+26, 762, 198, 225, 221, 1323, 1445, 856, 608, 155; 1488058736; 
+1405, 1404; 1483296648; 
+519, 496, 1323, 969; 1483988627; 
+155, 142; 1484859509; 
+1095, 1295, 215, 12, 1094, 1103, 1341, 562, 229, 668, 1128, 1246, 1149, 11, 1102, 1193, 338, 586, 482, 1143, 629, 167, 1092, 267, 1090, 1129, 117, 356, 423, 240, 1296, 198, 1215, 1097, 64, 1093, 73, 234, 225, 1087, 1138, 1088, 448, 1261, 725, 840, 1194, 1096, 395, 143, 1105, 144, 203, 1217, 231, 1211, 618, 590, 1250, 1323, 1403, 1303, 532, 499, 1099, 22, 492, 43, 856, 456, 233, 1108, 1109, 444, 1140, 533, 1089, 159, 222, 155, 1230, 270, 228, 1098, 17, 611, 357, 209, 1107, 681; 1484755830; 
+12, 1323, 22; 1485267575; 
+863, 489, 559, 744, 1487; 1487172216; 
+1128, 137, 1437, 458, 861, 703, 1438, 1443, 430, 1433, 444, 1436, 1439, 681; 1486513274; 
+552, 442, 423, 1323, 681; 1484413308; 
+651, 1041; 1486575741; 
+1100, 11, 1323; 1488224638; 
+642, 1121, 666, 1119, 663; 1487938431; 
+35, 267, 1438, 1443, 1433, 1434; 1486513281; 
+1121, 1129, 231, 1323; 1485379203; 
+833, 1006, 1295, 1183, 1028, 1032, 597, 808, 917, 1264, 630, 1077, 800, 805, 729, 561, 1305, 1022, 301, 412, 1274, 700, 1280, 1162, 1368, 851, 983, 699, 1341, 562, 1012, 829, 994, 1017, 986, 984, 740, 733, 1185, 690, 1202, 1030, 874, 1399, 623, 1268, 1324, 1293, 35, 1236, 1158, 746, 713, 1025, 1023, 1076, 1417, 338, 1186, 1242, 1421, 1172, 648, 609, 804, 1281, 792, 697, 891, 938, 664, 930, 482, 658, 599, 210, 937, 841, 1255, 1322, 801, 793, 1174, 1306, 1021, 849, 1309, 905, 665, 882, 844, 679, 432, 879, 1248, 942, 1259, 1160, 629, 1029, 929, 1276, 213, 832, 927, 211, 940, 1301, 267, 1033, 675, 1267, 190, 1320, 888, 1152, 543, 941, 1363, 1272, 810, 819, 1279, 875, 894, 845, 718, 1159, 356, 511, 939, 1296, 619, 1247, 1176, 1373, 1292, 1178, 1249, 1262, 1329, 720, 1215, 1019, 1180, 1287, 1258, 1257, 1302, 1206, 1275, 1004, 1290, 853, 739, 1288, 998, 803, 1203, 1311, 1020, 1031, 843, 850, 1321, 612, 1243, 1278, 743, 847, 1315, 1310, 1252, 838, 1285, 292, 763, 1261, 725, 721, 1385, 717, 569, 1263, 789, 795, 1282, 1000, 598, 1151, 268, 600, 1014, 1308, 722, 712, 1018, 842, 1273, 1237, 714, 738, 742, 918, 208, 880, 715, 1397, 1330, 987, 1371, 578, 1177, 603, 1312, 826, 1181, 244, 985, 809, 884, 745, 1433, 463, 806, 610, 484, 1400, 1307, 1217, 1372, 1342, 1253, 719, 1325, 1205, 1024, 1211, 852, 618, 1250, 1238, 1163, 1171, 1386, 649, 1384, 1189, 982, 1179, 732, 737, 1208, 1188, 1210, 716, 799, 881, 1398, 1241, 698, 1005, 999, 673, 1204, 1191, 1003, 1286, 807, 1016, 1173, 1153, 1026, 1271, 1239, 1161, 1394, 1184, 1064, 1035, 1063, 298, 827, 159, 791, 928, 741, 527, 1256, 1187, 837, 818, 828, 1277, 995, 1015, 1260, 944, 796, 1011, 988, 1284, 1201, 601, 1314, 1415, 996, 1209, 1002, 1027, 1007, 1326, 1182, 790, 1154, 1001, 797, 1313, 1291, 896, 1175, 1266, 1207, 1283, 670, 611, 1251, 1240, 997, 577, 579, 1265, 1382, 691, 1010, 1065, 883, 825, 1034; 1486911061; 
+1479, 1323, 209; 1487601797; 
+1103, 198, 1323, 1147; 1486394758; 
+782, 1046, 173, 589; 1486752833; 
+519, 410, 21, 449, 35, 816, 1299, 458, 409, 480, 429, 448, 495, 1433, 866, 1323, 672, 904, 1434; 1486683016; 
+11, 67; 1488244873; 
+167, 1323, 1082; 1485280907; 
+562, 621; 1485017361; 
+489, 1495; 1487775708; 
+642, 854, 1103, 668, 11, 201, 1199, 198, 203, 300, 1323, 438, 492, 663, 17, 687, 691; 1483706001; 
+12, 668, 1402, 395, 1323, 22; 1486685843; 
+1345, 1323, 271; 1484932377; 
+215, 1327, 61, 1341, 11, 1102, 586, 267, 1090, 1129, 240, 73, 1138, 294, 1217, 231, 1323, 22, 492, 264, 17, 1107; 1484121753; 
+1360, 817; 1486954138; 
+11, 181; 1484834238; 
+504, 506, 1248, 512, 1323; 1484915356; 
+284, 395, 1323; 1485040029; 
+1349, 713, 591, 1348, 720, 721, 717, 712, 542, 1345, 714, 715, 719, 1346, 1347, 1191, 995, 270, 691; 1484496542; 
+26, 1323, 1266; 1484054175; 
+385, 1138, 1323, 438; 1487966172; 
+198, 1323, 1303; 1485434273; 
+198, 155; 1487319458; 
+519, 215, 1073, 1264, 630, 1103, 562, 671, 668, 733, 21, 1268, 915, 658, 591, 863, 1248, 933, 919, 629, 489, 67, 167, 559, 1090, 190, 1129, 762, 356, 139, 1221, 1262, 1091, 1214, 73, 1087, 1138, 1088, 1252, 1261, 725, 1228, 598, 1345, 1443, 1344, 395, 1083, 203, 1217, 1211, 618, 1250, 1459, 532, 649, 1212, 456, 1191, 589, 1147, 914, 159, 1415, 270, 663, 1266, 611, 1251, 997, 691; 1486857379; 
+1095, 1139, 1428, 1143, 1431, 1438, 1088, 1096, 1427, 1148, 1150, 1099, 22, 1109, 1140, 1441, 1089, 1142, 1434; 1486231204; 
+1073, 1072, 1323; 1487344037; 
+668, 198, 1323, 1270; 1486564518; 
+26, 1267, 1315, 1323; 1483654824; 
+12, 1354, 1323, 22, 955; 1484140713; 
+762, 139, 1475; 1486741868; 
+552, 423, 1323; 1483296683; 
+1125, 1143, 1129, 198, 1447, 1119, 1323, 1127, 1089; 1487966638; 
+562, 1250; 1486912176; 
+586, 1194; 1486847154; 
+629, 1323, 547; 1484338101; 
+733, 1323, 731, 155; 1483441590; 
+1120, 1121, 443, 1119; 1487181636; 
+867, 1008, 1481, 1156, 1155, 448, 589, 1157; 1487437497; 
+1295, 338, 1473, 1323; 1487266847; 
+11, 1090, 1148, 1323; 1485012668; 
+12, 11, 921, 284, 1121, 240, 1119, 181, 1323, 1099; 1487967421; 
+729, 35, 634, 1323; 1486422206; 
+12, 448, 1323, 22; 1487255232; 
+215, 958, 1341, 1396, 1360, 11, 551, 1479, 1121, 970, 1129, 385, 1119, 1337, 1397, 1352, 144, 1323, 22, 1104, 1106, 817; 1487172289; 
+12, 1120, 1402, 1323, 438, 955; 1487789383; 
+449, 1299, 1433; 1486683331; 
+1120, 1402, 1323; 1484857184; 
+12, 1354, 1323, 22; 1485371077; 
+234, 496, 421, 1323, 456, 271; 1487779233; 
+552, 423, 1323, 859; 1484413641; 
+26, 504, 506, 512, 1263, 1323, 155; 1484413388; 
+167, 1323, 1082; 1484914894; 
+12, 448, 1323; 1485283536; 
+308, 1323; 1485981905; 
+1354, 1352, 1367; 1485105618; 
+629, 634, 1323; 1484834003; 
+552, 458, 1323; 1485628118; 
+867, 562, 1078, 868, 1157; 1483984343; 
+1248, 512, 1323; 1485299419; 
+644, 645, 646, 766, 765; 1484843228; 
+1095, 11, 1323; 1487684317; 
+1128, 35, 861, 423; 1486084472; 
+629, 1323, 474; 1486735842; 
+642, 12, 1341, 337, 11, 338, 284, 267, 240, 1296, 144, 1323, 731, 438, 22, 43, 264, 271, 17, 5; 1486679779; 
+167, 1323, 1082; 1487419734; 
+11, 1087, 1323; 1488292070; 
+1125, 1122, 1356, 35, 586, 7, 1126, 1224, 1118, 139, 1130, 1119, 1330, 1352, 1367, 1410, 1323, 1227, 1089, 209; 1484660711; 
+1092, 198, 1323, 1229; 1486067176; 
+504, 506, 960, 512, 1250, 1323, 1394, 1260; 1483386601; 
+586, 1129, 1323, 209; 1483487978; 
+1323, 456; 1487779566; 
+26, 337, 447, 671, 1122, 440, 668, 624, 540, 439, 11, 442, 1134, 688, 815, 680, 284, 441, 190, 130, 139, 385, 294, 621, 181, 144, 731, 622, 1123, 355, 1227, 271, 989, 724, 541, 1270, 296, 209; 1487181551; 
+11, 67; 1488256996; 
+1323, 1140, 17; 1484496626; 
+172, 1264, 867, 1008, 915, 488, 455, 863, 933, 919, 489, 559, 548, 762, 356, 139, 1084, 221, 725, 286, 598, 395, 1330, 1323, 649, 173, 1086, 914, 5; 1486740980; 
+447, 198, 448, 1323, 1150, 1109; 1485038837; 
+591, 139; 1488224696; 
+618, 1323, 622; 1485345535; 
+1068, 201, 198, 1352, 1323, 1147; 1487079217; 
+1332, 1337, 1323, 1401; 1488210354; 
+1396, 1397, 1323; 1485526783; 
+356; 1487336960; 181
+668, 198, 1119; 1487618304; 1323
+725; 1487343106; 598
+642, 1095, 854, 519, 1295, 1332, 215, 1393, 1073, 283, 1139, 1428, 1327, 1094, 1392, 1146, 301, 1103, 1100, 1341, 1375, 668, 624, 733, 21, 540, 1170, 1246, 1149, 1429, 449, 1293, 11, 1102, 137, 338, 1242, 1304, 60, 586, 816, 658, 591, 1348, 1143, 284, 201, 436, 1248, 1299, 1437, 932, 1432, 1121, 1369, 1126, 67, 167, 1092, 267, 1090, 1267, 190, 1224, 1129, 458, 1222, 1363, 861, 703, 443, 666, 139, 1430, 1221, 1292, 1262, 1215, 1097, 1091, 64, 1093, 1431, 73, 1013, 416, 1087, 1130, 1438, 1138, 1088, 448, 1252, 1261, 725, 1228, 1119, 598, 993, 1402, 542, 457, 1443, 1096, 395, 634, 1427, 1397, 1390, 1330, 1213, 1148, 1105, 1333, 1391, 1433, 203, 484, 1217, 277, 1145, 1211, 1403, 1150, 1303, 532, 1101, 1445, 499, 1099, 22, 492, 1104, 1141, 43, 1212, 1227, 1108, 589, 1370, 1109, 1127, 1106, 166, 1394, 444, 672, 1140, 1441, 1439, 1089, 1144, 298, 1147, 1142, 159, 1137, 1229, 57, 1401, 1314, 1415, 1230, 783, 1098, 1291, 293, 17, 1376, 1334, 1270, 1251, 296, 209, 1265, 1434, 691, 1082, 1336, 5, 1107, 681; 1486493445; 1128
+655, 528, 878, 749, 770, 1075, 582, 568, 342, 836, 222; 1484791304; 887
+1295, 1234, 1323; 1487780652; 840
+658, 933, 167, 559, 356, 286, 1433, 159; 1486918156; 489
+750, 227, 221, 856, 155, 357; 1485388045; 225
+1389, 811; 1484862817; 1055
+1347; 1488227160; 1323
+1170; 1483986759; 1323
+221, 1323, 811, 1191; 1487172032; 682
+1121, 1129, 1323; 1484328982; 22
+1323, 687; 1486659865; 691
+12, 1323, 1403; 1488228892; 1461
+12, 337, 338, 1121, 240, 1459, 1403, 22, 17; 1487111711; 11
+1264, 1191, 1487, 691; 1487254428; 139
+867, 1080; 1487190052; 1420
+634; 1485012518; 155
+1360, 1354, 524, 1409, 1362, 512; 1485785639; 504
+854, 519, 1295, 1332, 215, 1264, 630, 1094, 729, 301, 1349, 1103, 1341, 1375, 562, 668, 733, 21, 1246, 63, 11, 1102, 137, 338, 1242, 586, 816, 831, 482, 591, 1348, 1143, 284, 629, 1126, 1335, 267, 1090, 1267, 190, 1224, 458, 1222, 861, 703, 356, 511, 1296, 1221, 1215, 1091, 64, 73, 1013, 416, 1290, 1087, 1130, 1088, 448, 598, 1402, 1345, 457, 395, 430, 1330, 877, 1333, 203, 484, 433, 1217, 277, 618, 1403, 1150, 1303, 206, 532, 649, 499, 22, 492, 1346, 456, 1347, 1191, 589, 271, 1370, 1109, 166, 444, 672, 533, 1089, 298, 1147, 159, 1401, 1314, 1415, 270, 663, 611, 1334, 1265, 691, 1336, 681; 1486484009; 1304
+222; 1484862764; 1323
+240, 1323; 1486756146; 277
+1396, 1397; 1484750126; 1323
+1323, 22, 1270; 1484756015; 12
+769; 1486396538; 1416
+862, 1323, 499; 1485194802; 378
+1408; 1485102057; 1422
+733; 1487078965; 731
+1146, 1102; 1483540617; 198
+1402, 22; 1486517049; 1401
+12, 953, 11, 1087, 1323, 955; 1485178838; 22
+562, 11, 198, 1323, 155; 1487267132; 621
+1469, 1465, 861; 1486598965; 1467
+878, 536, 1323, 535; 1485358993; 657
+26, 504, 1268, 1323; 1484121440; 155
+337, 1323, 1314; 1484755522; 1367
+167, 1300; 1487856195; 1323
+423, 139; 1485287492; 489
+61, 180, 671, 63, 55, 35, 60, 650, 56, 64, 885, 59, 1041, 1330, 207, 433, 245, 1323, 206, 811, 58, 57, 652; 1486658543; 62
+1125, 1120, 1119, 231, 859; 1486232929; 1323
+12, 447, 668, 198, 1105, 144, 1323, 532, 159, 1098; 1488278602; 1473
+733, 221, 731, 155; 1486660254; 1323
+728, 35, 153, 154, 151, 727, 152, 1083, 1330, 1323, 150; 1485087309; 149
+337, 1323; 1484660568; 1314
+1089, 209; 1484260945; 1323
+519, 423, 1323, 1338, 431, 1334; 1484264018; 1013
+489; 1487644755; 1195
+12, 448, 1323, 1401; 1488228949; 1461
+586, 1323; 1485442646; 860
+1428, 1429, 1437, 703, 423, 1431, 1147; 1486224216; 1150
+864, 7, 1126, 666, 865, 208, 1330, 144, 1323, 1140, 159, 1137, 17; 1488291428; 1150
+1334; 1483442525; 326
+1323, 858; 1485085790; 751
+447, 448; 1486475871; 1323
+552; 1485121376; 285
+26, 1261; 1488206689; 1323
+1323, 858, 681; 1484915107; 552
+642, 1125, 1360, 551, 1119, 1323, 492; 1485528164; 1121
+81; 1488231781; 762
+201, 198, 1323, 1101, 1142; 1483476838; 203
+552, 1169, 483, 547; 1485797991; 35
+1428, 1128, 1429, 1143, 1437, 1215, 1431, 1427, 1150, 1109, 1147; 1486226536; 1103
+385, 1130, 457, 1323; 1485100137; 1119
+440, 1111, 1134, 863, 702; 1485283911; 860
+861, 444; 1486596967; 1447
+863, 651, 1046; 1485989740; 668
+1323, 724; 1487968878; 725
+671, 733, 11, 67, 1044, 1425, 1323, 731, 1462, 155; 1488228463; 1041
+762, 198, 225, 221, 1323, 1445, 856, 608, 155; 1488058736; 26
+1405; 1483296648; 1404
+519, 496, 969; 1483988627; 1323
+142; 1484859509; 155
+1095, 1295, 215, 12, 1094, 1103, 1341, 562, 229, 668, 1128, 1246, 1149, 11, 1102, 1193, 338, 586, 482, 1143, 629, 167, 1092, 267, 1090, 1129, 117, 356, 423, 240, 1296, 198, 1215, 1097, 64, 1093, 73, 234, 225, 1087, 1138, 1088, 448, 1261, 725, 840, 1194, 1096, 395, 143, 1105, 144, 203, 1217, 231, 1211, 618, 590, 1250, 1323, 1403, 1303, 532, 499, 1099, 22, 492, 43, 856, 456, 233, 1108, 1109, 444, 1140, 533, 1089, 159, 222, 1230, 270, 228, 1098, 17, 611, 357, 209, 1107, 681; 1484755830; 155
+12, 22; 1485267575; 1323
+863, 489, 559, 1487; 1487172216; 744
+1128, 137, 1437, 458, 861, 703, 1438, 430, 1433, 444, 1436, 1439, 681; 1486513274; 1443
+552, 442, 1323, 681; 1484413308; 423
+651; 1486575741; 1041
+1100, 11; 1488224638; 1323
+642, 1121, 666, 663; 1487938431; 1119
+35, 267, 1438, 1443, 1434; 1486513281; 1433
+1121, 1129, 1323; 1485379203; 231
+833, 1006, 1295, 1183, 1028, 1032, 597, 808, 917, 1264, 630, 1077, 800, 805, 729, 561, 1305, 1022, 301, 412, 1274, 700, 1280, 1162, 1368, 851, 983, 699, 1341, 562, 1012, 829, 994, 1017, 986, 984, 740, 733, 1185, 690, 1202, 1030, 874, 1399, 623, 1268, 1324, 1293, 35, 1236, 1158, 746, 713, 1025, 1023, 1076, 1417, 338, 1186, 1242, 1421, 1172, 648, 609, 804, 1281, 792, 697, 891, 938, 664, 930, 482, 658, 599, 210, 937, 841, 1255, 1322, 801, 793, 1174, 1306, 1021, 849, 1309, 905, 665, 882, 844, 679, 432, 879, 1248, 942, 1259, 1160, 629, 1029, 929, 1276, 213, 832, 927, 211, 940, 1301, 267, 1033, 675, 190, 1320, 888, 1152, 543, 941, 1363, 1272, 810, 819, 1279, 875, 894, 845, 718, 1159, 356, 511, 939, 1296, 619, 1247, 1176, 1373, 1292, 1178, 1249, 1262, 1329, 720, 1215, 1019, 1180, 1287, 1258, 1257, 1302, 1206, 1275, 1004, 1290, 853, 739, 1288, 998, 803, 1203, 1311, 1020, 1031, 843, 850, 1321, 612, 1243, 1278, 743, 847, 1315, 1310, 1252, 838, 1285, 292, 763, 1261, 725, 721, 1385, 717, 569, 1263, 789, 795, 1282, 1000, 598, 1151, 268, 600, 1014, 1308, 722, 712, 1018, 842, 1273, 1237, 714, 738, 742, 918, 208, 880, 715, 1397, 1330, 987, 1371, 578, 1177, 603, 1312, 826, 1181, 244, 985, 809, 884, 745, 1433, 463, 806, 610, 484, 1400, 1307, 1217, 1372, 1342, 1253, 719, 1325, 1205, 1024, 1211, 852, 618, 1250, 1238, 1163, 1171, 1386, 649, 1384, 1189, 982, 1179, 732, 737, 1208, 1188, 1210, 716, 799, 881, 1398, 1241, 698, 1005, 999, 673, 1204, 1191, 1003, 1286, 807, 1016, 1173, 1153, 1026, 1271, 1239, 1161, 1394, 1184, 1064, 1035, 1063, 298, 827, 159, 791, 928, 741, 527, 1256, 1187, 837, 818, 828, 1277, 995, 1015, 1260, 944, 796, 1011, 988, 1284, 1201, 601, 1314, 1415, 996, 1209, 1002, 1027, 1007, 1326, 1182, 790, 1154, 1001, 797, 1313, 1291, 896, 1175, 1266, 1207, 1283, 670, 611, 1251, 1240, 997, 577, 579, 1265, 1382, 691, 1010, 1065, 883, 825, 1034; 1486911061; 1267
+1479, 209; 1487601797; 1323
+1103, 198, 1323; 1486394758; 1147
+782, 1046, 589; 1486752833; 173
+519, 410, 21, 449, 35, 816, 1299, 458, 409, 480, 429, 448, 1433, 866, 1323, 672, 904, 1434; 1486683016; 495
+11; 1488244873; 67
+1323, 1082; 1485280907; 167
+562; 1485017361; 621
+1495; 1487775708; 489
+642, 854, 1103, 668, 11, 201, 1199, 198, 203, 300, 1323, 438, 663, 17, 687, 691; 1483706001; 492
+668, 1402, 395, 1323, 22; 1486685843; 12
+1345, 271; 1484932377; 1323
+215, 1327, 61, 1341, 11, 1102, 586, 267, 1090, 1129, 73, 1138, 294, 1217, 231, 1323, 22, 492, 264, 17, 1107; 1484121753; 240
+817; 1486954138; 1360
+11; 1484834238; 181
+506, 1248, 512, 1323; 1484915356; 504
+395, 1323; 1485040029; 284
+1349, 713, 591, 1348, 720, 721, 717, 712, 542, 714, 715, 719, 1346, 1347, 1191, 995, 270, 691; 1484496542; 1345
+1323, 1266; 1484054175; 26
+385, 1138, 438; 1487966172; 1323
+1323, 1303; 1485434273; 198
+155; 1487319458; 198
+519, 215, 1073, 1264, 630, 1103, 562, 671, 668, 733, 21, 1268, 915, 658, 591, 863, 1248, 933, 919, 629, 489, 67, 167, 559, 1090, 190, 1129, 762, 356, 139, 1221, 1262, 1091, 1214, 73, 1087, 1138, 1088, 1252, 1261, 725, 1228, 598, 1345, 1443, 1344, 395, 1083, 203, 1217, 1211, 618, 1250, 1459, 532, 649, 1212, 456, 1191, 589, 1147, 914, 159, 1415, 270, 663, 1266, 611, 1251, 997; 1486857379; 691
+1095, 1139, 1428, 1143, 1431, 1438, 1088, 1096, 1427, 1150, 1099, 22, 1109, 1140, 1441, 1089, 1142, 1434; 1486231204; 1148
+1072, 1323; 1487344037; 1073
+668, 1323, 1270; 1486564518; 198
+26, 1267, 1315; 1483654824; 1323
+1354, 1323, 22, 955; 1484140713; 12
+762, 139; 1486741868; 1475
+552, 1323; 1483296683; 423
+1143, 1129, 198, 1447, 1119, 1323, 1127, 1089; 1487966638; 1125
+1250; 1486912176; 562
+586; 1486847154; 1194
+629, 1323; 1484338101; 547
+733, 1323, 731; 1483441590; 155
+1120, 443, 1119; 1487181636; 1121
+867, 1008, 1481, 1156, 1155, 589, 1157; 1487437497; 448
+1295, 1473, 1323; 1487266847; 338
+11, 1090, 1323; 1485012668; 1148
+11, 921, 284, 1121, 240, 1119, 181, 1323, 1099; 1487967421; 12
+35, 634, 1323; 1486422206; 729
+12, 448, 1323; 1487255232; 22
+215, 958, 1341, 1396, 1360, 11, 551, 1479, 1121, 970, 1129, 385, 1119, 1337, 1352, 144, 1323, 22, 1104, 1106, 817; 1487172289; 1397
+12, 1120, 1402, 438, 955; 1487789383; 1323
+449, 1433; 1486683331; 1299
+1120, 1402; 1484857184; 1323
+12, 1323, 22; 1485371077; 1354
+234, 421, 1323, 456, 271; 1487779233; 496
+423, 1323, 859; 1484413641; 552
+26, 504, 506, 512, 1263, 155; 1484413388; 1323
+167, 1323; 1484914894; 1082
+12, 448; 1485283536; 1323
+1323; 1485981905; 308
+1354, 1367; 1485105618; 1352
+634, 1323; 1484834003; 629
+552, 1323; 1485628118; 458
+867, 562, 1078, 1157; 1483984343; 868
+512, 1323; 1485299419; 1248
+644, 646, 766, 765; 1484843228; 645
+11, 1323; 1487684317; 1095
+1128, 35, 423; 1486084472; 861
+1323, 474; 1486735842; 629
+642, 12, 337, 11, 338, 284, 267, 240, 1296, 144, 1323, 731, 438, 22, 43, 264, 271, 17, 5; 1486679779; 1341
+167, 1082; 1487419734; 1323
+1087, 1323; 1488292070; 11
+1125, 1122, 1356, 35, 586, 7, 1126, 1224, 1118, 139, 1130, 1119, 1330, 1352, 1367, 1410, 1227, 1089, 209; 1484660711; 1323
+1092, 198, 1323; 1486067176; 1229
+506, 960, 512, 1250, 1323, 1394, 1260; 1483386601; 504
+586, 1323, 209; 1483487978; 1129
+456; 1487779566; 1323
+26, 337, 447, 671, 1122, 440, 668, 624, 540, 439, 11, 442, 1134, 688, 815, 680, 284, 441, 190, 130, 139, 294, 621, 181, 144, 731, 622, 1123, 355, 1227, 271, 989, 724, 541, 1270, 296, 209; 1487181551; 385
+11; 1488256996; 67
+1323, 1140; 1484496626; 17
+172, 1264, 867, 1008, 915, 488, 863, 933, 919, 489, 559, 548, 762, 356, 139, 1084, 221, 725, 286, 598, 395, 1330, 1323, 649, 173, 1086, 914, 5; 1486740980; 455
+447, 448, 1323, 1150, 1109; 1485038837; 198
+591; 1488224696; 139
+1323, 622; 1485345535; 618
+1068, 201, 1352, 1323, 1147; 1487079217; 198
+1332, 1323, 1401; 1488210354; 1337
+1397, 1323; 1485526783; 1396
