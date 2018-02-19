@@ -45,10 +45,12 @@ class Estimator:
                         break
             predicted.append([commit, ans_predict])
             evaluator.update_counter(commit[2], ans_predict, types)
+
         table = create_table(types)
         if table not in self.log:
             self.log.add(table)
             print_table(min_prob, n, count, table)
+
         return tuple([predicted, types])
 
     # TODO: check speed, try to update
@@ -114,8 +116,10 @@ class Estimator:
     def _hill_climb(self, evaluator, n_min, n_max, cur_n, neigh=10):
         max_scores = -1
         ans_for_n_and_min_prob = (1, 0)
-
+        print("--------------")
+        print("n = {:d}".format(cur_n))
         for n in range(max(n_min, cur_n - neigh), min(n_max, cur_n + neigh)):
+            print("cur_n = {:d}".format(n))
             for min_prob in range(0, 100):
                 predict = self.predict_for_dataset(evaluator, n, min_prob)
                 scores = evaluator.get_score(predict[1])
@@ -139,6 +143,6 @@ class Estimator:
                 "score(A, '')": 0.1
             }
         )
-        n_max = 10
+        n_max = 1000
         min_prob_max = 100
-        return self._full_search(evaluator, n_max, min_prob_max)
+        return self._hill_climb(evaluator, 0, 100, 1)

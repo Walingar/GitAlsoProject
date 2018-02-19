@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from git_also.evaluate import Evaluator
 from git_also import dataset
 from git_also import estimate
@@ -24,8 +25,8 @@ def main():
             "score(A, '')": 0.1
         }
     )
-    teach.predict_for_dataset(evaluator, 1852, 100)
-    # teach.fit()
+    # teach.predict_for_dataset(evaluator, 1852, 100)
+    teach.fit()
     print("Finished")
 
 

@@ -13,12 +13,12 @@ class Evaluator:
     # TODO: add some logs
     @staticmethod
     def log_prediction(remote_files, predicted_files):
-        out = open("data/temp_log.log", "a")
+        out = open("D:/temp_log.log", "a")
         print("LOG: DELETED:", *remote_files, "; PREDICTION: ", *predicted_files, file=out)
         out.close()
 
     def update_counter(self, remote_files, predicted_files, types):
-        # self.log_prediction(remote_files, predicted_files)
+        self.log_prediction(remote_files, predicted_files)
         if len(predicted_files) == 0:
             if len(remote_files) == 0:
                 types["score('', '')"] += 1
