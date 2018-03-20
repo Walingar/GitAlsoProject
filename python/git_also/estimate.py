@@ -1,7 +1,6 @@
 from git_also.make_decision import bin_search
 from git_also.evaluate import Evaluator
 from git_also.memoize import memoize
-from random import randrange as rand
 from collections import Counter
 from git_also.table import create_table
 from git_also.table import print_table
@@ -37,9 +36,15 @@ class Estimator:
             predict.sort(key=lambda x: -x[1])
             ans_predict = []
             cur_count = 0
+            predicted_files_counter = {}
             for file in predict:
-                if file[1] > min_prob / 100:
-                    ans_predict.append(file)
+                predicted_files_counter.setdefault(file[0], 0)
+                # predicted_files_counter[file[0]] += file[1]
+                predicted_files_counter[file[0]] = file[1] + predicted_files_counter[file[0]]
+
+            for file, prob in sorted(predicted_files_counter.items(), key=lambda x: -x[1]):
+                if prob > min_prob / 100:
+                    ans_predict.append([file, prob])
                     cur_count += 1
                     if cur_count == count:
                         break
@@ -80,6 +85,8 @@ class Estimator:
     @memoize
     def _prediction_for_file(self, first_file, time, n, max_by_commit):
         """
+            14.03.18 added the most useful predict file
+
 
         :param first_file: file fow which we are looking for predicted files
         :param time: current time of commit
@@ -89,14 +96,66 @@ class Estimator:
         """
         predict = []
         for second_file, times in self.index[first_file].items():
-            if second_file != "count":
+            if second_file != "count" and times[0] != time:
                 prob = self.get_probability(self.index,
                                             first_file,
                                             second_file,
                                             time, n, max_by_commit)
                 if prob > self.extreme_prob:
                     predict.append(tuple([second_file, prob]))
-        return predict
+        predict = list(sorted(predict, key=lambda x: -x[1]))
+        # return tuple(predict)
+        return tuple(predict)
+
+    def predict_from_rules(self, rules):
+        rules = list(sorted(rules, key=lambda x: (len(x[0]), x[2]), reverse=True))
+        s = 0
+        predicted = []
+        for commit in self.dataset:
+            prediction = []
+            for rule in rules:
+                if len(prediction) == 3:
+                    break
+                flag = True
+                for file in rule[0]:
+                    if file not in commit[0]:
+                        flag = False
+                        break
+                # predict = rule[1]
+                # if flag:
+                #     for file in rule[1]:
+                #         if len(predict) == 3:
+                #             break
+                #         predict.append(file)
+                if flag:
+                    for file in rule[1]:
+                        if len(prediction) == 3:
+                            break
+                        if file not in prediction and file not in commit[0]:
+                            prediction.append(file)
+            # print(prediction, commit[2])
+            predicted.append([commit[2], prediction, commit[0]])
+        # мб не все правила применились
+        # какие правила сколько раз применились
+        #
+        silent = 0
+        wrong = 0
+        for predict in predicted:
+            flag = False
+            for file in predict[1]:
+                if file in predict[0]:
+                    flag = True
+                    s += 1
+                    break
+            if not flag and len(predict[1]) != 0:
+                wrong += 1
+                print(*predict)
+            if len(predict[1]) == 0:
+                silent += 1
+
+        print(s)
+        print(silent)
+        print(wrong)
 
     def _full_search(self, evaluator, n_max, min_prob_max):
         max_scores = -1

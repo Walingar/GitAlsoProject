@@ -24,6 +24,7 @@ def create_index(repository_name):
         print(time)
         while len(files) != 0:
             first_file = files.pop()
+            print("hihi: ", len(files))
             _ensure_file_count(index, files_with_time[first_file][time], time)
             for second_file in files:
                 _add_files_to_indices(index, files_with_time[first_file][time], files_with_time[second_file][time],

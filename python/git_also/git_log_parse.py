@@ -6,20 +6,18 @@ def parse_git_log_file(filename):
     """
     file = open(filename, 'r')
     commits = {}
-    cur_time = file.readline().strip()
-    while cur_time != '':
-        cur_time = int(cur_time)
-        commits[cur_time] = []
-        cur_line = file.readline().strip()
-        while cur_line and not cur_line.isdigit():
-            commits[cur_time].append(cur_line.split())
-            cur_line = file.readline().strip()
-        if len(commits[cur_time]) == 0:
-            del commits[cur_time]
-        if not cur_line:
-            cur_time = file.readline().strip()
-        else:
-            cur_time = cur_line
+    cur_time = 0
+    for line in file:
+        line = line.strip()
+        if len(line) > 0:
+            if line[0].isdigit():
+                if cur_time in commits and len(commits[cur_time]) == 0:
+                    del commits[cur_time]
+                cur_time = int(line)
+                commits[cur_time] = []
+
+            else:
+                commits[cur_time].append(line.split())
     return commits
 
 
@@ -48,11 +46,13 @@ def get_index(file_name, cur_index, files):
     return add_file(cur_index, file_name, files)
 
 
-def add_file_with_time(file_name, time, files, files_with_time):
+def add_file_with_time(file_name, time, files, files_with_time, cur_index):
     files_with_time.setdefault(file_name, {})
     files_with_time[file_name].setdefault(time, 0)
+    if file_name not in files:
+        cur_index = add_file(cur_index, file_name, files)
     files_with_time[file_name][time] = files[file_name]
-
+    return cur_index
 
 def create_files_indices(commits):
     """
@@ -88,9 +88,11 @@ def create_files_indices(commits):
         # create files_with_time and indices_with_time
         for file in commit[1]:
             if file[0][0] == 'C' or file[0][0] == 'R':
-                add_file_with_time(file[2], time, files, files_with_time)
+                cur_index = add_file_with_time(file[2], time, files, files_with_time, cur_index)
             elif len(file) > 1:
-                add_file_with_time(file[1], time, files, files_with_time)
+                cur_index = add_file_with_time(file[1], time, files, files_with_time, cur_index)
+    # print(cur_index)
+    # return []
     return files_with_time
 
 # example
