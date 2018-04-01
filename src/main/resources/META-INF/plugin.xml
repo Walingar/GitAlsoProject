@@ -10,8 +10,9 @@
 
 
     <extensions defaultExtensionNs="com.intellij">
-        <checkinHandlerFactory implementation="PreCommitCheckinHandlerFactory"  />
+        <checkinHandlerFactory implementation="GitAlsoCheckinHandlerFactory"/>
     </extensions>
+
     <actions>
     </actions>
 </idea-plugin>
