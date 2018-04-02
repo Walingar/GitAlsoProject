@@ -3,6 +3,7 @@ package index
 import commit.Commit
 import commit.CommittedFile
 
+// TODO: useless??
 class Index(private val repoName: String) {
     private val filesWithCommits = HashMap<CommittedFile, MutableSet<Commit>>()
 

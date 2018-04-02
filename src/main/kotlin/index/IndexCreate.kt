@@ -2,6 +2,7 @@ package index
 
 import commit.Commit
 
+// TODO: useless??
 fun createIndexFromCommits(commits: Collection<Commit>, repoName: String): Index {
     val index = Index(repoName)
     for (commit in commits) {
