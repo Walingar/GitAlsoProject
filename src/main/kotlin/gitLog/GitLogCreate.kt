@@ -5,7 +5,7 @@ import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 
-fun executeCommand(from: File, command: String): String? {
+private fun executeCommand(from: File, command: String): String? {
     return try {
         val proc = ProcessBuilder(*command.split(" ").toTypedArray())
                 .directory(from)
@@ -26,5 +26,5 @@ fun createSimpleGitLog(repository: File): String? {
 }
 
 fun createGitLogWithTimestampsAndFiles(repository: File): String? {
-    return executeCommand(repository, "git log --name-status -C --pretty=format:%ct")
+    return executeCommand(repository, "git log --name-status -C --pretty=format:%at")
 }
