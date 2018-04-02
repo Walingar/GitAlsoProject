@@ -25,7 +25,6 @@ private fun predictForFileInCommit(firstFile: CommittedFile, time: Long, n: Int,
 }
 
 fun predictForCommit(commit: Commit): Collection<CommittedFile> {
-    val was = HashSet<Pair<CommittedFile, CommittedFile>>()
     var maxByCommit = 0
     for (file in commit.getFiles()) {
         val temp = file.getCommits().size

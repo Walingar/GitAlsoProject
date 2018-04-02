@@ -22,7 +22,7 @@ private fun getTimeRate(time: Long, startTime: Long): Double {
     val week = 604800
     val parameter = sqrt((startTime - time).toDouble() / week)
     if (parameter == 0.0) {
-        return sqrt(week.toDouble())
+        return 1.0
     }
     return 1 / parameter
 }

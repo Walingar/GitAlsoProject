@@ -7,6 +7,7 @@ class CommittedFile(private val id: Int) {
     fun committed(commit: Commit, name: String) {
         commits.add(commit)
         names[commit] = name
+        commit.addFile(this)
     }
 
     fun getId(): Int {

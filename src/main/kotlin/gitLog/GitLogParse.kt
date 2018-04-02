@@ -37,7 +37,6 @@ fun getCommitsFromGitLogWithTimestampsAndFiles(log: String): Collection<Commit> 
                 mapNameToID.remove(firstFile)
 
                 val committedFile = CommittedFile(id!!)
-                currentCommit.addFile(committedFile)
                 committedFile.committed(currentCommit, secondFile)
             }
         } else {
@@ -47,7 +46,6 @@ fun getCommitsFromGitLogWithTimestampsAndFiles(log: String): Collection<Commit> 
             }
             val id = mapNameToID[file]
             val committedFile = CommittedFile(id!!)
-            currentCommit.addFile(committedFile)
             committedFile.committed(currentCommit, file)
         }
 
