@@ -23,7 +23,22 @@ class Commit(private val time: Long) {
     }
 
     override fun toString(): String {
-        return files.joinToString{t -> t.toString(this)}
+        return time.toString()
+    }
+
+    fun toFullString(): String {
+        return files.joinToString { t -> t.toString(this) }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other is Commit) {
+            return other.getTime() == this.getTime()
+        }
+        return false
+    }
+
+    override fun hashCode(): Int {
+        return this.getTime().toInt()
     }
 
 }

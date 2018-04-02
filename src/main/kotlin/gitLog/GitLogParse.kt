@@ -3,7 +3,7 @@ package gitLog
 import commit.Commit
 import commit.CommittedFile
 
-fun getCommitsFromGitLogWithTimestampsAndFiles(log: String): HashSet<Commit> {
+fun getCommitsFromGitLogWithTimestampsAndFiles(log: String): Collection<Commit> {
     val commits = HashSet<Commit>()
     val lines = log.lines()
     var time = System.currentTimeMillis()
@@ -38,7 +38,7 @@ fun getCommitsFromGitLogWithTimestampsAndFiles(log: String): HashSet<Commit> {
 
                 val committedFile = CommittedFile(id!!)
                 currentCommit.addFile(committedFile)
-                committedFile.commited(currentCommit, secondFile)
+                committedFile.committed(currentCommit, secondFile)
             }
         } else {
             val (_, file) = change
@@ -48,7 +48,7 @@ fun getCommitsFromGitLogWithTimestampsAndFiles(log: String): HashSet<Commit> {
             val id = mapNameToID[file]
             val committedFile = CommittedFile(id!!)
             currentCommit.addFile(committedFile)
-            committedFile.commited(currentCommit, file)
+            committedFile.committed(currentCommit, file)
         }
 
     }

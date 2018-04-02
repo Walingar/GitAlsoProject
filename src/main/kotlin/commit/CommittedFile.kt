@@ -4,7 +4,7 @@ class CommittedFile(private val id: Int) {
     private val commits = HashSet<Commit>()
     private val names = HashMap<Commit, String>()
 
-    fun commited(commit: Commit, name: String) {
+    fun committed(commit: Commit, name: String) {
         commits.add(commit)
         names[commit] = name
     }
@@ -13,7 +13,7 @@ class CommittedFile(private val id: Int) {
         return id
     }
 
-    fun getCommits(): Set<Commit> {
+    fun getCommits(): Collection<Commit> {
         return commits
     }
 
@@ -29,4 +29,14 @@ class CommittedFile(private val id: Int) {
         return names[commit]!!
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (other is CommittedFile) {
+            return other.getId() == this.getId()
+        }
+        return false
+    }
+
+    override fun hashCode(): Int {
+        return this.getId()
+    }
 }
