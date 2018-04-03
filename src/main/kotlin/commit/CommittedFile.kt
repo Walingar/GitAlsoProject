@@ -18,16 +18,25 @@ class CommittedFile(private val id: Int) {
         return commits
     }
 
-    fun getName(commit: Commit): String? {
-        return names[commit]
+    fun getName(currentCommit: Commit): String {
+        var delta = currentCommit.getTime()
+        var fileName = ""
+        for ((commit, name) in names) {
+            val curDelta = currentCommit.getTime() - commit.getTime()
+            if (curDelta in 1..(delta - 1)) {
+                delta = curDelta
+                fileName = name
+            }
+        }
+        return fileName
     }
 
     override fun toString(): String {
         return id.toString()
     }
 
-    fun toString(commit: Commit): CharSequence {
-        return names[commit]!!
+    fun toString(currentCommit: Commit): CharSequence {
+        return this.getName(currentCommit)
     }
 
     override fun equals(other: Any?): Boolean {

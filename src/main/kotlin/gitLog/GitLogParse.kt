@@ -1,15 +1,16 @@
 package gitLog
 
+import com.intellij.openapi.components.ServiceManager
 import commit.Commit
-import commit.CommittedFile
+import GitAlsoService
+import com.intellij.openapi.project.Project
 
-fun getCommitsFromGitLogWithTimestampsAndFiles(log: String): Collection<Commit> {
+fun getCommitsFromGitLogWithTimestampsAndFiles(log: String, project: Project): Collection<Commit> {
     val commits = HashSet<Commit>()
     val lines = log.lines()
     var time = System.currentTimeMillis()
-    var currentCommit = Commit(time)
-    var fileCounter = 0
-    val mapNameToID = HashMap<String, Int>()
+    var currentCommit: Commit
+    val changes = ArrayList<List<String>>()
 
     for (i in lines) {
         val line = i.trim()
@@ -17,40 +18,17 @@ fun getCommitsFromGitLogWithTimestampsAndFiles(log: String): Collection<Commit> 
             continue
         }
         if (line.toLongOrNull() != null) {
+            currentCommit = ServiceManager.getService(project, GitAlsoService::class.java).committed(changes, time)
             if (currentCommit.getFiles().isNotEmpty()) {
                 commits.add(currentCommit)
             }
+            changes.clear()
             time = line.toLong()
-            currentCommit = Commit(time)
             continue
         }
-
-        val change = i.split("\\s".toRegex())
-
-        if (change.size == 3) {
-            val (type, firstFile, secondFile) = change
-            if (type[0] == 'R') {
-                if (firstFile !in mapNameToID) {
-                    mapNameToID[firstFile] = fileCounter++
-                }
-                val id = mapNameToID[firstFile]
-                mapNameToID.remove(firstFile)
-
-                val committedFile = CommittedFile(id!!)
-                committedFile.committed(currentCommit, secondFile)
-            }
-        } else {
-            val (_, file) = change
-            if (file !in mapNameToID) {
-                mapNameToID[file] = fileCounter++
-            }
-            val id = mapNameToID[file]
-            val committedFile = CommittedFile(id!!)
-            committedFile.committed(currentCommit, file)
-        }
-
+        changes.add(i.split("\\s".toRegex()))
     }
-
+    currentCommit = ServiceManager.getService(project, GitAlsoService::class.java).committed(changes, time)
     if (currentCommit.getFiles().isNotEmpty()) {
         commits.add(currentCommit)
     }
