@@ -1,22 +1,19 @@
 import com.intellij.testFramework.LightPlatformTestCase
-import com.intellij.testFramework.LightPlatformTestCase.getProject
 import gitLog.createGitLogWithTimestampsAndFiles
 import gitLog.createSimpleGitLog
-import junit.framework.Assert.assertTrue
 import org.junit.Test
-import java.io.File
 
 class GitLogCreateTest : LightPlatformTestCase() {
 
     @Test
-    fun testSimpleRepoInCurDir() {
+    fun testSimpleRepoInTempProject() {
         val log = createSimpleGitLog(getProject())
         assertTrue(log != null && log.isNotEmpty())
         println(log)
     }
 
     @Test
-    fun testRepoInCurDirWithTimeStampAndFiles() {
+    fun testRepoInTempProjectWithTimeStampAndFiles() {
         val log = createGitLogWithTimestampsAndFiles(getProject())
         assertTrue(log != null && log.isNotEmpty())
         println(log)

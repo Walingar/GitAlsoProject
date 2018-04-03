@@ -13,7 +13,7 @@ class GitAlsoComponent(private val project: Project) : ProjectComponent {
     }
 
     override fun projectOpened() {
-        val log = createGitLogWithTimestampsAndFiles(File(project.basePath), project)
+        val log = createGitLogWithTimestampsAndFiles(project)
         getCommitsFromGitLogWithTimestampsAndFiles(log!!, project)
     }
 }
