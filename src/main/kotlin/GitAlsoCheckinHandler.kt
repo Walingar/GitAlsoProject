@@ -29,7 +29,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
                     "Files to be committed",
                     Messages.getInformationIcon())
         }
-        return ReturnResult.CLOSE_WINDOW
+        return ReturnResult.COMMIT
     }
 
     private fun getFiles(): List<List<String>> {
