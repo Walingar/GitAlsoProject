@@ -14,8 +14,6 @@ class GitAlsoComponent(private val project: Project) : ProjectComponent {
 
     override fun projectOpened() {
         val log = createGitLogWithTimestampsAndFiles(File(project.basePath), project)
-        val commits = getCommitsFromGitLogWithTimestampsAndFiles(log!!, project)
-        Messages.showMessageDialog(project, "log gotten", "Kek", Messages.getInformationIcon())
-        Messages.showMessageDialog(project, commits.toString(), "Kek", Messages.getInformationIcon())
+        getCommitsFromGitLogWithTimestampsAndFiles(log!!, project)
     }
 }
