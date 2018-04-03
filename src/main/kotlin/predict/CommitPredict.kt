@@ -9,6 +9,7 @@ private fun predictForFileInCommit(firstFile: CommittedFile, time: Long, n: Int,
 
     val was = HashSet<Pair<CommittedFile, CommittedFile>>()
     val scores = ArrayList<Pair<Double, CommittedFile>>()
+
     for (commit in firstFile.getCommits()) {
         for (secondFile in commit.getFiles()) {
             if (firstFile != secondFile && Pair(firstFile, secondFile) !in was) {
@@ -35,12 +36,15 @@ fun predictForCommit(commit: Commit): Collection<CommittedFile> {
     val scores = HashSet<Pair<Double, CommittedFile>>()
     for (file in commit.getFiles()) {
         predictForFileInCommit(file, commit.getTime(), 14, maxByCommit, 0.4).forEach {
-            scores.add(it)
+            if (it.second !in commit.getFiles()) {
+                scores.add(it)
+            }
         }
     }
     var maxInPrediction = Double.MAX_VALUE
     val prediction = HashSet<CommittedFile>()
 
+    // TODO: check it
     while (prediction.size != min(scores.size, 5)) {
 
         // counting max
