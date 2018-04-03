@@ -1,34 +1,38 @@
 package gitLog
 
 import com.intellij.openapi.project.Project
+import com.intellij.testFramework.TempFiles
 import java.io.File
 import java.io.IOException
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 
 
-private fun executeCommand(from: File, command: String): String? {
+private fun executeCommand(project: Project, command: String): String? {
     try {
-        val file = File("log")
+        val file = createTempFile()
         val proc = ProcessBuilder(*command.split(" ").toTypedArray())
-                .directory(from)
+                .directory(File(project.basePath))
                 .redirectErrorStream(true)
                 .redirectOutput(file)
                 .start()
 
         proc.waitFor(5, TimeUnit.MINUTES)
         val log = file.readText()
+        file.delete()
         return log
     } catch (e: IOException) {
-        System.err.print("ERROR: something went wrong when trying to get $command from: $from")
+        System.err.print("ERROR: something went wrong when trying to get $command from: ${File(project.basePath)}")
         e.printStackTrace()
         return null
     }
 }
 
-fun createSimpleGitLog(repository: File): String? {
-    return executeCommand(repository, "git log")
+fun createSimpleGitLog(project: Project): String? {
+    return executeCommand(project, "git log")
 }
 
-fun createGitLogWithTimestampsAndFiles(repository: File, project: Project): String? {
-    return executeCommand(repository, "git log --name-status -C --pretty=format:%at")
+fun createGitLogWithTimestampsAndFiles(project: Project): String? {
+    return executeCommand(project, "git log --name-status -C --pretty=format:%at")
 }
