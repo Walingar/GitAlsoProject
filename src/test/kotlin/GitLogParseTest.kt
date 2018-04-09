@@ -1,8 +1,5 @@
 import com.intellij.testFramework.LightPlatformTestCase
-import gitLog.createGitLogWithTimestampsAndFiles
 import gitLog.getCommitsFromGitLogWithTimestampsAndFiles
-import junit.framework.Assert.assertNotNull
-import junit.framework.Assert.assertTrue
 import org.junit.Test
 import java.io.File
 

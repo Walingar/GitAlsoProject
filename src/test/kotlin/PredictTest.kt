@@ -1,6 +1,6 @@
 import commit.Commit
 import commit.CommittedFile
-import junit.framework.Assert.assertTrue
+import junit.framework.TestCase.assertTrue
 import org.junit.Test
 import predict.predictForCommit
 
