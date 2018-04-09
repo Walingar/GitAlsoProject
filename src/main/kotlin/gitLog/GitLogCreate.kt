@@ -34,5 +34,5 @@ fun createSimpleGitLog(project: Project): String? {
 }
 
 fun createGitLogWithTimestampsAndFiles(project: Project): String? {
-    return executeCommand(project, "git log --name-status -C --pretty=format:%at")
+    return executeCommand(project, "git log -50000 --name-status -C --pretty=format:%at")
 }

@@ -22,7 +22,7 @@ class GitAlsoService {
 
                     mapNameToID[secondFile]!!.committed(commit, secondFile)
                 }
-            } else {
+            } else if (change.size == 2) {
                 val (_, file) = change
                 if (file !in mapNameToID) {
                     mapNameToID[file] = CommittedFile(fileCounter++)

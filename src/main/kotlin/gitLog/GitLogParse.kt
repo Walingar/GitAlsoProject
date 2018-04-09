@@ -5,14 +5,13 @@ import commit.Commit
 import GitAlsoService
 import com.intellij.openapi.project.Project
 
-fun getCommitsFromGitLogWithTimestampsAndFiles(log: String, project: Project): Collection<Commit> {
+fun getCommitsFromGitLogWithTimestampsAndFiles(log: String, project: Project, maxCountFiles: Int = 10000): Collection<Commit> {
     val commits = HashSet<Commit>()
-    val lines = log.lines()
     var time = System.currentTimeMillis()
     var currentCommit: Commit
     val changes = ArrayList<List<String>>()
 
-    for (i in lines) {
+    for (i in log.lines()) {
         val line = i.trim()
         if (line.isEmpty()) {
             continue
