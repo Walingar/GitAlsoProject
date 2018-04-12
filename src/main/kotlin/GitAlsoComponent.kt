@@ -12,6 +12,7 @@ class GitAlsoComponent(private val project: Project) : ProjectComponent {
         return "GitAlsoComponent"
     }
 
+    // TODO: move it do background of commit window
     override fun projectOpened() {
         val log = createGitLogWithTimestampsAndFiles(project)
         getCommitsFromGitLogWithTimestampsAndFiles(log!!, project)
