@@ -23,11 +23,17 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
         val commit = ServiceManager.getService(project, GitAlsoService::class.java).committed(files, System.currentTimeMillis() / 1000)
         val predict = predictForCommit(commit)
         if (predict.isNotEmpty()) {
-            Messages.showMessageDialog(project,
-                    String.format("May be you forgot these files: %n%s",
-                            predict.joinToString(System.lineSeparator(), transform = { file -> file.toString(commit) })),
-                    "Files to be committed",
-                    Messages.getInformationIcon())
+            if (Messages.showDialog(project,
+                            String.format("May be you forgot these files: %n%s",
+                                    predict.joinToString(System.lineSeparator(), transform = { file -> file.toString(commit) })),
+                            "Files to be committed",
+                            arrayOf("Commit", "Cancel"),
+                            1,
+                            Messages.getInformationIcon()) == 0) {
+                return ReturnResult.COMMIT
+            } else {
+                return ReturnResult.CANCEL
+            }
         }
         return ReturnResult.COMMIT
     }
