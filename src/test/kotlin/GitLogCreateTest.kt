@@ -8,14 +8,14 @@ class GitLogCreateTest : LightPlatformTestCase() {
     @Test
     fun testSimpleRepoInTempProject() {
         val log = createSimpleGitLog(getProject())
-        assertTrue(log != null && log.isNotEmpty())
+        assertTrue(log != null && log.isEmpty())
         println(log)
     }
 
     @Test
     fun testRepoInTempProjectWithTimeStampAndFiles() {
         val log = createGitLogWithTimestampsAndFiles(getProject())
-        assertTrue(log != null && log.isNotEmpty())
+        assertTrue(log != null && log.isEmpty())
         println(log)
     }
 }

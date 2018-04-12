@@ -14,7 +14,6 @@ private fun executeCommand(project: Project, command: String): String? {
         val file = createTempFile()
         val proc = ProcessBuilder(*command.split(" ").toTypedArray())
                 .directory(File(project.basePath))
-                .redirectErrorStream(true)
                 .redirectOutput(file)
                 .start()
 
