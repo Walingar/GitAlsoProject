@@ -1,11 +1,8 @@
 package gitLog
 
 import com.intellij.openapi.project.Project
-import com.intellij.testFramework.TempFiles
 import java.io.File
 import java.io.IOException
-import java.nio.file.Files
-import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 
 
