@@ -13,20 +13,14 @@ class GitAlsoService {
             if (change.size == 3) {
                 val (type, firstFile, secondFile) = change
                 if (type[0] == 'R') {
-                    if (firstFile !in mapNameToID) {
-                        mapNameToID[firstFile] = CommittedFile(fileCounter++)
-                    }
-
+                    mapNameToID.putIfAbsent(firstFile, CommittedFile(fileCounter++))
                     mapNameToID[secondFile] = mapNameToID[firstFile]!!
                     mapNameToID.remove(firstFile)
-
                     mapNameToID[secondFile]!!.committed(commit, secondFile)
                 }
             } else if (change.size == 2) {
                 val (_, file) = change
-                if (file !in mapNameToID) {
-                    mapNameToID[file] = CommittedFile(fileCounter++)
-                }
+                mapNameToID.putIfAbsent(file, CommittedFile(fileCounter++))
                 mapNameToID[file]!!.committed(commit, file)
             }
         }

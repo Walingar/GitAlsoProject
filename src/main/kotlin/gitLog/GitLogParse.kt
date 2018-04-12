@@ -16,16 +16,21 @@ fun getCommitsFromGitLogWithTimestampsAndFiles(log: String, project: Project, ma
         if (line.isEmpty()) {
             continue
         }
-        if (line.toLongOrNull() != null) {
-            currentCommit = ServiceManager.getService(project, GitAlsoService::class.java).committed(changes, time)
-            if (currentCommit.getFiles().isNotEmpty()) {
-                commits.add(currentCommit)
+        if (line[0].isDigit()) {
+            if (changes.size != 20) {
+                currentCommit = ServiceManager.getService(project, GitAlsoService::class.java).committed(changes, time)
+                if (currentCommit.getFiles().isNotEmpty()) {
+                    commits.add(currentCommit)
+                }
             }
             changes.clear()
             time = line.toLong()
             continue
         }
-        changes.add(i.split("\\s".toRegex()))
+
+        if (changes.size < 20) {
+            changes.add(i.split("\\s".toRegex()))
+        }
     }
     currentCommit = ServiceManager.getService(project, GitAlsoService::class.java).committed(changes, time)
     if (currentCommit.getFiles().isNotEmpty()) {
