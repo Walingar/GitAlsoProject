@@ -1,28 +1,26 @@
 package commit
 
-class CommittedFile(private val id: Int) {
+class CommittedFile(val id: Int) {
     private val commits = HashSet<Commit>()
     private val names = HashMap<Commit, String>()
 
     fun committed(commit: Commit, name: String) {
-        commits.add(commit)
-        names[commit] = name
-        commit.addFile(this)
-    }
-
-    fun getId(): Int {
-        return id
+        if (commit !in commits) {
+            commits.add(commit)
+            names[commit] = name
+            commit.addFile(this)
+        }
     }
 
     fun getCommits(): Collection<Commit> {
         return commits
     }
 
-    fun getName(currentCommit: Commit): String {
-        var delta = currentCommit.getTime()
+    fun getName(time: Long): String {
+        var delta = time
         var fileName = ""
         for ((commit, name) in names) {
-            val curDelta = currentCommit.getTime() - commit.getTime()
+            val curDelta = time - commit.time
             if (curDelta in 1..(delta - 1)) {
                 delta = curDelta
                 fileName = name
@@ -36,17 +34,17 @@ class CommittedFile(private val id: Int) {
     }
 
     fun toString(currentCommit: Commit): CharSequence {
-        return this.getName(currentCommit)
+        return this.getName(currentCommit.time)
     }
 
     override fun equals(other: Any?): Boolean {
         if (other is CommittedFile) {
-            return other.getId() == this.getId()
+            return other.id == this.id
         }
         return false
     }
 
     override fun hashCode(): Int {
-        return this.getId()
+        return this.id
     }
 }

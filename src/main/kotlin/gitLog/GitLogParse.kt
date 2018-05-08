@@ -1,41 +1,47 @@
 package gitLog
 
-import com.intellij.openapi.components.ServiceManager
-import commit.Commit
 import GitAlsoService
+import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.project.Project
+import commit.Commit
 
-fun getCommitsFromGitLogWithTimestampsAndFiles(log: String, project: Project, maxCountFiles: Int = 10000): Collection<Commit> {
-    val commits = HashSet<Commit>()
+fun getCommitsFromGitLog(log: String, project: Project, maxCountFiles: Int = 20) {
+    val service = ServiceManager.getService(project, GitAlsoService::class.java)
     var time = System.currentTimeMillis()
-    var currentCommit: Commit
-    val changes = ArrayList<List<String>>()
+    var author = "Unknown"
+    val commit = ArrayList<List<String>>()
+    val commits = HashMap<Long, Commit>()
 
     for (i in log.lines()) {
         val line = i.trim()
-        if (line.isEmpty()) {
+        if (line.isBlank()) {
             continue
         }
+
         if (line[0].isDigit()) {
-            if (changes.size != 20) {
-                currentCommit = ServiceManager.getService(project, GitAlsoService::class.java).committed(changes, time)
-                if (currentCommit.getFiles().isNotEmpty()) {
-                    commits.add(currentCommit)
+            if (commit.isNotEmpty() && commit.size <= maxCountFiles) {
+                if (time !in commits) {
+                    val currentCommit = Commit(time, author)
+                    service.committedGitLog(commit, currentCommit)
+                    commits[time] = currentCommit
+                } else {
+                    service.committedGitLog(commit, commits[time]!!)
                 }
             }
-            changes.clear()
-            time = line.toLong()
+            val splitHeader = line.split("\\s".toRegex())
+            time = splitHeader[0].toLong()
+            author = splitHeader.subList(1, splitHeader.size).joinToString(" ")
+            if (author.isBlank()) {
+                author = "Unknown"
+            }
+            commit.clear()
             continue
         }
 
-        if (changes.size < 20) {
-            changes.add(i.split("\\s".toRegex()))
-        }
-    }
-    currentCommit = ServiceManager.getService(project, GitAlsoService::class.java).committed(changes, time)
-    if (currentCommit.getFiles().isNotEmpty()) {
-        commits.add(currentCommit)
+        commit.add(line.split("\\s".toRegex()))
     }
 
-    return commits
+    if (commit.isNotEmpty() && commit.size <= maxCountFiles) {
+        service.committedGitLog(commit, Commit(time, author))
+    }
 }

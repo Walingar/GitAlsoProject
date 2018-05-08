@@ -4,16 +4,18 @@ import commit.Commit
 import commit.CommittedFile
 import java.lang.Integer.min
 
-private fun predictForFileInCommit(firstFile: CommittedFile, time: Long, n: Int, maxByCommit: Int, minProb: Double):
-        Collection<Pair<Double, CommittedFile>> {
+var currentTime = 0L
 
-    val was = HashSet<Pair<CommittedFile, CommittedFile>>()
+private fun predictForFileInCommit(firstFile: CommittedFile, time: Long, n: Int, maxByCommit: Int, minProb: Double):
+        List<Pair<Double, CommittedFile>> {
+
+    val was = HashSet<CommittedFile>()
     val scores = ArrayList<Pair<Double, CommittedFile>>()
 
-    for (commit in firstFile.getCommits()) {
+    for (commit in firstFile.getCommits().filter { it.time < currentTime }) {
         for (secondFile in commit.getFiles()) {
-            if (firstFile != secondFile && Pair(firstFile, secondFile) !in was) {
-                was.add(Pair(firstFile, secondFile))
+            if (firstFile != secondFile && secondFile !in was) {
+                was.add(secondFile)
                 val prob = getProbabilityWithTime(firstFile, secondFile, time, n, maxByCommit)
                 if (prob > minProb) {
                     scores.add(Pair(prob, secondFile))
@@ -25,47 +27,45 @@ private fun predictForFileInCommit(firstFile: CommittedFile, time: Long, n: Int,
     return scores
 }
 
-fun predictForCommit(commit: Commit): Collection<CommittedFile> {
+fun getMaxByCommit(commit: Commit): Int {
     var maxByCommit = 0
     for (file in commit.getFiles()) {
-        val temp = file.getCommits().size
+        val temp = file.getCommits().filter { it.time < currentTime }.size
         if (temp >= maxByCommit) {
             maxByCommit = temp
         }
     }
-    val scores = HashSet<Pair<Double, CommittedFile>>()
+    return maxByCommit
+}
+
+val counted = HashMap<Pair<Long, CommittedFile>, List<Pair<Double, CommittedFile>>>()
+
+fun predictForCommit(commit: Commit, n: Int = 14, minProb: Double = 0.4, maxPredict: Int = 5): List<CommittedFile> {
+    currentTime = commit.time
+    val maxByCommit = getMaxByCommit(commit)
+
+    val scores = HashMap<CommittedFile, Double>()
     for (file in commit.getFiles()) {
-        predictForFileInCommit(file, commit.getTime(), 14, maxByCommit, 0.4).forEach {
+
+        counted[Pair(commit.time, file)] = predictForFileInCommit(file, commit.time, n, maxByCommit, minProb)
+
+
+        counted[Pair(commit.time, file)]!!.forEach {
             if (it.second !in commit.getFiles()) {
-                scores.add(it)
+                if (it.second in scores) {
+                    scores[it.second] = scores[it.second]!! + it.first
+                } else {
+                    scores[it.second] = it.first
+                }
             }
         }
-    }
-    var maxInPrediction = Double.MAX_VALUE
-    val prediction = HashSet<CommittedFile>()
 
-    // TODO: check it
-    while (prediction.size != min(scores.size, 5)) {
-
-        // counting max
-        var curMax = 0.0
-        for (predict in scores) {
-            if (predict.first > curMax && predict.first < maxInPrediction) {
-                curMax = predict.first
-            }
-        }
-        maxInPrediction = curMax
-
-        // adding max to predict
-        for (predict in scores) {
-            if (prediction.size == 5) {
-                break
-            }
-            if (maxInPrediction == predict.first) {
-                prediction.add(predict.second)
-            }
-        }
     }
 
-    return prediction
+    return scores
+            .toList()
+            .sortedBy { (_, value) -> value }
+            .reversed()
+            .map { it.first }
+            .subList(0, min(scores.size, maxPredict))
 }

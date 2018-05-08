@@ -1,7 +1,8 @@
 import com.intellij.openapi.components.ProjectComponent
+import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
-import gitLog.createGitLogWithTimestampsAndFiles
-import gitLog.getCommitsFromGitLogWithTimestampsAndFiles
+import index.IndexGetter
+import index.IndexWriter
 import org.jetbrains.annotations.NotNull
 
 class GitAlsoComponent(private val project: Project) : ProjectComponent {
@@ -10,9 +11,7 @@ class GitAlsoComponent(private val project: Project) : ProjectComponent {
         return "GitAlsoComponent"
     }
 
-    // TODO: move it do background of commit window
     override fun projectOpened() {
-        val log = createGitLogWithTimestampsAndFiles(project)
-        getCommitsFromGitLogWithTimestampsAndFiles(log!!, project)
+        DumbService.getInstance(project).queueTask(IndexGetter(project))
     }
 }

@@ -1,13 +1,9 @@
 package commit
 
-class Commit(private val time: Long) {
+class Commit(val time: Long, val author: String = "Unknown") {
     private val files = HashSet<CommittedFile>()
 
-    fun getTime(): Long {
-        return time
-    }
-
-    fun getFiles(): Set<CommittedFile> {
+    fun getFiles(): HashSet<CommittedFile> {
         return files
     }
 
@@ -32,13 +28,13 @@ class Commit(private val time: Long) {
 
     override fun equals(other: Any?): Boolean {
         if (other is Commit) {
-            return other.getTime() == this.getTime()
+            return other.time == this.time
         }
         return false
     }
 
     override fun hashCode(): Int {
-        return this.getTime().toInt()
+        return this.time.toInt()
     }
 
 }
