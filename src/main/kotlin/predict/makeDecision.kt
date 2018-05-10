@@ -3,6 +3,7 @@ package predict
 import commit.Commit
 import commit.CommittedFile
 import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.sqrt
 
 private fun getIntersection(firstFile: CommittedFile, secondFile: CommittedFile): List<Commit> {
@@ -41,9 +42,9 @@ fun getSimpleRateForFile(file: CommittedFile, commit: Commit): Int {
     for (secondFile in commit.getFiles()) {
         if (file != secondFile) {
             val intersection = getIntersection(file, secondFile).size
-            val rateForFirstFile = file.getCommits().size
-            val rateForSecondFile = secondFile.getCommits().size
-            val union = rateForFirstFile + rateForSecondFile - intersection
+            val rateForFirstFile = file.getCommits().filter{it.getFiles().size > 1}.size
+            val rateForSecondFile = secondFile.getCommits().filter{it.getFiles().size > 1}.size
+            val union = 2*min(rateForFirstFile, rateForSecondFile) - intersection
             rate = max(rate, intersection * 100 / union)
         }
     }
