@@ -10,11 +10,10 @@ buildscript {
 }
 
 plugins {
-    id 'org.jetbrains.intellij' version '0.3.1'
+    id 'org.jetbrains.intellij' version '0.2.3'
 }
 
 group 'com.jetbrains'
-version '1.0-SNAPSHOT'
 
 apply plugin: 'idea'
 apply plugin: 'org.jetbrains.intellij'
@@ -42,7 +41,7 @@ compileTestKotlin {
 
 intellij {
     intellij.version "2017.3"
-    pluginName = "Git also"
+    pluginName = "GitAlso"
     sameSinceUntilBuild = false
     updateSinceUntilBuild = false
 }

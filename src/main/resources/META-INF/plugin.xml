@@ -1,12 +1,12 @@
 <idea-plugin>
-    <id>com.jetbrains.Git-Also</id>
-    <name>Plugin display name here</name>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <id>com.jetbrains.GitAlso</id>
+    <name>GitAlso</name>
+    <version>0.0.5</version>
+    <vendor email="walingar@mail.ru" url="http://www.jetbrains.com">JetBrains</vendor>
 
-    <description><![CDATA[
-    Enter short description for your plugin here.<br>
-    <em>most HTML tags may be used</em>
-    ]]></description>
+    <description>This plugin predicts files which developer may forgot to change or add to CVS.</description>
+
+    <idea-version since-build="173.0"/>
 
     <project-components>
         <component>

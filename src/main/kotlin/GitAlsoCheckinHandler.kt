@@ -1,4 +1,3 @@
-import com.intellij.openapi.application.PathManager
 import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
@@ -10,10 +9,7 @@ import com.intellij.util.PairConsumer
 import predict.predictForCommit
 import java.io.File
 import commit.Commit
-import index.IndexGetter
-import index.IndexWriter
 import predict.getSimpleRateForFile
-import kotlin.math.max
 
 class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHandler() {
     private val project: Project = panel.project
@@ -31,24 +27,22 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
         val time = System.currentTimeMillis() / 1000
         val author = "Unknown"
         val commit = service.createCommit(time, author, files)
-        val predict = predictForCommit(commit)
+        val predict = predictForCommit(commit).filter { getSimpleRateForFile(it, commit) >= 25 }
         if (predict.isNotEmpty()) {
-            if (Messages.showDialog(project,
+            return if (Messages.showDialog(project,
                             String.format("May be you forgot these files(with rates): %n%s",
-                                    predict.joinToString(System.lineSeparator(), transform = { file -> "rate: ${max(getSimpleRateForFile(file, commit), 50)}% file: ${file.toString(commit)}" })),
+                                    predict.joinToString(System.lineSeparator(), transform = { file -> "rate: ${getSimpleRateForFile(file, commit)}% file: ${file.toString(commit)}" })),
                             "Files to be committed",
                             arrayOf("Commit", "Cancel"),
                             1,
                             Messages.getInformationIcon()) == 0) {
                 service.committed(files, Commit(time, author))
-                DumbService.getInstance(project).queueTask(IndexWriter(project))
-                return ReturnResult.COMMIT
+                ReturnResult.COMMIT
             } else {
-                return ReturnResult.CANCEL
+                ReturnResult.CANCEL
             }
         }
         service.committed(files, Commit(time, author))
-        DumbService.getInstance(project).queueTask(IndexWriter(project))
         return ReturnResult.COMMIT
     }
 
