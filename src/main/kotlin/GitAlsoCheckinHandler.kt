@@ -28,9 +28,14 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
         val author = "Unknown"
         val commit = service.createCommit(time, author, files)
         val predict = predictForCommit(commit).filter { getSimpleRateForFile(it, commit) >= 25 }
+        val message = if (predict.size == 1) {
+            "You might have forgotten this file"
+        } else {
+            "You might have forgotten these files"
+        }
         if (predict.isNotEmpty()) {
             return if (Messages.showDialog(project,
-                            String.format("May be you forgot these files(with rates): %n%s",
+                            String.format("$message: %n%s",
                                     predict.joinToString(System.lineSeparator(), transform = { file -> "rate: ${getSimpleRateForFile(file, commit)}% file: ${file.toString(commit)}" })),
                             "Files to be committed",
                             arrayOf("Commit", "Cancel"),
