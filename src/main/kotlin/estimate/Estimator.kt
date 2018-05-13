@@ -10,7 +10,7 @@ class Estimator(val service: GitAlsoService, val dataset: List<PipeLineCommit>) 
     private val extremeProbability = 0.1
 
     private fun createCommit(pipeLineCommit: PipeLineCommit): Commit {
-        val mapIDToFile = service.getIDTofile()
+        val mapIDToFile = service.getIDToFile()
         val commit = Commit(pipeLineCommit.time)
         for (id in pipeLineCommit.files) {
             commit.addFile(mapIDToFile[id]!!)
@@ -67,7 +67,7 @@ class Estimator(val service: GitAlsoService, val dataset: List<PipeLineCommit>) 
             }
 
             for (id in pipeLineCommit.forgottenFiles) {
-                val mapIDToFile = service.getIDTofile()
+                val mapIDToFile = service.getIDToFile()
                 if (mapIDToFile[id]!! in predict) {
                     println("commit: ${pipeLineCommit.time} file: $id ")
                     countRight++

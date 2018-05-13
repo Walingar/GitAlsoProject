@@ -14,7 +14,7 @@ fun createCommitsDataIndex(service: GitAlsoService): String {
 
 fun createFilesIndex(service: GitAlsoService): String {
     val index = StringBuffer()
-    val mapIDtoFile = service.getIDTofile()
+    val mapIDtoFile = service.getIDToFile()
     val time = System.currentTimeMillis()
     for (id in 0 until service.getFileCount()) {
         index.append("$id ${mapIDtoFile[id]!!.getName(time)}${System.lineSeparator()}")

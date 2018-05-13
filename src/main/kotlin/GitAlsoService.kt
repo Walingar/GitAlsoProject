@@ -3,6 +3,7 @@ import commit.CommittedFile
 import kotlin.math.max
 
 class GitAlsoService {
+    var lastCommit: Commit? = null
     private var fileCounter = 0
     private val mapNameToFile = HashMap<String, CommittedFile>()
     private val commits = ArrayList<Commit>()
@@ -12,10 +13,28 @@ class GitAlsoService {
 
     fun getFileCount() = fileCounter
 
-    fun getIDTofile() = mapIDToFile
+    fun getIDToFile() = mapIDToFile
+
+    fun createCommit(time: Long, author: String, files: List<String>): Commit {
+        val commit = Commit(time, author)
+        for (fileName in files) {
+            if (fileName in mapNameToFile) {
+                commit.addFile(mapNameToFile[fileName]!!)
+            }
+        }
+        return commit
+    }
+
+    private fun commit(commit: Commit) {
+        if (commit.getFiles().isNotEmpty()) {
+            commits.add(commit)
+        }
+        if (lastCommit == null || lastCommit!!.time < commit.time) {
+            lastCommit = commit
+        }
+    }
 
     fun committedFromIndex(files: List<Int>, commit: Commit, idToFileName: Map<Int, String>) {
-        commits.add(commit)
         for (id in files) {
             if (id !in mapIDToFile) {
                 val file = CommittedFile(id)
@@ -26,6 +45,7 @@ class GitAlsoService {
             mapIDToFile[id]!!.committed(commit, idToFileName[id]!!)
             fileCounter = max(id + 1, fileCounter)
         }
+        commit(commit)
     }
 
     private fun commitFile(name: String) {
@@ -42,10 +62,7 @@ class GitAlsoService {
             commitFile(file)
             mapNameToFile[file]!!.committed(commit, file)
         }
-
-        if (commit.getFiles().isNotEmpty()) {
-            commits.add(commit)
-        }
+        commit(commit)
     }
 
     fun committedGitLog(commitByString: List<List<String>>, commit: Commit) {
@@ -64,9 +81,6 @@ class GitAlsoService {
                 mapNameToFile[file]!!.committed(commit, file)
             }
         }
-
-        if (commit.getFiles().isNotEmpty()) {
-            commits.add(commit)
-        }
+        commit(commit)
     }
 }
