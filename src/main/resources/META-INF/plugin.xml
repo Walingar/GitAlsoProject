@@ -17,9 +17,11 @@
     </project-components>
 
     <extensions defaultExtensionNs="com.intellij">
-        <checkinHandlerFactory implementation="GitAlsoCheckinHandlerFactory"/>
-        <projectService serviceInterface="GitAlsoService" serviceImplementation="GitAlsoService"/>
-        <applicationService serviceInterface="log.UserIDProvider" serviceImplementation="log.UserIDProvider"/>
+        <checkinHandlerFactory implementation="commitHandle.GitAlsoCheckinHandlerFactory"/>
+        <projectService serviceInterface="repository.GitAlsoService"
+                        serviceImplementation="repository.GitAlsoService"/>
+        <applicationService serviceInterface="storage.log.UserIDProvider"
+                            serviceImplementation="storage.log.UserIDProvider"/>
     </extensions>
 
     <actions>

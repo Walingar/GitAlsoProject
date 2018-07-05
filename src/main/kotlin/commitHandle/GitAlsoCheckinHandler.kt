@@ -1,3 +1,5 @@
+package commitHandle
+
 import com.intellij.openapi.application.PathManager
 import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.project.DumbService
@@ -9,13 +11,12 @@ import com.intellij.openapi.vcs.checkin.CheckinHandler
 import com.intellij.util.PairConsumer
 import predict.predictForCommit
 import java.io.File
-import commit.Commit
+import commitInfo.Commit
 import git4idea.GitUtil
-import git4idea.history.GitLogUtil
-import log.LogFileWriter
-import log.*
 import predict.getMaxByCommit
 import predict.getSimpleRateForFile
+import repository.GitAlsoService
+import storage.log.*
 
 class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHandler() {
     private val project: Project = panel.project
@@ -36,7 +37,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
 
         val logWriter = LogFileWriter(project)
 
-
+        Messages.showInfoMessage(PathManager.getSystemPath(), "test")
         // TODO: author name from git4idea
 
         val time = System.currentTimeMillis() / 1000
@@ -68,7 +69,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
                 factors
         )
 
-        if (predict.isNotEmpty()) {
+        if (predict.isNotEmpty() || true) {
             return if (Messages.showDialog(project,
                             String.format("$message: %n%s",
                                     predict.joinToString(System.lineSeparator(), transform = { file -> "rate: ${getSimpleRateForFile(file, commit)}% file: ${file.toString(commit)}" })),

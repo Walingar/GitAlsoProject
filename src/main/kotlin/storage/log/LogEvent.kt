@@ -1,4 +1,4 @@
-package log
+package storage.log
 
 import com.google.gson.reflect.TypeToken
 import json.GitAlsoJsonSerializer

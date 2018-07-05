@@ -1,19 +1,17 @@
-import commit.Commit
-import commit.CommittedFile
+package repository
+
+import commitInfo.Commit
+import commitInfo.CommittedFile
 import kotlin.math.max
 
 class GitAlsoService {
     var lastCommit: Commit? = null
+    val commits = ArrayList<Commit>()
+    val mapIDToFile = HashMap<Int, CommittedFile>()
     private var fileCounter = 0
     private val mapNameToFile = HashMap<String, CommittedFile>()
-    private val commits = ArrayList<Commit>()
-    private val mapIDToFile = HashMap<Int, CommittedFile>()
-
-    fun getCommits() = commits
 
     fun getFileCount() = fileCounter
-
-    fun getIDToFile() = mapIDToFile
 
     fun createCommit(time: Long, author: String, files: List<String>): Commit {
         val commit = Commit(time, author)
@@ -28,6 +26,13 @@ class GitAlsoService {
     private fun commit(commit: Commit) {
         if (commit.getFiles().isNotEmpty()) {
             commits.add(commit)
+            updateLastCommit(commit)
+        }
+    }
+
+    private fun updateLastCommit(commit: Commit) {
+        if (lastCommit == null || lastCommit!!.time < commit.time) {
+            lastCommit = commit
         }
     }
 
@@ -43,9 +48,6 @@ class GitAlsoService {
             fileCounter = max(id + 1, fileCounter)
         }
         commit(commit)
-        if (lastCommit == null || lastCommit!!.time < commit.time) {
-            lastCommit = commit
-        }
     }
 
     private fun commitFile(name: String) {
@@ -62,7 +64,6 @@ class GitAlsoService {
             commitFile(file)
             mapNameToFile[file]!!.committed(commit, file)
         }
-
         commit(commit)
     }
 
@@ -82,7 +83,6 @@ class GitAlsoService {
                 mapNameToFile[file]!!.committed(commit, file)
             }
         }
-
         commit(commit)
     }
 }

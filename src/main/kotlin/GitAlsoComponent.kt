@@ -1,9 +1,13 @@
 import com.intellij.openapi.components.ProjectComponent
+import com.intellij.openapi.components.ServiceManager
+import com.intellij.openapi.progress.ProgressIndicator
+import com.intellij.openapi.progress.ProgressManager
+import com.intellij.openapi.project.DumbModeTask
 import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
-import index.IndexGetter
-import index.IndexWriter
 import org.jetbrains.annotations.NotNull
+import repository.GitAlsoService
+import storage.index.IndexFileManager
 
 class GitAlsoComponent(private val project: Project) : ProjectComponent {
     @NotNull
@@ -12,8 +16,11 @@ class GitAlsoComponent(private val project: Project) : ProjectComponent {
     }
 
     override fun projectOpened() {
-        // TODO: change it to ApplicationManager.getApplication().executeOnPooledThread
-        // after removing GitAlsoService because it is very expensive
-        DumbService.getInstance(project).queueTask(IndexGetter(project))
+        DumbService.getInstance(project).queueTask(object : DumbModeTask() {
+            override fun performInDumbMode(progress: ProgressIndicator) {
+                IndexFileManager(project).read(ServiceManager.getService(project, GitAlsoService::
+                class.java))
+            }
+        })
     }
 }

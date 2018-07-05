@@ -1,7 +1,7 @@
 package predict
 
-import commit.Commit
-import commit.CommittedFile
+import commitInfo.Commit
+import commitInfo.CommittedFile
 import java.lang.Integer.min
 
 var currentTime = 0L

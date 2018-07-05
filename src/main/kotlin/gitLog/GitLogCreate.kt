@@ -1,18 +1,18 @@
 package gitLog
 
 import com.intellij.openapi.project.Project
-import commit.Commit
+import commitInfo.Commit
 import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 
-private fun executeCommand(project: Project, command: List<String>): String? {
+private fun executeCommand(dir: File, command: List<String>): String? {
     try {
         val file = createTempFile()
         val fileError = createTempFile()
         val proc = ProcessBuilder(command)
-                .directory(File(project.basePath))
+                .directory(dir)
                 .redirectOutput(file)
                 .redirectError(fileError)
                 .start()
@@ -26,13 +26,13 @@ private fun executeCommand(project: Project, command: List<String>): String? {
 
         return log
     } catch (e: IOException) {
-        System.err.print("ERROR: something went wrong when trying to get $command from: ${File(project.basePath)}")
+        System.err.print("ERROR: something went wrong when trying to get $command from: ${dir}")
         e.printStackTrace()
         return null
     }
 }
 
-fun createGitLogSinceCommit(project: Project, commit: Commit): String? {
+fun createGitLogSinceCommit(dir: File, commit: Commit): String? {
     val command = arrayListOf(
             "git",
             "-c",
@@ -44,10 +44,10 @@ fun createGitLogSinceCommit(project: Project, commit: Commit): String? {
             "--name-status",
             "-C",
             "--pretty=format:%at %an")
-    return executeCommand(project, command)
+    return executeCommand(dir, command)
 }
 
-fun createGitLog(project: Project): String? {
+fun createGitLog(dir: File): String? {
     val command = arrayListOf(
             "git",
             "-c",
@@ -58,5 +58,5 @@ fun createGitLog(project: Project): String? {
             "--name-status",
             "-C",
             "--pretty=format:%at %an")
-    return executeCommand(project, command)
+    return executeCommand(dir, command)
 }

@@ -1,6 +1,6 @@
-package log
+package storage.log
 
-import commit.CommittedFile
+import commitInfo.CommittedFile
 import predict.getIntersection
 import predict.getRateForCommits
 

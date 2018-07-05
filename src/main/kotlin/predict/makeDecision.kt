@@ -1,12 +1,10 @@
 package predict
 
-import commit.Commit
-import commit.CommittedFile
+import commitInfo.Commit
+import commitInfo.CommittedFile
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sqrt
-
-// TODO: add advanced functions for commit
 
 fun getIntersection(firstFile: CommittedFile, secondFile: CommittedFile): List<Commit> {
     val intersection = ArrayList<Commit>()

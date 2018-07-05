@@ -1,7 +1,7 @@
 import com.google.gson.reflect.TypeToken
 import junit.framework.TestCase.assertTrue
-import log.Action
-import log.LogEvent
+import storage.log.Action
+import storage.log.LogEvent
 import org.junit.Test
 import json.GitAlsoJsonSerializer
 

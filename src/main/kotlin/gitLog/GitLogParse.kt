@@ -1,12 +1,9 @@
 package gitLog
 
-import GitAlsoService
-import com.intellij.openapi.components.ServiceManager
-import com.intellij.openapi.project.Project
-import commit.Commit
+import repository.GitAlsoService
+import commitInfo.Commit
 
-fun getCommitsFromGitLog(log: String, project: Project, maxCountFiles: Int = 20) {
-    val service = ServiceManager.getService(project, GitAlsoService::class.java)
+fun getCommitsFromGitLog(log: String, service: GitAlsoService, maxCountFiles: Int = 20) {
     var time = System.currentTimeMillis()
     var author = "Unknown"
     val commit = ArrayList<List<String>>()

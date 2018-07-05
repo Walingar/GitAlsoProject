@@ -1,8 +1,8 @@
-package log
+package storage.log
 
 import com.intellij.openapi.application.PathManager
 import com.intellij.openapi.project.Project
-import log.validate.LogValidator
+import storage.log.validate.LogValidator
 import java.io.File
 
 class LogFileWriter(project: Project) {

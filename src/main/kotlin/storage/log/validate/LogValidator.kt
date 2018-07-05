@@ -1,6 +1,6 @@
-package log.validate
+package storage.log.validate
 
-import log.LogEvent
+import storage.log.LogEvent
 
 class LogValidator {
     companion object {

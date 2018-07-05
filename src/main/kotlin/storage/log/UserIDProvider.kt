@@ -1,4 +1,4 @@
-package log
+package storage.log
 
 import com.intellij.openapi.application.PermanentInstallationID
 
