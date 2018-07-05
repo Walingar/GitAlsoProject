@@ -35,9 +35,8 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
         val x = GitUtil.getRepositoryManager(project)
         print(x.repositories)
 
-        val logWriter = LogFileWriter(project)
+        val logWriter = LogFileManager()
 
-        Messages.showInfoMessage(PathManager.getSystemPath(), "test")
         // TODO: author name from git4idea
 
         val time = System.currentTimeMillis() / 1000
@@ -69,7 +68,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
                 factors
         )
 
-        if (predict.isNotEmpty() || true) {
+        if (predict.isNotEmpty()) {
             return if (Messages.showDialog(project,
                             String.format("$message: %n%s",
                                     predict.joinToString(System.lineSeparator(), transform = { file -> "rate: ${getSimpleRateForFile(file, commit)}% file: ${file.toString(commit)}" })),

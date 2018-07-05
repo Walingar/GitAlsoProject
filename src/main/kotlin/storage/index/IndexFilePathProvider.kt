@@ -8,7 +8,7 @@ import java.io.FileFilter
 
 class IndexFilePathProvider(project: Project) : FilePathProvider {
     private val projectHash = project.locationHash
-    private val indexDirectory = File(PathManager.getSystemPath()).resolve(File("git-also/$projectHash"))
+    private val indexDirectory = File(PathManager.getSystemPath()).resolve(File("git-also/index/$projectHash"))
 
     private val commitsIndexFileName = "commitsIndex.ga"
     private val filesIndexFileName = "filesIndex.ga"
