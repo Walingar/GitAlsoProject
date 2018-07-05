@@ -59,14 +59,14 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
             }
         }
 
-        logWriter.log(LogEvent(
+        val event = LogEvent(
                 uidProvider.installationID(),
                 "1",
                 "1",
                 System.currentTimeMillis() / 1000,
-                Action.CANCEL,
+                Action.NOT_WATCHED,
                 factors
-        ))
+        )
 
         if (predict.isNotEmpty()) {
             return if (Messages.showDialog(project,
@@ -77,12 +77,17 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
                             1,
                             Messages.getInformationIcon()) == 0) {
                 service.committed(files, Commit(time, author))
+                event.action = Action.COMMIT
+                logWriter.log(event)
                 ReturnResult.COMMIT
             } else {
+                event.action = Action.CANCEL
+                logWriter.log(event)
                 ReturnResult.CANCEL
             }
         }
         service.committed(files, Commit(time, author))
+        logWriter.log(event)
         return ReturnResult.COMMIT
     }
 

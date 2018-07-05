@@ -8,7 +8,7 @@ class LogEvent(
         val sessionID: String,
         val repositoryID: String,
         val timestamp: Long,
-        val action: Action,
+        var action: Action,
         val factors: Map<String, Map<String, Number>>
 ) {
     override fun toString(): String {
