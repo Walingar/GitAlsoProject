@@ -6,7 +6,9 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sqrt
 
-private fun getIntersection(firstFile: CommittedFile, secondFile: CommittedFile): List<Commit> {
+// TODO: add advanced functions for commit
+
+fun getIntersection(firstFile: CommittedFile, secondFile: CommittedFile): List<Commit> {
     val intersection = ArrayList<Commit>()
     for (firstCommit in firstFile.getCommits()) {
         for (secondCommit in secondFile.getCommits()) {
