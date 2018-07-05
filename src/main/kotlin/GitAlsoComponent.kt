@@ -12,6 +12,8 @@ class GitAlsoComponent(private val project: Project) : ProjectComponent {
     }
 
     override fun projectOpened() {
+        // TODO: change it to ApplicationManager.getApplication().executeOnPooledThread
+        // after removing GitAlsoService because it is very expensive
         DumbService.getInstance(project).queueTask(IndexGetter(project))
     }
 }
