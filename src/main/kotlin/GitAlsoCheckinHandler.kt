@@ -1,3 +1,4 @@
+import com.intellij.openapi.application.PathManager
 import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
@@ -9,6 +10,11 @@ import com.intellij.util.PairConsumer
 import predict.predictForCommit
 import java.io.File
 import commit.Commit
+import git4idea.GitUtil
+import git4idea.history.GitLogUtil
+import log.LogFileWriter
+import log.*
+import predict.getMaxByCommit
 import predict.getSimpleRateForFile
 
 class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHandler() {
@@ -23,7 +29,16 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
         }
         val files = getFiles()
         val service = ServiceManager.getService(project, GitAlsoService::class.java)
-        // TODO: author name
+        val uidProvider = ServiceManager.getService(project, UserIDProvider::class.java)
+
+        val x = GitUtil.getRepositoryManager(project)
+        print(x.repositories)
+
+        val logWriter = LogFileWriter(project)
+
+
+        // TODO: author name from git4idea
+
         val time = System.currentTimeMillis() / 1000
         val author = "Unknown"
         val commit = service.createCommit(time, author, files)
@@ -33,6 +48,26 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
         } else {
             "You might have forgotten these files"
         }
+
+        // TODO: load indices there, not in the start from git4idea
+
+        // TODO: this code is so ugly
+        val factors = HashMap<String, Map<String, Number>>()
+        for (firstFile in commit.getFiles()) {
+            for (secondFile in predict) {
+                factors += getFactors(firstFile, secondFile, time, getMaxByCommit(commit))
+            }
+        }
+
+        logWriter.log(LogEvent(
+                uidProvider.installationID(),
+                "1",
+                "1",
+                System.currentTimeMillis() / 1000,
+                Action.CANCEL,
+                factors
+        ))
+
         if (predict.isNotEmpty()) {
             return if (Messages.showDialog(project,
                             String.format("$message: %n%s",
