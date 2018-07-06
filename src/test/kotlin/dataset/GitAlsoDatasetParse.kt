@@ -1,32 +1,39 @@
 package dataset
 
-import index.parseIndex
-import junit.framework.TestCase.assertTrue
+
+import getDatasetFromFile
+import getDatasetFromService
+import getGitAlsoServiceFromIndex
+import junit.framework.TestCase.assertEquals
 import org.junit.Test
-import java.io.File
-import GitAlsoService
-import estimate.Estimator
+import storage.dataset.DatasetType
 
 class GitAlsoDatasetParse {
 
-    private val datasetName = "fullDataset.ga"
+    private val startTime = 1483228800L
+    private val endTime = 1488326400L
 
-    private fun parseImpl(repositoryName: String) {
-        val directoryDataset = File("data/dataset/$repositoryName")
-        val fileDataset = directoryDataset.resolve(datasetName)
+    private fun testDataset(repositoryName: String, datasetType: DatasetType) {
+        val datasetFromFile = getDatasetFromFile(repositoryName, datasetType)
 
-        val dataset = parseDataset(fileDataset.readText())
-
-        assertTrue(dataset.isNotEmpty())
+        val service = getGitAlsoServiceFromIndex(repositoryName)
+        val datasetFromService = getDatasetFromService(repositoryName, datasetType, service, startTime, endTime)
+        
+        assertEquals(datasetFromFile, datasetFromService)
     }
+
+    private fun testFullDataset(repositoryName: String) {
+        testDataset(repositoryName, DatasetType.FULL)
+    }
+
 
     @Test
     fun testPandas() {
-        parseImpl("pandas")
+        testFullDataset("pandas")
     }
 
     @Test
     fun testIJCommunity() {
-        parseImpl("intellij-community")
+        testFullDataset("intellij-community")
     }
 }

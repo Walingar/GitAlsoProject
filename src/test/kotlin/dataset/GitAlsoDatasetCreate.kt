@@ -1,37 +1,43 @@
 package dataset
 
-import junit.framework.TestCase.assertTrue
+import createDataset
+import getGitAlsoServiceFromIndex
 import org.junit.Test
-import java.io.File
-import GitAlsoService
-import index.parseIndex
+import storage.dataset.DatasetType
 
 class GitAlsoDatasetCreate {
 
     private val startTime = 1483228800L
     private val endTime = 1488326400L
 
-    private fun parseImpl(repositoryName: String) {
-        val directoryIndex = File("data/index/$repositoryName")
-        val service = GitAlsoService()
-        parseIndex(service, directoryIndex)
-        assertTrue(service.getCommits().isNotEmpty())
+    private fun fullDataset(repositoryName: String) {
+        val service = getGitAlsoServiceFromIndex(repositoryName)
+        createDataset(repositoryName, DatasetType.FULL, service, startTime, endTime)
+    }
 
-        val directoryDataset = File("data/dataset/$repositoryName")
-        val dataset = createRandomDataset(service, startTime, endTime)
+    private fun simpleDataset(repositoryName: String) {
+        val service = getGitAlsoServiceFromIndex(repositoryName)
+        createDataset(repositoryName, DatasetType.SIMPLE, service, startTime, endTime)
+    }
 
-        assertTrue(dataset.isNotEmpty())
+    private fun randomDataset(repositoryName: String) {
+        val service = getGitAlsoServiceFromIndex(repositoryName)
+        createDataset(repositoryName, DatasetType.RANDOM, service, startTime, endTime)
+    }
 
-        printDataset(directoryDataset, "fullDataset.ga", dataset)
+    private fun createAllDatasetTypes(repositoryName: String) {
+        fullDataset(repositoryName)
+        simpleDataset(repositoryName)
+        randomDataset(repositoryName)
     }
 
     @Test
     fun testPandas() {
-        parseImpl("pandas")
+        createAllDatasetTypes("pandas")
     }
 
     @Test
     fun testIJCommunity() {
-        parseImpl("intellij-community")
+        createAllDatasetTypes("intellij-community")
     }
 }

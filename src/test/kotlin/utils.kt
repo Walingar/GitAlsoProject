@@ -1,8 +1,9 @@
+import commitInfo.PipeLineCommit
 import gitLog.createGitLog
 import gitLog.getCommitsFromGitLog
 import repository.GitAlsoService
+import storage.dataset.*
 import storage.index.IndexFileManager
-import storage.index.IndexFilePathProvider
 import java.io.File
 
 fun getGitLog(repositoryName: String) = createGitLog(File("data/repository/$repositoryName"))
@@ -25,4 +26,30 @@ fun getGitAlsoServiceFromIndex(repositoryName: String): GitAlsoService {
     val indexFileManager = IndexFileManager(repositoryName)
     indexFileManager.read(service)
     return service
+}
+
+fun getDatasetFileManager(repositoryName: String, datasetType: DatasetType): DatasetFileManager {
+    return when (datasetType) {
+        DatasetType.RANDOM -> RandomDatasetFileManager(repositoryName)
+        DatasetType.SIMPLE -> SimpleDatasetFileManager(repositoryName)
+        DatasetType.FULL -> FullDatasetFileManager(repositoryName)
+    }
+}
+
+fun getDatasetFromService(repositoryName: String, datasetType: DatasetType, service: GitAlsoService, startTime: Long, endTime: Long): List<PipeLineCommit> {
+    val datasetFileManager = getDatasetFileManager(repositoryName, datasetType)
+
+    return datasetFileManager.createDataset(service, startTime, endTime)
+}
+
+fun createDataset(repositoryName: String, datasetType: DatasetType, service: GitAlsoService, startTime: Long, endTime: Long) {
+    val datasetFileManager = getDatasetFileManager(repositoryName, datasetType)
+
+    datasetFileManager.write(service, startTime, endTime)
+}
+
+fun getDatasetFromFile(repositoryName: String, datasetType: DatasetType): List<PipeLineCommit> {
+    val datasetFileManager = getDatasetFileManager(repositoryName, datasetType)
+
+    return datasetFileManager.read()
 }
