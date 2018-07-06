@@ -1,13 +1,12 @@
 package gitlog
 
-import gitLog.createGitLog
+import getGitLog
 import junit.framework.TestCase.assertNotNull
 import org.junit.Test
-import java.io.File
 
 class GitLogCreate {
     private fun createImpl(repositoryName: String) {
-        val log = createGitLog(File("data/repository/$repositoryName"))
+        val log = getGitLog(repositoryName)
         assertNotNull(log)
         print(log)
     }

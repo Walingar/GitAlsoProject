@@ -1,19 +1,13 @@
 package gitlog
 
-import gitLog.createGitLog
-import gitLog.getCommitsFromGitLog
-import repository.GitAlsoService
-import junit.framework.TestCase.assertNotNull
+import getGitLogAndParseIt
 import junit.framework.TestCase.assertTrue
 import org.junit.Test
-import java.io.File
 
 class GitLogParse {
     private fun parseImpl(repositoryName: String) {
-        val log = createGitLog(File("data/repository/$repositoryName"))
-        val service = GitAlsoService()
-        assertNotNull(log)
-        getCommitsFromGitLog(log!!, service)
+        val service = getGitLogAndParseIt(repositoryName)
+
         assertTrue(service.commits.isNotEmpty())
         print(service.commits.joinToString("\n"))
     }
