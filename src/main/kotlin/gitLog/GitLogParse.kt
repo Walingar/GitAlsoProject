@@ -1,10 +1,9 @@
 package gitLog
 
-import GitAlsoService
-import commit.Commit
+import repository.GitAlsoService
+import commitInfo.Commit
 
-fun getCommitsFromGitLogWithTimestampsAuthorsAndFiles(log: String, service: GitAlsoService, maxCountFiles: Int = 20) {
-
+fun getCommitsFromGitLog(log: String, service: GitAlsoService, maxCountFiles: Int = 20) {
     var time = System.currentTimeMillis()
     var author = "Unknown"
     val commit = ArrayList<List<String>>()

@@ -1,15 +1,15 @@
 package gitlog
 
-import gitLog.createGitLogWithTimestampsAuthorsAndFiles
+import gitLog.createGitLog
 import junit.framework.TestCase.assertNotNull
 import org.junit.Test
 import java.io.File
 
 class GitLogCreate {
     private fun createImpl(repositoryName: String) {
-        val log = createGitLogWithTimestampsAuthorsAndFiles(File("data/repository/$repositoryName"))
-        print(log)
+        val log = createGitLog(File("data/repository/$repositoryName"))
         assertNotNull(log)
+        print(log)
     }
 
     @Test
