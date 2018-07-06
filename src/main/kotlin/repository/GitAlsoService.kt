@@ -8,7 +8,7 @@ class GitAlsoService {
     var lastCommit: Commit? = null
     private var fileCounter = 0
     val mapNameToFile = HashMap<String, CommittedFile>()
-    val commits = ArrayList<Commit>()
+    val commits = HashSet<Commit>()
     val mapIDToFile = HashMap<Int, CommittedFile>()
 
     fun getFileCount() = fileCounter
@@ -25,10 +25,17 @@ class GitAlsoService {
 
     private fun commit(commit: Commit) {
         if (commit.getFiles().isNotEmpty()) {
-            commits.add(commit)
-        }
-        if (lastCommit == null || lastCommit!!.time < commit.time) {
-            lastCommit = commit
+            if (commit in commits) {
+                val committed = commits.find { it.time == commit.time }!!
+                for (file in commit.getFiles()) {
+                    committed.addFile(file)
+                }
+            } else {
+                commits.add(commit)
+            }
+            if (lastCommit == null || lastCommit!!.time < commit.time) {
+                lastCommit = commit
+            }
         }
     }
 

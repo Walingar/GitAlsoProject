@@ -1,16 +1,16 @@
 package index
 
-import junit.framework.TestCase.assertTrue
+import getGitAlsoIndex
+import getGitLogAndParseIt
+import junit.framework.TestCase.assertEquals
 import org.junit.Test
-import java.io.File
-import GitAlsoService
 
 class GitAlsoIndexParse {
     private fun parseImpl(repositoryName: String) {
-        val directory = File("data/index/$repositoryName")
-        val service = GitAlsoService()
-        parseIndex(service, directory)
-        assertTrue(service.getCommits().isNotEmpty())
+        val serviceFromIndex = getGitAlsoIndex(repositoryName)
+        val serviceFromLog = getGitLogAndParseIt(repositoryName)
+
+        assertEquals(serviceFromLog.commits.size, serviceFromIndex.commits.size)
     }
 
     @Test
@@ -26,5 +26,10 @@ class GitAlsoIndexParse {
     @Test
     fun testIJCommunity() {
         parseImpl("intellij-community")
+    }
+
+    @Test
+    fun testTestRepository() {
+        parseImpl("testRepo")
     }
 }

@@ -1,22 +1,18 @@
 package index
 
-import gitLog.createGitLogWithTimestampsAuthorsAndFiles
-import gitLog.getCommitsFromGitLogWithTimestampsAuthorsAndFiles
+import createGitAlsoIndex
+import junit.framework.TestCase.assertTrue
 import org.junit.Test
 import java.io.File
-import GitAlsoService
+import storage.index.IndexFilePathProvider
 
 class GitAlsoIndexCreate {
     private fun createImpl(repositoryName: String) {
-        val log = createGitLogWithTimestampsAuthorsAndFiles(File("data/repository/$repositoryName"))
-        val service = GitAlsoService()
-        getCommitsFromGitLogWithTimestampsAuthorsAndFiles(log!!, service)
+        createGitAlsoIndex(repositoryName)
+        val indexFilePathProvider = IndexFilePathProvider(repositoryName)
 
-        val directory = File("data/index/$repositoryName")
-
-        printIndex(directory, "commitsIndex.ga", createCommitsIndex(service))
-        printIndex(directory, "filesIndex.ga", createFilesIndex(service))
-        printIndex(directory, "commitsDataIndex.ga", createCommitsDataIndex(service))
+        assertTrue(File("data/index/$repositoryName").exists())
+        assertTrue(indexFilePathProvider.getDataFiles().size == 3)
     }
 
     @Test
@@ -32,5 +28,10 @@ class GitAlsoIndexCreate {
     @Test
     fun testIJCommunity() {
         createImpl("intellij-community")
+    }
+
+    @Test
+    fun testTestRepository() {
+        createImpl("testRepo")
     }
 }
