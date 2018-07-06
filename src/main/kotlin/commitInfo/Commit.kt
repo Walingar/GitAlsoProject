@@ -1,4 +1,4 @@
-package commit
+package commitInfo
 
 class Commit(val time: Long, val author: String = "Unknown") {
     private val files = HashSet<CommittedFile>()

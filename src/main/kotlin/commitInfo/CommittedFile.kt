@@ -1,4 +1,4 @@
-package commit
+package commitInfo
 
 class CommittedFile(val id: Int) {
     private val commits = HashSet<Commit>()

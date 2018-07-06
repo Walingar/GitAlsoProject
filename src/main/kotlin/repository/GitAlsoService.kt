@@ -1,19 +1,17 @@
-import commit.Commit
-import commit.CommittedFile
+package repository
+
+import commitInfo.Commit
+import commitInfo.CommittedFile
 import kotlin.math.max
 
 class GitAlsoService {
     var lastCommit: Commit? = null
     private var fileCounter = 0
-    private val mapNameToFile = HashMap<String, CommittedFile>()
-    private val commits = ArrayList<Commit>()
-    private val mapIDToFile = HashMap<Int, CommittedFile>()
-
-    fun getCommits() = commits
+    val mapNameToFile = HashMap<String, CommittedFile>()
+    val commits = ArrayList<Commit>()
+    val mapIDToFile = HashMap<Int, CommittedFile>()
 
     fun getFileCount() = fileCounter
-
-    fun getIDToFile() = mapIDToFile
 
     fun createCommit(time: Long, author: String, files: List<String>): Commit {
         val commit = Commit(time, author)
