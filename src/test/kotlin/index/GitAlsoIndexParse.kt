@@ -1,13 +1,13 @@
 package index
 
-import getGitAlsoIndex
+import getGitAlsoServiceFromIndex
 import getGitLogAndParseIt
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
 class GitAlsoIndexParse {
     private fun parseImpl(repositoryName: String) {
-        val serviceFromIndex = getGitAlsoIndex(repositoryName)
+        val serviceFromIndex = getGitAlsoServiceFromIndex(repositoryName)
         val serviceFromLog = getGitLogAndParseIt(repositoryName)
 
         assertEquals(serviceFromLog.commits.size, serviceFromIndex.commits.size)

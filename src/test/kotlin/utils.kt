@@ -20,7 +20,7 @@ fun createGitAlsoIndex(repositoryName: String) {
     indexFileManager.write(service)
 }
 
-fun getGitAlsoIndex(repositoryName: String): GitAlsoService {
+fun getGitAlsoServiceFromIndex(repositoryName: String): GitAlsoService {
     val service = GitAlsoService()
     val indexFileManager = IndexFileManager(repositoryName)
     indexFileManager.read(service)
