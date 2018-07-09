@@ -1,16 +1,17 @@
 package estimate
 
-import GitAlsoService
-import dataset.PipeLineCommit
-import predict.predictForCommit
-import commit.Commit
-import predict.curService
+import commitInfo.Commit
+import commitInfo.PipeLineCommit
+import predict.PredictionProvider
+import repository.GitAlsoService
+import javax.naming.SizeLimitExceededException
 
-class Estimator(val service: GitAlsoService, val dataset: List<PipeLineCommit>) {
+
+class Estimator(private val service: GitAlsoService) {
     private val extremeProbability = 0.1
 
     private fun createCommit(pipeLineCommit: PipeLineCommit): Commit {
-        val mapIDToFile = service.getIDToFile()
+        val mapIDToFile = service.mapIDToFile
         val commit = Commit(pipeLineCommit.time)
         for (id in pipeLineCommit.files) {
             commit.addFile(mapIDToFile[id]!!)
@@ -18,66 +19,46 @@ class Estimator(val service: GitAlsoService, val dataset: List<PipeLineCommit>) 
         return commit
     }
 
-    private fun getCommitIndex(commit: Commit): Int {
-        return service.getCommits().indexOf(commit)
-    }
+    fun predictForDatasetWithForgottenFiles(dataset: List<PipeLineCommit>, predictionProvider: PredictionProvider) {
 
-    fun predictForSimpleDataset(n: Int = 14, minProbability: Double = 0.4, maxPredict: Int = 5) {
-        var countSilent = 0
-        var countRight = 0
-        curService = service
+        var rightPrediction = 0
+        var silentPrediction = 0
+        var wrongPrediction = 0
+
         for (pipeLineCommit in dataset) {
             val commit = createCommit(pipeLineCommit)
-            val commits = service.getCommits()
-            val index = getCommitIndex(commit)
-            val predict = predictForCommit(commit, n, minProbability, maxPredict)
+            println("Current commit: $commit")
 
-            if (predict.isEmpty()) {
-                countSilent++
-                continue
-            }
+            val prediction = predictionProvider.commitPredict(commit)
 
-            loop@ for (i in index + 1..index + 6) {
-                val curCommit = commits[i]
-                for (file in predict) {
-                    if (file in curCommit.getFiles()) {
-                        countRight++
-                        println("commit: $curCommit predict: $predict")
-                        break@loop
-                    }
-                }
-            }
-        }
+            println("Prediction: $prediction")
+            println("Expected: ${pipeLineCommit.forgottenFiles}")
 
-        println(countSilent)
-        println(countRight)
-    }
+            var right = false
 
-    fun predictForRandomDataset(n: Int = 14, minProbability: Double = 0.4, maxPredict: Int = 5) {
-        var countSilent = 0
-        var countRight = 0
-        curService = service
-        for (pipeLineCommit in dataset) {
-            val commit = createCommit(pipeLineCommit)
-
-            val predict = predictForCommit(commit, n, minProbability, maxPredict)
-            if (predict.isEmpty()) {
-                countSilent++
-                continue
-            }
-
-            for (id in pipeLineCommit.forgottenFiles) {
-                val mapIDToFile = service.getIDToFile()
-                if (mapIDToFile[id]!! in predict) {
-                    println("commit: ${pipeLineCommit.time} file: $id ")
-                    countRight++
+            for (predictedFile in prediction) {
+                if (predictedFile.id in pipeLineCommit.forgottenFiles) {
+                    right = true
+                    rightPrediction += 1
                     break
                 }
             }
-            println("commit: ${pipeLineCommit.time} predict: $predict required: ${pipeLineCommit.forgottenFiles}")
+            if (!right) {
+                if (prediction.isEmpty()) {
+                    if (pipeLineCommit.forgottenFiles.isEmpty()) {
+                        rightPrediction += 1
+                    } else {
+                        silentPrediction += 1
+                    }
+                } else {
+                    wrongPrediction += 1
+                }
+            }
         }
 
-        println(countSilent)
-        println(countRight)
+        println()
+        println("Right: $rightPrediction")
+        println("Silent: $silentPrediction")
+        println("Wrong: $wrongPrediction")
     }
 }

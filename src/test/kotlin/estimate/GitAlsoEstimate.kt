@@ -1,40 +1,73 @@
 package estimate
 
-import dataset.parseDataset
-import index.parseIndex
-import junit.framework.TestCase.assertTrue
+import getDatasetFromFile
+import getGitAlsoServiceFromIndex
 import org.junit.Test
-import java.io.File
-import GitAlsoService
+import predict.baseline.RandomPredictionProvider
+import predict.current.TimePredictionProvider
+import storage.dataset.DatasetType
 
 
 class GitAlsoEstimate {
+    private fun timePrediction(repositoryName: String, datasetType: DatasetType) {
+        val service = getGitAlsoServiceFromIndex(repositoryName)
+        val dataset = getDatasetFromFile(repositoryName, datasetType)
+        val predictionProvider = TimePredictionProvider(14, 0.4)
+        val estimator = Estimator(service)
 
-    private val datasetName = "fullDataset.ga"
+        estimator.predictForDatasetWithForgottenFiles(dataset, predictionProvider)
+    }
 
-    private fun parseImpl(repositoryName: String) {
-        val directoryDataset = File("data/dataset/$repositoryName")
-        val fileDataset = directoryDataset.resolve(datasetName)
+    private fun randomPrediction(repositoryName: String, datasetType: DatasetType) {
+        val service = getGitAlsoServiceFromIndex(repositoryName)
+        val dataset = getDatasetFromFile(repositoryName, datasetType)
+        val predictionProvider = RandomPredictionProvider()
+        val estimator = Estimator(service)
 
-        val dataset = parseDataset(fileDataset.readText())
-
-        assertTrue(dataset.isNotEmpty())
-
-        val directory = File("data/index/$repositoryName")
-        val service = GitAlsoService()
-        parseIndex(service, directory)
-
-        val estimator = Estimator(service, dataset)
-        estimator.predictForRandomDataset()
+        estimator.predictForDatasetWithForgottenFiles(dataset, predictionProvider)
     }
 
     @Test
-    fun testPandas() {
-        parseImpl("pandas")
+    fun `test pandas time prediction for full dataset`() {
+        timePrediction("pandas", DatasetType.FULL)
     }
 
     @Test
-    fun testIJCommunity() {
-        parseImpl("intellij-community")
+    fun `test pandas time prediction for random dataset`() {
+        timePrediction("pandas", DatasetType.RANDOM)
+    }
+
+    @Test
+    fun `test pandas random prediction for full dataset`() {
+        randomPrediction("pandas", DatasetType.FULL)
+    }
+
+
+    @Test
+    fun `test pandas random prediction for random dataset`() {
+        randomPrediction("pandas", DatasetType.RANDOM)
+    }
+
+
+    @Test
+    fun `test intellij-community time prediction for full dataset`() {
+        timePrediction("intellij-community", DatasetType.FULL)
+    }
+
+    @Test
+    fun `test intellij-community time prediction for random dataset`() {
+        timePrediction("intellij-community", DatasetType.RANDOM)
+    }
+
+
+    @Test
+    fun `test intellij-community random prediction for full dataset`() {
+        randomPrediction("intellij-community", DatasetType.FULL)
+    }
+
+
+    @Test
+    fun `test intellij-community random prediction for random dataset`() {
+        randomPrediction("intellij-community", DatasetType.RANDOM)
     }
 }

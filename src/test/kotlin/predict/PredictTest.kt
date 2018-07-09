@@ -1,10 +1,10 @@
 package predict
 
-import commit.Commit
-import commit.CommittedFile
+import commitInfo.Commit
+import commitInfo.CommittedFile
 import junit.framework.TestCase.assertTrue
 import org.junit.Test
-import predict.predictForCommit
+import predict.current.TimePredictionProvider
 
 class PredictTest {
     @Test
@@ -28,10 +28,13 @@ class PredictTest {
         file1.committed(commit5, "a")
 
 
-        assertTrue(file2 in predictForCommit(commit5))
+        val predictionProvider = TimePredictionProvider(14, 0.4)
+        val prediction = predictionProvider.commitPredict(commit5)
+        assertTrue(file2 in prediction)
+
+        print(prediction)
 
     }
-
 
 
 }

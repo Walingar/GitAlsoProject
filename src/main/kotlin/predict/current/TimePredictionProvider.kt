@@ -1,0 +1,118 @@
+package predict.current
+
+import commitInfo.Commit
+import commitInfo.CommittedFile
+import predict.PredictionProvider
+import kotlin.math.sqrt
+
+class TimePredictionProvider(private val n: Int, private val minProb: Double) : PredictionProvider {
+
+    private fun getIntersection(firstFile: CommittedFile, secondFile: CommittedFile): List<Commit> {
+        val intersection = ArrayList<Commit>()
+        for (firstCommit in firstFile.getCommits()) {
+            for (secondCommit in secondFile.getCommits()) {
+                if (firstCommit == secondCommit) {
+                    intersection.add(firstCommit)
+                }
+            }
+        }
+        return intersection
+    }
+
+    private fun getTimeRate(time: Long, startTime: Long): Double {
+        val week = 604800
+        val parameter = sqrt(((startTime - time) / week).toDouble())
+        if (parameter == 0.0) {
+            return sqrt(week.toDouble())
+        }
+        return 1 / parameter
+    }
+
+    private fun getRateForCommits(commits: Collection<Commit>, startTime: Long): Double {
+        var ans = 0.0
+        for (commit in commits) {
+            if (commit.time < startTime) {
+                ans += getTimeRate(commit.time, startTime)
+            }
+        }
+        return ans
+    }
+
+    private fun getProbabilityWithTime(firstFile: CommittedFile, secondFile: CommittedFile, time: Long, n: Int, maxByCommit: Int): Double {
+        val intersection = getRateForCommits(getIntersection(firstFile, secondFile).filter { it.time < time }, time)
+        val rateForFirstFile = getRateForCommits(firstFile.getCommits().filter { it.time < time }, time)
+        val rateForSecondFile = getRateForCommits(secondFile.getCommits().filter { it.time < time }, time)
+        val union = rateForFirstFile + rateForSecondFile - intersection
+        if (union == 0.0) {
+            return 0.0
+        }
+        return (intersection * sqrt(rateForFirstFile * rateForSecondFile)) /
+                (union * java.lang.Double.max(n.toDouble(), maxByCommit.toDouble()))
+    }
+
+    private fun predictForFileInCommit(firstFile: CommittedFile, currentTime: Long, n: Int, maxByCommit: Int, minProb: Double):
+            List<Pair<Double, CommittedFile>> {
+
+        val was = HashSet<CommittedFile>()
+        val scores = ArrayList<Pair<Double, CommittedFile>>()
+
+        for (commit in firstFile.getCommits().filter { it.time < currentTime }) {
+            for (secondFile in commit.getFiles()) {
+                if (firstFile != secondFile && secondFile !in was) {
+                    was.add(secondFile)
+
+                    val prob = getProbabilityWithTime(firstFile, secondFile, currentTime, n, maxByCommit)
+                    if (prob > minProb) {
+                        scores.add(Pair(prob, secondFile))
+                    }
+                }
+            }
+        }
+
+        return scores
+    }
+
+    private fun getMaxByCommit(commit: Commit): Int {
+        val currentTime = commit.time
+        var maxByCommit = 0
+        for (file in commit.getFiles()) {
+            val temp = file.getCommits().filter { it.time < currentTime }.size
+            if (temp >= maxByCommit) {
+                maxByCommit = temp
+            }
+        }
+        return maxByCommit
+    }
+
+
+    override fun commitPredict(commit: Commit, maxPredictedFileCount: Int): List<CommittedFile> {
+        val currentTime = commit.time
+
+        val maxByCommit = getMaxByCommit(commit)
+        val scores = HashMap<CommittedFile, Double>()
+
+        for (file in commit.getFiles()) {
+            val prediction = predictForFileInCommit(file, currentTime, n, maxByCommit, minProb)
+
+
+            prediction.forEach {
+                if (it.second !in commit.getFiles()) {
+                    if (it.second in scores) {
+                        scores[it.second] = scores[it.second]!! + it.first
+                    } else {
+                        scores[it.second] = it.first
+                    }
+                }
+            }
+
+        }
+
+        return scores
+                .toList()
+                .sortedBy { (_, value) -> value }
+                .reversed()
+                .map { it.first }
+                .subList(0, Integer.min(scores.size, maxPredictedFileCount))
+    }
+
+}
