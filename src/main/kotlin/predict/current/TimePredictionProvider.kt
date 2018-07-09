@@ -3,21 +3,11 @@ package predict.current
 import commitInfo.Commit
 import commitInfo.CommittedFile
 import predict.PredictionProvider
+import predict.getIntersection
+import predict.getMaxByCommit
 import kotlin.math.sqrt
 
 class TimePredictionProvider(private val n: Int, private val minProb: Double) : PredictionProvider {
-
-    private fun getIntersection(firstFile: CommittedFile, secondFile: CommittedFile): List<Commit> {
-        val intersection = ArrayList<Commit>()
-        for (firstCommit in firstFile.getCommits()) {
-            for (secondCommit in secondFile.getCommits()) {
-                if (firstCommit == secondCommit) {
-                    intersection.add(firstCommit)
-                }
-            }
-        }
-        return intersection
-    }
 
     private fun getTimeRate(time: Long, startTime: Long): Double {
         val week = 604800
@@ -70,18 +60,6 @@ class TimePredictionProvider(private val n: Int, private val minProb: Double) : 
         }
 
         return scores
-    }
-
-    private fun getMaxByCommit(commit: Commit): Int {
-        val currentTime = commit.time
-        var maxByCommit = 0
-        for (file in commit.getFiles()) {
-            val temp = file.getCommits().filter { it.time < currentTime }.size
-            if (temp >= maxByCommit) {
-                maxByCommit = temp
-            }
-        }
-        return maxByCommit
     }
 
 
