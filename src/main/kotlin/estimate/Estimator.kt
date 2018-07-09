@@ -4,11 +4,8 @@ import commitInfo.Commit
 import commitInfo.PipeLineCommit
 import predict.PredictionProvider
 import repository.GitAlsoService
-import javax.naming.SizeLimitExceededException
-
 
 class Estimator(private val service: GitAlsoService) {
-    private val extremeProbability = 0.1
 
     private fun createCommit(pipeLineCommit: PipeLineCommit): Commit {
         val mapIDToFile = service.mapIDToFile
