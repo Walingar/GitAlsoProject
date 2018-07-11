@@ -4,7 +4,7 @@ import predict.PredictionType
 import storage.dataset.DatasetType
 import java.io.File
 
-data class PredictionResult(private val right: Int, private val wrong: Int, private val rightSilent: Int, private val wrongSilent: Int) {
+data class PredictionResult(val right: Int, val wrong: Int, val rightSilent: Int, val wrongSilent: Int) {
     override fun toString() = "$right, $wrong, $rightSilent, $wrongSilent${System.lineSeparator()}"
 
     private fun getHeader() = "Repository, Dataset, Decision Function, Right, Wrong, Right silent, Wrong silent${System.lineSeparator()}"
