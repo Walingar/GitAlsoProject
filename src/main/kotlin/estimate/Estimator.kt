@@ -4,6 +4,7 @@ import commitInfo.Commit
 import commitInfo.PipeLineCommit
 import predict.PredictionProvider
 import repository.GitAlsoService
+import storage.csv.PredictionResult
 
 class Estimator(private val service: GitAlsoService) {
 
@@ -16,11 +17,12 @@ class Estimator(private val service: GitAlsoService) {
         return commit
     }
 
-    fun predictForDatasetWithForgottenFiles(dataset: List<PipeLineCommit>, predictionProvider: PredictionProvider) {
+    fun predictForDatasetWithForgottenFiles(dataset: List<PipeLineCommit>, predictionProvider: PredictionProvider): PredictionResult {
 
         var rightPrediction = 0
-        var silentPrediction = 0
         var wrongPrediction = 0
+        var rightSilentPrediction = 0
+        var wrongSilentPrediction = 0
 
         for (pipeLineCommit in dataset) {
             val commit = createCommit(pipeLineCommit)
@@ -43,9 +45,9 @@ class Estimator(private val service: GitAlsoService) {
             if (!right) {
                 if (prediction.isEmpty()) {
                     if (pipeLineCommit.forgottenFiles.isEmpty()) {
-                        rightPrediction += 1
+                        rightSilentPrediction += 1
                     } else {
-                        silentPrediction += 1
+                        wrongSilentPrediction += 1
                     }
                 } else {
                     wrongPrediction += 1
@@ -55,7 +57,10 @@ class Estimator(private val service: GitAlsoService) {
 
         println()
         println("Right: $rightPrediction")
-        println("Silent: $silentPrediction")
         println("Wrong: $wrongPrediction")
+        println("Right silent: $rightSilentPrediction")
+        println("Wrong silent: $wrongSilentPrediction")
+
+        return PredictionResult(rightPrediction, wrongPrediction, rightSilentPrediction, wrongSilentPrediction)
     }
 }
