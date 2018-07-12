@@ -1,5 +1,6 @@
 package estimate
 
+import commitInfo.PipeLineCommit
 import getDatasetFromFile
 import getGitAlsoServiceFromIndex
 import org.junit.Test
@@ -18,7 +19,7 @@ import predict.current.TimePredictionProvider
 @RunWith(Parameterized::class)
 class GitAlsoEstimate(val repositoryName: String, val datasetType: DatasetType, val predictionType: PredictionType) {
 
-    private val csvFile = File("data/results/resultWithSimple.csv")
+    private val csvFile = File("data/results/resultWithSimple3.csv")
 
 
     companion object {
@@ -26,17 +27,14 @@ class GitAlsoEstimate(val repositoryName: String, val datasetType: DatasetType, 
         @JvmStatic
         @Parameterized.Parameters
         fun data(): Collection<Array<Any>> {
-//            val randomPredictCount = 50
             val parameters = ArrayList<Array<Any>>()
             val repositories = arrayListOf("pandas", "intellij-community")
             for (repository in repositories) {
                 for (datasetType in DatasetType.values()) {
+                    if (datasetType == DatasetType.SIMPLE) {
+                        continue // TODO: add support of this dataset
+                    }
                     for (predictionType in PredictionType.values()) {
-//                        if (predictionType == PredictionType.RANDOM) {
-//                            for (i in 1..randomPredictCount) {
-//                                parameters += arrayOf(repository, datasetType, predictionType)
-//                            }
-//                        }
                         parameters += arrayOf(repository, datasetType, predictionType)
                     }
                 }
@@ -62,32 +60,39 @@ class GitAlsoEstimate(val repositoryName: String, val datasetType: DatasetType, 
     }
 
 
+    private fun averageRandomPrediction(
+            estimator: Estimator,
+            predictionProvider: PredictionProvider,
+            dataset: List<PipeLineCommit>,
+            randomPredictCount: Int
+    ): PredictionResult {
+        var prediction = estimator.predictForDatasetWithForgottenFiles(dataset, predictionProvider)
+        for (i in 2..randomPredictCount) {
+            val newPrediction = estimator.predictForDatasetWithForgottenFiles(dataset, predictionProvider)
+            prediction = PredictionResult(
+                    prediction.right + newPrediction.right,
+                    prediction.wrong + newPrediction.wrong,
+                    prediction.rightSilent + newPrediction.rightSilent,
+                    prediction.wrongSilent + newPrediction.wrongSilent)
+        }
+        return PredictionResult(
+                prediction.right / randomPredictCount,
+                prediction.wrong / randomPredictCount,
+                prediction.rightSilent / randomPredictCount,
+                prediction.wrongSilent / randomPredictCount
+        )
+    }
+
     private fun predict(repositoryName: String, datasetType: DatasetType, predictionType: PredictionType) {
         println(predictionType)
         val service = getGitAlsoServiceFromIndex(repositoryName)
         val dataset = getDatasetFromFile(repositoryName, datasetType)
         val predictionProvider = getPredictionProvider(predictionType)
         val estimator = Estimator(service)
-        if (datasetType == DatasetType.SIMPLE) {
-            return
-        }
-        var prediction = estimator.predictForDatasetWithForgottenFiles(dataset, predictionProvider)
-        if (predictionType == PredictionType.RANDOM) {
-            val randomPredictCount = 200
-            for (i in 2..randomPredictCount) {
-                val newPrediction = estimator.predictForDatasetWithForgottenFiles(dataset, predictionProvider)
-                prediction = PredictionResult(
-                        prediction.right + newPrediction.right,
-                        prediction.wrong + newPrediction.wrong,
-                        prediction.rightSilent + newPrediction.rightSilent,
-                        prediction.wrongSilent + newPrediction.wrongSilent)
-            }
-            prediction = PredictionResult(
-                    prediction.right / randomPredictCount,
-                    prediction.wrong / randomPredictCount,
-                    prediction.rightSilent / randomPredictCount,
-                    prediction.wrongSilent / randomPredictCount
-            )
+        val prediction = if (predictionType == PredictionType.RANDOM) {
+            averageRandomPrediction(estimator, predictionProvider, dataset, 200)
+        } else {
+            estimator.predictForDatasetWithForgottenFiles(dataset, predictionProvider)
         }
         addToCSV(repositoryName, datasetType, predictionType, prediction)
     }
