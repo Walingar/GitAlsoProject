@@ -15,6 +15,7 @@ import predict.baseline.RandomPredictionProvider
 import predict.baseline.SimplePredictionProvider
 import predict.current.CommitTimePredictionProvider
 import predict.current.TimePredictionProvider
+import predict.current.WeightPredictionProvider
 
 
 @RunWith(Parameterized::class)
@@ -22,13 +23,6 @@ class GitAlsoEstimate(val repositoryName: String, val datasetType: DatasetType, 
     private val csvFile = File("data/results/resultTest.csv")
 
     companion object {
-        init {
-            val csvFile = File("data/results/resultCommitTimePrediction.csv")
-            if (csvFile.exists()) {
-                csvFile.appendText(", , , , , , , , , \n")
-            }
-        }
-
         @JvmStatic
         @Parameterized.Parameters
         fun data(): Collection<Array<Any>> {
@@ -39,7 +33,7 @@ class GitAlsoEstimate(val repositoryName: String, val datasetType: DatasetType, 
                     if (datasetType == DatasetType.SIMPLE) {
                         continue // TODO: add support of this dataset
                     }
-                    for (predictionType in PredictionType.values()) {
+                    for (predictionType in arrayOf(PredictionType.WEIGHT)) {
                         parameters += arrayOf(repository, datasetType, predictionType)
                     }
                 }
@@ -48,6 +42,11 @@ class GitAlsoEstimate(val repositoryName: String, val datasetType: DatasetType, 
         }
     }
 
+    private var m1 = 2.0
+    private var m2 = 20.0
+    private var commitSize = 4.0
+    private var minProb = 0.6
+
     private fun getPredictionProvider(predictionType: PredictionType): PredictionProvider {
         return when (predictionType) {
 
@@ -55,7 +54,7 @@ class GitAlsoEstimate(val repositoryName: String, val datasetType: DatasetType, 
             PredictionType.TIME -> TimePredictionProvider(14, 0.4)
             PredictionType.COMMIT_TIME -> CommitTimePredictionProvider(14, 0.35, 20)
             PredictionType.SIMPLE_FORMULA -> SimplePredictionProvider()
-            PredictionType.WEIGHT -> TODO("WEIGHT not implemented")
+            PredictionType.WEIGHT -> WeightPredictionProvider(minProb, m1, m2, commitSize)
         }
     }
 
@@ -77,15 +76,14 @@ class GitAlsoEstimate(val repositoryName: String, val datasetType: DatasetType, 
                     prediction.right + newPrediction.right,
                     prediction.wrong + newPrediction.wrong,
                     prediction.rightSilent + newPrediction.rightSilent,
-                    prediction.wrongSilent + newPrediction.wrongSilent,
-                    prediction.couldPredict + newPrediction.couldPredict)
+                    prediction.wrongSilent + newPrediction.wrongSilent
+            )
         }
         return PredictionResult(
                 prediction.right / randomPredictCount,
                 prediction.wrong / randomPredictCount,
                 prediction.rightSilent / randomPredictCount,
-                prediction.wrongSilent / randomPredictCount,
-                prediction.couldPredict / randomPredictCount
+                prediction.wrongSilent / randomPredictCount
         )
     }
 
@@ -107,7 +105,6 @@ class GitAlsoEstimate(val repositoryName: String, val datasetType: DatasetType, 
     @Test
     fun test() {
         try {
-            println("TEST: $repositoryName, $datasetType, $predictionType")
             predict(repositoryName, datasetType, predictionType)
         } catch (e: NotImplementedError) {
             println(e)

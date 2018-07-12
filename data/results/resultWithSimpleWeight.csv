@@ -1,0 +1,21 @@
+Repository, Dataset, Decision Function, Right, Wrong, Right silent, Wrong silent
+pandas, RANDOM, RANDOM, 8, 136, 0, 0
+pandas, RANDOM, TIME, 25, 84, 0, 36
+pandas, RANDOM, COMMIT_TIME, 32, 106, 0, 7
+pandas, RANDOM, SIMPLE_FORMULA, 22, 76, 0, 47
+pandas, RANDOM, WEIGHT, 30, 91, 0, 24
+pandas, FULL, RANDOM, 27, 634, 0, 0
+pandas, FULL, TIME, 92, 440, 0, 130
+pandas, FULL, COMMIT_TIME, 124, 514, 0, 24
+pandas, FULL, SIMPLE_FORMULA, 103, 409, 0, 150
+pandas, FULL, WEIGHT, 101, 312, 0, 249
+intellij-community, RANDOM, RANDOM, 450, 909, 0, 0
+intellij-community, RANDOM, TIME, 299, 438, 0, 623
+intellij-community, RANDOM, COMMIT_TIME, 265, 442, 0, 653
+intellij-community, RANDOM, SIMPLE_FORMULA, 323, 677, 0, 360
+intellij-community, RANDOM, WEIGHT, 505, 683, 0, 172
+intellij-community, FULL, RANDOM, 1218, 3751, 0, 0
+intellij-community, FULL, TIME, 1199, 1908, 0, 1863
+intellij-community, FULL, COMMIT_TIME, 1065, 2183, 0, 1722
+intellij-community, FULL, SIMPLE_FORMULA, 1288, 2852, 0, 830
+intellij-community, FULL, WEIGHT, 1462, 2028, 0, 1480

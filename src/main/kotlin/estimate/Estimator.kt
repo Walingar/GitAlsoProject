@@ -73,6 +73,6 @@ class Estimator(private val service: GitAlsoService) {
         println("Right silent: $rightSilentPrediction")
         println("Wrong silent: $wrongSilentPrediction")
 
-        return PredictionResult(rightPrediction, wrongPrediction, rightSilentPrediction, wrongSilentPrediction, couldPredict)
+        return PredictionResult(rightPrediction, wrongPrediction, rightSilentPrediction, wrongSilentPrediction)
     }
 }
