@@ -39,13 +39,6 @@ class SimplePredictionProvider : PredictionProvider {
                 .map { it.first }
                 .reversed()
 
-        val notFilteredListOfCandidates = candidates
-                .toList()
-                .sortedBy { (_, value) -> value }
-                .filter { it.first !in commit.getFiles() }
-                .map { it.first }
-                .reversed()
-
         return filteredListOfCandidates
                 .subList(0, Integer.min(filteredListOfCandidates.size, maxPredictedFileCount))
     }
