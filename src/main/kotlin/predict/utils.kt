@@ -26,3 +26,17 @@ fun getMaxByCommit(commit: Commit): Int {
     }
     return maxByCommit
 }
+
+fun isPredictable(commit: Commit, fileIDToPredict: Int): Boolean {
+    for (file in commit.getFiles()) {
+        for (fileCommit in file.getCommits().filter { it.time < commit.time }) {
+            for (secondFile in fileCommit.getFiles()) {
+                if (secondFile.id == fileIDToPredict) {
+                    return true
+                }
+            }
+        }
+    }
+
+    return false
+}

@@ -13,16 +13,21 @@ import java.io.File
 import org.junit.runners.Parameterized
 import predict.baseline.RandomPredictionProvider
 import predict.baseline.SimplePredictionProvider
+import predict.current.CommitTimePredictionProvider
 import predict.current.TimePredictionProvider
 
 
 @RunWith(Parameterized::class)
 class GitAlsoEstimate(val repositoryName: String, val datasetType: DatasetType, val predictionType: PredictionType) {
-
-    private val csvFile = File("data/results/resultWithSimple3.csv")
-
+    private val csvFile = File("data/results/resultTest.csv")
 
     companion object {
+        init {
+            val csvFile = File("data/results/resultCommitTimePrediction.csv")
+            if (csvFile.exists()) {
+                csvFile.appendText(", , , , , , , , , \n")
+            }
+        }
 
         @JvmStatic
         @Parameterized.Parameters
@@ -48,9 +53,8 @@ class GitAlsoEstimate(val repositoryName: String, val datasetType: DatasetType, 
 
             PredictionType.RANDOM -> RandomPredictionProvider()
             PredictionType.TIME -> TimePredictionProvider(14, 0.4)
-            PredictionType.COMMIT_TIME -> TODO("COMMIT_TIME not implemented")
+            PredictionType.COMMIT_TIME -> CommitTimePredictionProvider(14, 0.35, 20)
             PredictionType.SIMPLE_FORMULA -> SimplePredictionProvider()
-            PredictionType.FORMULA -> TODO("FORMULA not implemented")
             PredictionType.WEIGHT -> TODO("WEIGHT not implemented")
         }
     }
@@ -73,13 +77,15 @@ class GitAlsoEstimate(val repositoryName: String, val datasetType: DatasetType, 
                     prediction.right + newPrediction.right,
                     prediction.wrong + newPrediction.wrong,
                     prediction.rightSilent + newPrediction.rightSilent,
-                    prediction.wrongSilent + newPrediction.wrongSilent)
+                    prediction.wrongSilent + newPrediction.wrongSilent,
+                    prediction.couldPredict + newPrediction.couldPredict)
         }
         return PredictionResult(
                 prediction.right / randomPredictCount,
                 prediction.wrong / randomPredictCount,
                 prediction.rightSilent / randomPredictCount,
-                prediction.wrongSilent / randomPredictCount
+                prediction.wrongSilent / randomPredictCount,
+                prediction.couldPredict / randomPredictCount
         )
     }
 
@@ -101,6 +107,7 @@ class GitAlsoEstimate(val repositoryName: String, val datasetType: DatasetType, 
     @Test
     fun test() {
         try {
+            println("TEST: $repositoryName, $datasetType, $predictionType")
             predict(repositoryName, datasetType, predictionType)
         } catch (e: NotImplementedError) {
             println(e)

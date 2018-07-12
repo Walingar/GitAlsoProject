@@ -3,8 +3,10 @@ package estimate
 import commitInfo.Commit
 import commitInfo.PipeLineCommit
 import predict.PredictionProvider
+import predict.isPredictable
 import repository.GitAlsoService
 import storage.csv.PredictionResult
+import java.io.File
 
 class Estimator(private val service: GitAlsoService) {
 
@@ -18,15 +20,16 @@ class Estimator(private val service: GitAlsoService) {
     }
 
     fun predictForDatasetWithForgottenFiles(dataset: List<PipeLineCommit>, predictionProvider: PredictionProvider): PredictionResult {
-
         var rightPrediction = 0
         var wrongPrediction = 0
         var rightSilentPrediction = 0
         var wrongSilentPrediction = 0
+        var couldPredict = 0
 
         for (pipeLineCommit in dataset) {
             val commit = createCommit(pipeLineCommit)
             println("Current commit: $commit")
+            println("Files: ${pipeLineCommit.files}")
 
             val prediction = predictionProvider.commitPredict(commit)
 
@@ -42,6 +45,7 @@ class Estimator(private val service: GitAlsoService) {
                     break
                 }
             }
+
             if (!right) {
                 if (prediction.isEmpty()) {
                     if (pipeLineCommit.forgottenFiles.isEmpty()) {
@@ -53,6 +57,14 @@ class Estimator(private val service: GitAlsoService) {
                     wrongPrediction += 1
                 }
             }
+
+            if (pipeLineCommit.forgottenFiles.size == 1) {
+                couldPredict += if (isPredictable(commit, pipeLineCommit.forgottenFiles[0])) {
+                    1
+                } else {
+                    0
+                }
+            }
         }
 
         println()
@@ -61,6 +73,6 @@ class Estimator(private val service: GitAlsoService) {
         println("Right silent: $rightSilentPrediction")
         println("Wrong silent: $wrongSilentPrediction")
 
-        return PredictionResult(rightPrediction, wrongPrediction, rightSilentPrediction, wrongSilentPrediction)
+        return PredictionResult(rightPrediction, wrongPrediction, rightSilentPrediction, wrongSilentPrediction, couldPredict)
     }
 }

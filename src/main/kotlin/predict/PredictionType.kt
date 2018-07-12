@@ -1,5 +1,5 @@
 package predict
 
 enum class PredictionType {
-    RANDOM, TIME, COMMIT_TIME, SIMPLE_FORMULA, FORMULA, WEIGHT
+    RANDOM, TIME, COMMIT_TIME, SIMPLE_FORMULA, WEIGHT
 }
