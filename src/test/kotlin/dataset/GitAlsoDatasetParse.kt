@@ -36,4 +36,19 @@ class GitAlsoDatasetParse {
     fun testIJCommunity() {
         testFullDataset("intellij-community")
     }
+
+    @Test
+    fun testGoogleTest() {
+        testFullDataset("googletest")
+    }
+
+    @Test
+    fun testIJRust() {
+        testFullDataset("intellij-rust")
+    }
+
+    @Test
+    fun testKotlin() {
+        testFullDataset("kotlin")
+    }
 }

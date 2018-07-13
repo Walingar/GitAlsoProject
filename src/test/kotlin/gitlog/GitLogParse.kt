@@ -26,4 +26,19 @@ class GitLogParse {
     fun testIJCommunity() {
         parseImpl("intellij-community")
     }
+
+    @Test
+    fun testGoogleTest() {
+        parseImpl("googletest")
+    }
+
+    @Test
+    fun testIJRust() {
+        parseImpl("intellij-rust")
+    }
+
+    @Test
+    fun testKotlin() {
+        parseImpl("kotlin")
+    }
 }

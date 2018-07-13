@@ -25,7 +25,7 @@ class GitAlsoEstimate(val repositoryName: String, val datasetType: DatasetType, 
         @Parameterized.Parameters
         fun data(): Collection<Array<Any>> {
             val parameters = ArrayList<Array<Any>>()
-            val repositories = arrayListOf("pandas", "intellij-community")
+            val repositories = arrayListOf("pandas", "intellij-community", "kotlin", "googletest", "intellij-rust")
             for (repository in repositories) {
                 for (datasetType in DatasetType.values()) {
                     if (datasetType == DatasetType.SIMPLE) {

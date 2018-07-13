@@ -32,4 +32,19 @@ class GitAlsoIndexParse {
     fun testTestRepository() {
         parseImpl("testRepo")
     }
+
+    @Test
+    fun testGoogleTest() {
+        parseImpl("googletest")
+    }
+
+    @Test
+    fun testIJRust() {
+        parseImpl("intellij-rust")
+    }
+
+    @Test
+    fun testKotlin() {
+        parseImpl("kotlin")
+    }
 }

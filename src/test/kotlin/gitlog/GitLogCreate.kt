@@ -25,4 +25,19 @@ class GitLogCreate {
     fun testIJCommunity() {
         createImpl("intellij-community")
     }
+
+    @Test
+    fun testGoogleTest() {
+        createImpl("googletest")
+    }
+
+    @Test
+    fun testIJRust() {
+        createImpl("intellij-rust")
+    }
+
+    @Test
+    fun testKotlin() {
+        createImpl("kotlin")
+    }
 }
