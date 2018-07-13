@@ -24,17 +24,16 @@ class Estimator(private val service: GitAlsoService) {
         var wrongPrediction = 0
         var rightSilentPrediction = 0
         var wrongSilentPrediction = 0
-        var couldPredict = 0
 
         for (pipeLineCommit in dataset) {
             val commit = createCommit(pipeLineCommit)
-            println("Current commit: $commit")
-            println("Files: ${pipeLineCommit.files}")
+//            println("Current commit: $commit")
+//            println("Files: ${pipeLineCommit.files}")
 
             val prediction = predictionProvider.commitPredict(commit)
 
-            println("Prediction: $prediction")
-            println("Expected: ${pipeLineCommit.forgottenFiles}")
+//            println("Prediction: $prediction")
+//            println("Expected: ${pipeLineCommit.forgottenFiles}")
 
             var right = false
 
@@ -57,22 +56,67 @@ class Estimator(private val service: GitAlsoService) {
                     wrongPrediction += 1
                 }
             }
-
-            if (pipeLineCommit.forgottenFiles.size == 1) {
-                couldPredict += if (isPredictable(commit, pipeLineCommit.forgottenFiles[0])) {
-                    1
-                } else {
-                    0
-                }
-            }
         }
 
-        println()
-        println("Right: $rightPrediction")
-        println("Wrong: $wrongPrediction")
-        println("Right silent: $rightSilentPrediction")
-        println("Wrong silent: $wrongSilentPrediction")
+//        println()
+//        println("Right: $rightPrediction")
+//        println("Wrong: $wrongPrediction")
+//        println("Right silent: $rightSilentPrediction")
+//        println("Wrong silent: $wrongSilentPrediction")
 
         return PredictionResult(rightPrediction, wrongPrediction, rightSilentPrediction, wrongSilentPrediction)
     }
+
+
+    fun compareTwoPredictionProviders(dataset: List<PipeLineCommit>, predictionProvider1: PredictionProvider, predictionProvider2: PredictionProvider) {
+
+        fun printLog(pipeLineCommit: PipeLineCommit) {
+            println("Current commit: ${pipeLineCommit.time}")
+            println("Files: ${pipeLineCommit.files}")
+            println("Forgotten files: ${pipeLineCommit.forgottenFiles}")
+        }
+
+        for (pipeLineCommit in dataset) {
+            val commit = createCommit(pipeLineCommit)
+            val prediction1 = predictionProvider1.commitPredict(commit)
+            val prediction2 = predictionProvider2.commitPredict(commit)
+            var right1 = false
+            var right2 = false
+            var wrong1 = false
+            var wrong2 = false
+
+            for (predictedFile in prediction1) {
+                if (predictedFile.id in pipeLineCommit.forgottenFiles) {
+                    right1 = true
+                    break
+                }
+            }
+
+            for (predictedFile in prediction2) {
+                if (predictedFile.id in pipeLineCommit.forgottenFiles) {
+                    right2 = true
+                    break
+                }
+            }
+
+            if (!right1 && prediction1.isNotEmpty()) {
+                wrong1 = true
+            }
+            if (!right2 && prediction2.isNotEmpty()) {
+                wrong2 = true
+            }
+            if (right1 && !right2) {
+                printLog(pipeLineCommit)
+                println("First prediction is right: $prediction1")
+                println("Second prediction is not right: $prediction2")
+                println()
+            } else if (!wrong1 && wrong2) {
+                printLog(pipeLineCommit)
+                println("First prediction is not wrong: $prediction1")
+                println("Second prediction is wrong: $prediction2")
+                println()
+            }
+        }
+    }
+
 }

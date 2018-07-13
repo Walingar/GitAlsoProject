@@ -3,28 +3,29 @@ package predict.current
 import commitInfo.Commit
 import commitInfo.CommittedFile
 import predict.PredictionProvider
-import kotlin.math.max
+
 import kotlin.math.min
 
-class WeightPredictionProvider(private val minProb: Double, private val m1: Double, private val m2: Double, private val commitSize: Double) : PredictionProvider {
+class NewWeightPredictionProvider(private val minProb: Double, private val m1: Double, private val m2: Double, private val commitSize: Double) : PredictionProvider {
 
     private class VoteProvider(private val m: Double) {
         var result = 0.0
         private var votesCounter = 0
         private var votesSum = 0.0
 
-        private fun R() = votesSum / votesCounter.toDouble()
+        private fun R() = if (votesCounter != 0) votesSum / votesCounter.toDouble() else 0.0
 
         override fun toString(): String {
             return result.toString()
         }
 
         fun vote(rate: Double) {
+            val R = R()
             votesCounter++
             votesSum += rate
 
             val v = votesCounter.toDouble()
-            result = (v / (m + v)) * R() + (m / (m + v)) * 0.6
+            result = (v / (m + v)) * R + (m / (m + v)) * 0.6
         }
     }
 
@@ -36,7 +37,7 @@ class WeightPredictionProvider(private val minProb: Double, private val m1: Doub
                 if (secondFile in commit.getFiles()) {
                     continue
                 }
-                val currentRate = max(1.0, commitSize / fileCommit.getFiles().size.toDouble()) * min(1.0, firstFile.getCommits().size.toDouble() / secondFile.getCommits().size)
+                val currentRate = min(1.0, commitSize / fileCommit.getFiles().size.toDouble()) // * min(1.0, commits.size.toDouble() / secondFile.getCommits().filter { it.time < commit.time }.size)
                 candidates.putIfAbsent(secondFile, VoteProvider(m2))
                 candidates[secondFile]!!.vote(currentRate)
             }
@@ -51,25 +52,31 @@ class WeightPredictionProvider(private val minProb: Double, private val m1: Doub
     }
 
     override fun commitPredict(commit: Commit, maxPredictedFileCount: Int): List<CommittedFile> {
-        val candidates = HashMap<CommittedFile, VoteProvider>()
+        val candidates = HashMap<CommittedFile, Double>()
+        val votes = ArrayList<Pair<CommittedFile, Double>>()
 
         for (file in commit.getFiles()) {
             val currentVotes = vote(file, commit)
             for ((currentFile, currentVote) in currentVotes) {
-                candidates.putIfAbsent(currentFile, VoteProvider(m1))
-                candidates[currentFile]!!.vote(currentVote)
+                votes.add(Pair(currentFile, currentVote))
+                candidates.putIfAbsent(currentFile, 0.0)
+                candidates[currentFile] = candidates[currentFile]!! + currentVote
             }
         }
 
         val filteredCandidates = candidates
-                .filter { it.value.result > minProb }
+                .filter { it.value > minProb }
 
         val sortedCandidates = filteredCandidates
                 .toList()
-                .sortedBy { (_, value) -> value.result }
+                .sortedBy { (_, value) -> value }
                 .reversed()
         if (commit.getFiles().size > 5) {
             return arrayListOf()
+        }
+
+        if (commit.time == 1483354263L) {
+            val x = 2
         }
 
         return sortedCandidates
