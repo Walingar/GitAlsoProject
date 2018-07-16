@@ -69,10 +69,6 @@ class WeightWithFilterPredictionProvider(private val minProb: Double = 0.0, priv
 
         val filteredCandidates = HashMap<CommittedFile, Double>()
 
-        if (commit.time == 1484842901L) {
-            val x = 2
-        }
-
         for ((file, score) in candidates) {
             if (score > minProb) {
                 for (commitFile in commit.getFiles()) {
