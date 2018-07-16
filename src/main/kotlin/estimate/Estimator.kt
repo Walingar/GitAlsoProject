@@ -24,7 +24,8 @@ class Estimator(private val service: GitAlsoService) {
         var wrongPrediction = 0
         var rightSilentPrediction = 0
         var wrongSilentPrediction = 0
-        var sizeCount = 0
+        var sizeCounter = 0
+        var counterNonEmpty = 0
 
         for (pipeLineCommit in dataset) {
             val commit = createCommit(pipeLineCommit)
@@ -37,7 +38,10 @@ class Estimator(private val service: GitAlsoService) {
 //            println("Expected: ${pipeLineCommit.forgottenFiles}")
 
             var right = false
-            sizeCount += prediction.size
+            sizeCounter += prediction.size
+            if (prediction.isNotEmpty()) {
+                counterNonEmpty++
+            }
 
             for (predictedFile in prediction) {
                 if (predictedFile.id in pipeLineCommit.forgottenFiles) {
@@ -60,7 +64,7 @@ class Estimator(private val service: GitAlsoService) {
             }
         }
         println()
-        println(sizeCount.toDouble() / dataset.size)
+        println(sizeCounter.toDouble() / counterNonEmpty)
 //        println()
 //        println("Right: $rightPrediction")
 //        println("Wrong: $wrongPrediction")
