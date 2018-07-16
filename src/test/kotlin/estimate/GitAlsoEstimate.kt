@@ -18,20 +18,20 @@ import predict.current.*
 
 @RunWith(Parameterized::class)
 class GitAlsoEstimate(val repositoryName: String, val datasetType: DatasetType, val predictionType: PredictionType) {
-    private val csvFile = File("data/results/resultWithFilteredWeight.csv")
+    private val csvFile = File("data/results/resultTest.csv")
 
     companion object {
         @JvmStatic
         @Parameterized.Parameters
         fun data(): Collection<Array<Any>> {
             val parameters = ArrayList<Array<Any>>()
-            val repositories = arrayListOf("pandas", "intellij-community", "kotlin", "googletest", "intellij-rust")
+            val repositories = arrayListOf("pandas", "intellij-community", "kotlin", "intellij-rust")
             for (repository in repositories) {
                 for (datasetType in DatasetType.values()) {
                     if (datasetType == DatasetType.SIMPLE) {
                         continue // TODO: add support of this dataset
                     }
-                    for (predictionType in PredictionType.values()) {
+                    for (predictionType in arrayOf(PredictionType.WEIGHT_WITH_FILTER)) {
                         parameters += arrayOf(repository, datasetType, predictionType)
                     }
                 }
@@ -44,12 +44,12 @@ class GitAlsoEstimate(val repositoryName: String, val datasetType: DatasetType, 
         return when (predictionType) {
 
             PredictionType.RANDOM -> RandomPredictionProvider()
-            PredictionType.TIME -> TimePredictionProvider(14, 0.4)
-            PredictionType.COMMIT_TIME -> CommitTimePredictionProvider(14, 0.35, 20)
+            PredictionType.TIME -> TimePredictionProvider()
+            PredictionType.COMMIT_TIME -> CommitTimePredictionProvider()
             PredictionType.SIMPLE_FORMULA -> SimplePredictionProvider()
-            PredictionType.WEIGHT_NEW -> NewWeightPredictionProvider(0.57, 2.0, 20.0, 5.0)
-            PredictionType.WEIGHT -> SimpleWeightPredictionProvider(0.0)
-            PredictionType.WEIGHT_WITH_FILTER -> WeightWithFilterPredictionProvider(0.0, 2.0, 20.0, 5.0)
+            PredictionType.WEIGHT_NEW -> NewWeightPredictionProvider()
+            PredictionType.WEIGHT -> SimpleWeightPredictionProvider()
+            PredictionType.WEIGHT_WITH_FILTER -> WeightWithFilterPredictionProvider()
         }
     }
 
@@ -96,7 +96,7 @@ class GitAlsoEstimate(val repositoryName: String, val datasetType: DatasetType, 
         addToCSV(repositoryName, datasetType, predictionType, prediction)
     }
 
-    private val compareWith = PredictionType.WEIGHT_NEW
+    private val compareWith = PredictionType.WEIGHT_WITH_FILTER
 
     private fun compare(repositoryName: String, datasetType: DatasetType, predictionType: PredictionType) {
         val service = getGitAlsoServiceFromIndex(repositoryName)

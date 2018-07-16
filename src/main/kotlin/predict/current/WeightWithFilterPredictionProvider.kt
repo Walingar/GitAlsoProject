@@ -36,7 +36,7 @@ class WeightWithFilterPredictionProvider(private val minProb: Double = 0.0, priv
                 if (secondFile in commit.getFiles()) {
                     continue
                 }
-                val currentRate = min(1.0, commitSize / fileCommit.getFiles().size.toDouble()) // * min(1.0, commits.size.toDouble() / secondFile.getCommits().filter { it.time < commit.time }.size)
+                val currentRate = min(1.0, commitSize / fileCommit.getFiles().size.toDouble())
                 candidates.putIfAbsent(secondFile, VoteProvider(m2))
                 candidates[secondFile]!!.vote(currentRate)
             }
@@ -54,6 +54,10 @@ class WeightWithFilterPredictionProvider(private val minProb: Double = 0.0, priv
         val candidates = HashMap<CommittedFile, Double>()
         val votes = ArrayList<Pair<CommittedFile, Double>>()
 
+        if (commit.getFiles().size > 10) {
+            return arrayListOf()
+        }
+
         for (file in commit.getFiles()) {
             val currentVotes = vote(file, commit)
             for ((currentFile, currentVote) in currentVotes) {
@@ -65,10 +69,16 @@ class WeightWithFilterPredictionProvider(private val minProb: Double = 0.0, priv
 
         val filteredCandidates = HashMap<CommittedFile, Double>()
 
+        if (commit.time == 1484842901L) {
+            val x = 2
+        }
+
         for ((file, score) in candidates) {
             if (score > minProb) {
                 for (commitFile in commit.getFiles()) {
-                    if (file.getCommits().filter { commitFile in it.getFiles() }.size.toDouble() / commitFile.getCommits().size > 0.2) {
+                    val predictedFileWithCommitFileSize = file.getCommits().filter { it.time <= commit.time && commitFile in it.getFiles() }.size.toDouble()
+                    val commitFileSize = commitFile.getCommits().filter { it.time <= commit.time }.size.toDouble()
+                    if (predictedFileWithCommitFileSize / commitFileSize > 0.3) {
                         filteredCandidates[file] = score
                     }
                 }
@@ -79,9 +89,6 @@ class WeightWithFilterPredictionProvider(private val minProb: Double = 0.0, priv
                 .toList()
                 .sortedBy { (_, value) -> value }
                 .reversed()
-        if (commit.getFiles().size > 5) {
-            return arrayListOf()
-        }
 
         return sortedCandidates
                 .map { it.first }
