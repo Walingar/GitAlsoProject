@@ -86,8 +86,10 @@ class WeightWithFilterPredictionProvider(private val minProb: Double = 0.0, priv
                 .sortedBy { (_, value) -> value }
                 .reversed()
 
+        var sliceBy = Integer.min(sortedCandidates.size, maxPredictedFileCount)
+
         return sortedCandidates
                 .map { it.first }
-                .subList(0, Integer.min(filteredCandidates.size, maxPredictedFileCount))
+                .subList(0, sliceBy)
     }
 }
