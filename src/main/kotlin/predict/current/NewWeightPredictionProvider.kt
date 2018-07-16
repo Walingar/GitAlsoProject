@@ -6,7 +6,7 @@ import predict.PredictionProvider
 
 import kotlin.math.min
 
-class NewWeightPredictionProvider(private val minProb: Double, private val m1: Double, private val m2: Double, private val commitSize: Double) : PredictionProvider {
+class NewWeightPredictionProvider(private val minProb: Double = 0.57, private val m1: Double = 2.0, private val m2: Double = 20.0, private val commitSize: Double = 5.0) : PredictionProvider {
 
     private class VoteProvider(private val m: Double) {
         var result = 0.0

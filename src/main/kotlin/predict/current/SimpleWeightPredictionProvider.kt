@@ -5,7 +5,7 @@ import commitInfo.CommittedFile
 import predict.PredictionProvider
 import kotlin.math.max
 
-class SimpleWeightPredictionProvider(private val minProb: Double) : PredictionProvider {
+class SimpleWeightPredictionProvider(private val minProb: Double = 0.0) : PredictionProvider {
 
     private class VoteProvider(private val m: Double) {
         var result = 0.0

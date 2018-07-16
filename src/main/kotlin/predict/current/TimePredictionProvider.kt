@@ -7,7 +7,7 @@ import predict.getIntersection
 import predict.getMaxByCommit
 import kotlin.math.sqrt
 
-class TimePredictionProvider(private val n: Int, private val minProb: Double) : PredictionProvider {
+class TimePredictionProvider(private val n: Int = 14, private val minProb: Double = 0.4) : PredictionProvider {
 
     private fun getTimeRate(time: Long, startTime: Long): Double {
         val week = 604800

@@ -7,7 +7,7 @@ import predict.getMaxByCommit
 import kotlin.math.max
 import kotlin.math.sqrt
 
-class CommitTimePredictionProvider(private val n: Int, private val minProb: Double, private val commitTick: Int) : PredictionProvider {
+class CommitTimePredictionProvider(private val n: Int = 14, private val minProb: Double = 0.4, private val commitTick: Int = 20) : PredictionProvider {
 
     private fun getRateForCommits(commits: Collection<Commit>): Double {
         var ans = 0.0
