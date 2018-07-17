@@ -5,7 +5,7 @@ import commitInfo.CommittedFile
 import predict.PredictionProvider
 import kotlin.math.min
 
-class WeightWithFilterPredictionProvider(private val minProb: Double = 0.5, private val m2: Double = 20.0, private val commitSize: Double = 5.0) : PredictionProvider {
+class WeightWithFilterPredictionProvider(private val minProb: Double = 1.0, private val m2: Double = 20.0, private val commitSize: Double = 5.0) : PredictionProvider {
 
     private class VoteProvider(private val m: Double) {
         var result = 0.0
@@ -54,6 +54,10 @@ class WeightWithFilterPredictionProvider(private val minProb: Double = 0.5, priv
         val candidates = HashMap<CommittedFile, Double>()
         val votes = ArrayList<Pair<CommittedFile, Double>>()
 
+//        if (commit.getFiles().size > 10) {
+//            return listOf()
+//        }
+
         for (file in commit.getFiles()) {
             val currentVotes = vote(file, commit)
             for ((currentFile, currentVote) in currentVotes) {
@@ -70,7 +74,7 @@ class WeightWithFilterPredictionProvider(private val minProb: Double = 0.5, priv
                 for (commitFile in commit.getFiles()) {
                     val predictedFileWithCommitFileSize = file.getCommits().filter { it.time < commit.time && commitFile in it.getFiles() }.size.toDouble()
                     val commitFileSize = commitFile.getCommits().filter { it.time < commit.time }.size.toDouble()
-                    if (predictedFileWithCommitFileSize / commitFileSize > 0.3) {
+                    if (predictedFileWithCommitFileSize / commitFileSize > 0.1) {
                         filteredCandidates[file] = score
                     }
                 }
@@ -82,7 +86,7 @@ class WeightWithFilterPredictionProvider(private val minProb: Double = 0.5, priv
                 .sortedBy { (_, value) -> value }
                 .reversed()
 
-        val sliceBy = Integer.min(sortedCandidates.size, maxPredictedFileCount)
+        val sliceBy = min(sortedCandidates.size, maxPredictedFileCount)
 
         return sortedCandidates
                 .map { it.first }
