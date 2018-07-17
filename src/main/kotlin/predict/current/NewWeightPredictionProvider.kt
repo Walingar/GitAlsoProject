@@ -6,7 +6,7 @@ import predict.PredictionProvider
 
 import kotlin.math.min
 
-class NewWeightPredictionProvider(private val minProb: Double = 0.57, private val m1: Double = 2.0, private val m2: Double = 20.0, private val commitSize: Double = 5.0) : PredictionProvider {
+class NewWeightPredictionProvider(private val minProb: Double = 0.57, private val m2: Double = 20.0, private val commitSize: Double = 5.0) : PredictionProvider {
 
     private class VoteProvider(private val m: Double) {
         var result = 0.0
@@ -37,7 +37,7 @@ class NewWeightPredictionProvider(private val minProb: Double = 0.57, private va
                 if (secondFile in commit.getFiles()) {
                     continue
                 }
-                val currentRate = min(1.0, commitSize / fileCommit.getFiles().size.toDouble()) // * min(1.0, commits.size.toDouble() / secondFile.getCommits().filter { it.time < commit.time }.size)
+                val currentRate = min(1.0, commitSize / fileCommit.getFiles().size.toDouble())
                 candidates.putIfAbsent(secondFile, VoteProvider(m2))
                 candidates[secondFile]!!.vote(currentRate)
             }
@@ -73,10 +73,6 @@ class NewWeightPredictionProvider(private val minProb: Double = 0.57, private va
                 .reversed()
         if (commit.getFiles().size > 5) {
             return arrayListOf()
-        }
-
-        if (commit.time == 1483354263L) {
-            val x = 2
         }
 
         return sortedCandidates
