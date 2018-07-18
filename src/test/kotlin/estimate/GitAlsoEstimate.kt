@@ -18,20 +18,27 @@ import predict.current.*
 
 @RunWith(Parameterized::class)
 class GitAlsoEstimate(val repositoryName: String, val datasetType: DatasetType, val predictionType: PredictionType) {
-    private val csvFile = File("data/results/resultTest.csv")
+    private val csvFile = File("data/results/resultMonday.csv")
 
     companion object {
         @JvmStatic
         @Parameterized.Parameters
         fun data(): Collection<Array<Any>> {
             val parameters = ArrayList<Array<Any>>()
-            val repositories = arrayListOf("pandas", "intellij-community", "kotlin", "intellij-rust")
-            for (repository in repositories) {
+            val allRepositories = arrayListOf("pandas", "intellij-community", "kotlin", "intellij-rust")
+            val currentRepositories = arrayListOf("kotlin")
+            for (repository in allRepositories) {
                 for (datasetType in DatasetType.values()) {
                     if (datasetType == DatasetType.SIMPLE) {
                         continue // TODO: add support of this dataset
                     }
-                    for (predictionType in arrayOf(PredictionType.WEIGHT_WITH_FILTER)) {
+                    val allPredictionTypes = arrayOf(
+                            PredictionType.SIMPLE_FORMULA,
+                            PredictionType.TIME,
+                            PredictionType.WEIGHT_NEW,
+                            PredictionType.WEIGHT_WITH_FILTER)
+                    val currentPredictionType = arrayOf(PredictionType.WEIGHT_WITH_FILTER)
+                    for (predictionType in allPredictionTypes) {
                         parameters += arrayOf(repository, datasetType, predictionType)
                     }
                 }
@@ -68,17 +75,17 @@ class GitAlsoEstimate(val repositoryName: String, val datasetType: DatasetType, 
         for (i in 2..randomPredictCount) {
             val newPrediction = estimator.predictForDatasetWithForgottenFiles(dataset, predictionProvider)
             prediction = PredictionResult(
+                    prediction.rightAtFirst + newPrediction.rightAtFirst,
                     prediction.right + newPrediction.right,
                     prediction.wrong + newPrediction.wrong,
-                    prediction.rightSilent + newPrediction.rightSilent,
-                    prediction.wrongSilent + newPrediction.wrongSilent
+                    prediction.silent + newPrediction.silent
             )
         }
         return PredictionResult(
+                prediction.rightAtFirst / randomPredictCount,
                 prediction.right / randomPredictCount,
                 prediction.wrong / randomPredictCount,
-                prediction.rightSilent / randomPredictCount,
-                prediction.wrongSilent / randomPredictCount
+                prediction.silent / randomPredictCount
         )
     }
 

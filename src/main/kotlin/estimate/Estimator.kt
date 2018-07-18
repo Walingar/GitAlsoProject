@@ -22,20 +22,16 @@ class Estimator(private val service: GitAlsoService) {
     fun predictForDatasetWithForgottenFiles(dataset: List<PipeLineCommit>, predictionProvider: PredictionProvider): PredictionResult {
         var rightPrediction = 0
         var wrongPrediction = 0
-        var rightSilentPrediction = 0
-        var wrongSilentPrediction = 0
+        var silentPrediction = 0
         var sizeCounter = 0
         var counterNonEmpty = 0
+        var rightAtFirst = 0
 
         for (pipeLineCommit in dataset) {
             val commit = createCommit(pipeLineCommit)
-//            println("Current commit: $commit")
-//            println("Files: ${pipeLineCommit.files}")
 
             val prediction = predictionProvider.commitPredict(commit)
 
-//            println("Prediction: $prediction")
-//            println("Expected: ${pipeLineCommit.forgottenFiles}")
 
             var right = false
             sizeCounter += prediction.size
@@ -46,32 +42,26 @@ class Estimator(private val service: GitAlsoService) {
             for (predictedFile in prediction) {
                 if (predictedFile.id in pipeLineCommit.forgottenFiles) {
                     right = true
-                    rightPrediction += 1
+                    if (prediction[0] == predictedFile) {
+                        rightAtFirst++
+                    }
+                    rightPrediction++
                     break
                 }
             }
 
             if (!right) {
                 if (prediction.isEmpty()) {
-                    if (pipeLineCommit.forgottenFiles.isEmpty()) {
-                        rightSilentPrediction += 1
-                    } else {
-                        wrongSilentPrediction += 1
-                    }
+                    silentPrediction++
                 } else {
-                    wrongPrediction += 1
+                    wrongPrediction++
                 }
             }
         }
         println()
         println(sizeCounter.toDouble() / counterNonEmpty)
-//        println()
-//        println("Right: $rightPrediction")
-//        println("Wrong: $wrongPrediction")
-//        println("Right silent: $rightSilentPrediction")
-//        println("Wrong silent: $wrongSilentPrediction")
 
-        return PredictionResult(rightPrediction, wrongPrediction, rightSilentPrediction, wrongSilentPrediction)
+        return PredictionResult(rightAtFirst, rightPrediction, wrongPrediction, silentPrediction)
     }
 
 
