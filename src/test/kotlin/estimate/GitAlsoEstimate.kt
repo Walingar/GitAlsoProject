@@ -18,7 +18,7 @@ import predict.current.*
 
 @RunWith(Parameterized::class)
 class GitAlsoEstimate(val repositoryName: String, val datasetType: DatasetType, val predictionType: PredictionType) {
-    private val csvFile = File("data/results/resultMonday.csv")
+    private val csvFile = File("data/results/resultTest.csv")
 
     companion object {
         @JvmStatic
@@ -36,7 +36,8 @@ class GitAlsoEstimate(val repositoryName: String, val datasetType: DatasetType, 
                             PredictionType.SIMPLE_FORMULA,
                             PredictionType.TIME,
                             PredictionType.WEIGHT_NEW,
-                            PredictionType.WEIGHT_WITH_FILTER)
+                            PredictionType.WEIGHT_WITH_FILTER,
+                            PredictionType.WEIGHT_WITH_FILTER_TUNED)
                     val currentPredictionType = arrayOf(PredictionType.WEIGHT_WITH_FILTER)
                     for (predictionType in allPredictionTypes) {
                         parameters += arrayOf(repository, datasetType, predictionType)
@@ -57,6 +58,8 @@ class GitAlsoEstimate(val repositoryName: String, val datasetType: DatasetType, 
             PredictionType.WEIGHT_NEW -> NewWeightPredictionProvider()
             PredictionType.WEIGHT -> SimpleWeightPredictionProvider()
             PredictionType.WEIGHT_WITH_FILTER -> WeightWithFilterPredictionProvider()
+            PredictionType.TOTAL_WEIGHT -> TotalWeightPredictionProvider()
+            PredictionType.WEIGHT_WITH_FILTER_TUNED -> WeightWithFilterTunedPredictionProvider()
         }
     }
 
