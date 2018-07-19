@@ -1,13 +1,12 @@
 <idea-plugin>
     <id>com.jetbrains.GitAlso</id>
     <name>GitAlso</name>
-    <version>0.0.51</version>
+    <version>0.0.6</version>
     <vendor email="walingar@mail.ru" url="http://www.jetbrains.com">JetBrains</vendor>
 
     <description>This plugin predicts files which developer may forgot to change or add to CVS.</description>
 
-    <idea-version since-build="173.0"/>
-    <depends>Git4Idea</depends>
+    <idea-version since-build="182.3684.40"/>
 
     <project-components>
         <component>
@@ -16,7 +15,10 @@
 
     </project-components>
 
+    <depends>com.intellij.modules.lang</depends>
+
     <extensions defaultExtensionNs="com.intellij">
+        <vcsLogIndexService implementation="com.jetbrains.gitalso.repository.GitAlsoService"/>
         <checkinHandlerFactory implementation="com.jetbrains.gitalso.commitHandle.GitAlsoCheckinHandlerFactory"/>
         <projectService serviceInterface="com.jetbrains.gitalso.repository.GitAlsoService"
                         serviceImplementation="com.jetbrains.gitalso.repository.GitAlsoService"/>
