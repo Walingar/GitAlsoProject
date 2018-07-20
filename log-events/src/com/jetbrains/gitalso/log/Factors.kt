@@ -1,5 +1,5 @@
 package com.jetbrains.gitalso.log
 
-enum class Factors(val type: Class<Any>) {
-    SCORES(ArrayList<Int>().javaClass) // TODO: come up with factors
+enum class Factors(val internalType: Class<*>) {
+    SCORES(Number::class.java) // TODO: come up with factors
 }

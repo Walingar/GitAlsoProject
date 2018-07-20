@@ -12,17 +12,21 @@ abstract class LogValidator {
 
     private fun getFactorsFromJson(json: String) = GitAlsoJsonSerializer.fromJsonToType<Map<String, Any>>(json, factorsType)
 
-    private fun checkFactorValueType(value: Any?, type: Class<Any>): Boolean {
+
+    private fun checkFactorValueType(value: Any?, type: Class<*>): Boolean {
         return when (value) {
             null -> false
-            else -> type == value.javaClass
+            is List<*> -> value.all {
+                it != null && type.isAssignableFrom(it::class.java)
+            }
+            else -> value::class == type
         }
     }
 
     private fun isFactorsValid(map: Map<*, *>): Boolean {
         return map.all { (key, value) ->
             when (key) {
-                is String -> key in Factors.values().map { it.toString() } && checkFactorValueType(value, Factors.valueOf(key).type)
+                is String -> key in Factors.values().map { it.toString() } && checkFactorValueType(value, Factors.valueOf(key).internalType)
                 else -> false
             }
         }
