@@ -7,7 +7,6 @@ import com.jetbrains.gitalso.log.Action
 import com.jetbrains.gitalso.log.Factor
 import com.jetbrains.gitalso.log.LogEvent
 import com.jetbrains.gitalso.log.LogField
-import com.sun.org.apache.xpath.internal.operations.Bool
 
 abstract class LogValidator {
     private val factorsType = object : TypeToken<Map<String, Any>>() {}.type

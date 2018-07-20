@@ -10,7 +10,7 @@ import org.junit.Test
 class ClientLogValidatorTest {
 
     @Test
-    fun testValidateValid() {
+    fun testValidateFromEvent() {
         val event = LogEvent(
                 System.currentTimeMillis() / 1000,
                 "gitalso",
@@ -125,6 +125,20 @@ class ClientLogValidatorTest {
                 "{\"FACTORS\":{\"123_111\":{\"SCORES\":[1.11,1.10,1.20]}},\"REPOSITORY\":\"1\"}"
 
         assertNotNull(ClientLogValidator.validate(eventJson))
+    }
+
+    @Test
+    fun testValidateValidEmptyKey() {
+        val eventJson = "1532074221\t" +
+                "gitalso\t" +
+                "1.0\t" +
+                "testID\t" +
+                "1\t" +
+                "COMMIT\t" +
+                "1\t" +
+                "{\"FACTORS\":}"
+
+        assertNull(ClientLogValidator.validate(eventJson))
     }
 
 
