@@ -22,7 +22,7 @@ abstract class LogValidator {
     private fun isFactorsValid(map: Map<*, *>): Boolean {
         return map.all { (key, value) ->
             when (key) {
-                is Factors -> checkFactorValueType(value, key.type)
+                is String -> key in Factors.values().map { it.toString() } && checkFactorValueType(value, Factors.valueOf(key).type)
                 else -> false
             }
         }
@@ -58,12 +58,12 @@ abstract class LogValidator {
         val repositoryID = elements[5]
 
         val action = try {
-            Action.valueOf(elements[4])
+            Action.valueOf(elements[6])
         } catch (e: IllegalArgumentException) {
             null
         } ?: return null
 
-        val factorsString = elements.subList(5, elements.size).joinToString("\t")
+        val factorsString = elements.subList(7, elements.size).joinToString("\t")
 
         val factors = try {
             getFactorsFromJson(factorsString)
