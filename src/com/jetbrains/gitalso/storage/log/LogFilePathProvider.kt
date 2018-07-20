@@ -15,7 +15,7 @@ class LogFilePathProvider : FilePathProvider {
 
     private val logPrefix = "log"
 
-    private fun getSuffix(name: String) = name.split('_')[1].toLong()
+    private fun getSuffix(name: String) = name.substringAfter('_').toLong()
 
     fun newLogFile(): File {
         val files = getDataFiles()
@@ -31,7 +31,6 @@ class LogFilePathProvider : FilePathProvider {
     }
 
     override fun cleanupOldFiles() {
-        // TODO: try to send
         var size = 0L
         val files = getDataFiles()
         files.forEach { size += it.length() }
