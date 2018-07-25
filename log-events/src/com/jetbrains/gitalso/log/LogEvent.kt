@@ -54,7 +54,7 @@ class LogEvent(
         result = 31 * result + sessionID.hashCode()
         result = 31 * result + action.hashCode()
         result = 31 * result + bucket.hashCode()
-        result = 31 * result + fields.hashCode()
+        result = 31 * result + fields.size
         return result
     }
 }
