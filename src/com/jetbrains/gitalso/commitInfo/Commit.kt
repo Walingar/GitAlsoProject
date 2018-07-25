@@ -1,40 +1,48 @@
 package com.jetbrains.gitalso.commitInfo
 
-class Commit(val time: Long, val author: String = "Unknown") {
-    private val files = HashSet<CommittedFile>()
+import com.intellij.openapi.project.Project
+import com.intellij.vcs.log.impl.VcsProjectLog
 
-    fun getFiles(): HashSet<CommittedFile> {
-        return files
-    }
+class Commit(project: Project, val id: Int) {
+
+    private val indexData = VcsProjectLog.getInstance(project).dataManager!!.index.dataGetter!!
+
+    val files = HashSet<CommittedFile>()
 
     fun addFile(file: CommittedFile) {
         files.add(file)
     }
 
-    fun isFileInCommit(file: CommittedFile): Boolean {
-        if (file in files) {
-            return true
-        }
-        return false
-    }
+    val time
+        get() =
+            if (id != -1) {
+                indexData.getAuthorTime(id)
+            } else {
+                System.currentTimeMillis()
+            }
 
-    override fun toString(): String {
-        return time.toString()
-    }
 
-    fun toFullString(): String {
-        return files.joinToString { t -> t.toString(this) }
-    }
+    val author
+        get() =
+            if (id != -1) {
+                indexData.getAuthor(id).toString()
+            } else {
+                "null"
+            }
+
+
+    override fun toString() = id.toString()
+
+    override fun hashCode() = id
 
     override fun equals(other: Any?): Boolean {
-        if (other is Commit) {
-            return other.time == this.time
-        }
-        return false
-    }
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
 
-    override fun hashCode(): Int {
-        return this.time.toInt()
-    }
+        other as Commit
 
+        if (id != other.id) return false
+
+        return true
+    }
 }
