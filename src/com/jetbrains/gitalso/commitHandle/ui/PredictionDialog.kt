@@ -6,6 +6,8 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.ScrollPaneFactory
 import java.awt.BorderLayout
 import java.awt.Color
+import java.awt.Dimension
+import java.awt.Toolkit
 import javax.swing.*
 
 class PredictionDialog(project: Project, private val root: VirtualFile, private val drawable: Set<VirtualFile>, private val color: Color) : DialogWrapper(project) {
@@ -21,7 +23,13 @@ class PredictionDialog(project: Project, private val root: VirtualFile, private 
     override fun createCenterPanel(): JComponent? {
         val panel = JPanel(BorderLayout())
         val predictionTreeChange = PredictionTree(root, drawable, color)
-        panel.add(ScrollPaneFactory.createScrollPane(predictionTreeChange.getTree()))
+        val scrollPane = ScrollPaneFactory.createScrollPane(predictionTreeChange.getTree())
+
+        scrollPane.preferredSize = Dimension(
+                50 + scrollPane.preferredSize.width,
+                50 * predictionTreeChange.getTree().rowCount)
+
+        panel.add(scrollPane)
 
         return panel
     }
