@@ -73,7 +73,7 @@ class GitAlsoDialog(private val project: Project, modifiedFiles: Set<VirtualFile
         }
 
         if (unmodifiedDrawable.isNotEmpty()) {
-            val changePanel = createPredictionPanel("change", unmodifiedDrawable, blackColor)
+            val changePanel = createPredictionPanel("modify", unmodifiedDrawable, blackColor)
             mainPanel.add(changePanel)
         }
 
