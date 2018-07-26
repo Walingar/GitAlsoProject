@@ -60,7 +60,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
         val dialog = GitAlsoDialog(project, modifiedFiles, unmodifiedFiles)
         dialog.show()
 
-        return if (dialog.exitCode == 0) {
+        return if (dialog.exitCode == 1) {
             ReturnResult.CANCEL
         } else {
             return ReturnResult.COMMIT
