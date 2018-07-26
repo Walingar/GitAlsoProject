@@ -4,7 +4,7 @@ import com.jetbrains.gitalso.commitInfo.Commit
 import com.jetbrains.gitalso.commitInfo.CommittedFile
 import kotlin.math.min
 
-class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.6, private val m: Double = 4.7, private val commitSize: Double = 5.0) : PredictionProvider {
+class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.6, private val m: Double = 4.7, private val commitSize: Double = 5.0) {
 
     private class VoteProvider(private val m: Double) {
         var result = 0.0
@@ -55,7 +55,8 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.6,
         return answer
     }
 
-    override fun commitPredict(commit: Commit, maxPredictedFileCount: Int): List<CommittedFile> {
+    // TODO: add prediction result
+    fun commitPredict(commit: Commit, maxPredictedFileCount: Int = 5): List<CommittedFile> {
         val candidates = HashMap<CommittedFile, Double>()
         val votes = ArrayList<Pair<CommittedFile, Double>>()
 
