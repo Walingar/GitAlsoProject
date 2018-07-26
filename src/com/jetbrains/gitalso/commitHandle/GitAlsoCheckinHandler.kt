@@ -36,6 +36,8 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
 
     private fun getRoot(file: FilePath) = VcsUtil.getVcsRootFor(project, file)
 
+
+    // TODO: add log create and send from PredictionResult
     override fun beforeCheckin(executor: CommitExecutor?, additionalDataConsumer: PairConsumer<Any, Any>?): ReturnResult {
         if (root == null) {
             return ReturnResult.COMMIT
