@@ -59,7 +59,11 @@ class IDEARepositoryInfo(private val project: Project) : RepositoryInfo {
     }
 
     override fun getCommit(root: FilePath, files: Collection<FilePath>): Commit? {
-        if (!predictable || root.virtualFile == null || !dataManager!!.index.isIndexed(root.virtualFile!!)) {
+        if (
+                files.isEmpty() ||
+                !predictable ||
+                root.virtualFile == null ||
+                !dataManager!!.index.isIndexed(root.virtualFile!!)) {
             return null
         }
 
