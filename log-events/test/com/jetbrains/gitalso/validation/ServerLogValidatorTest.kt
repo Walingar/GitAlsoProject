@@ -20,7 +20,7 @@ class ServerLogValidatorTest {
                 val logEvents = HashMap<String, Any>()
                 for (file1 in 1..10) {
                     for (file2 in 1..10) {
-                        logEvents["${file1}_$file2"] = mapOf(Factor.SCORES to arrayOf(1.0, 1.1, 1.2))
+                        logEvents["($file1, $file2)"] = mapOf(Factor.SCORES to arrayOf(1.0, 1.1, 1.2))
                     }
                 }
                 eventJson[LogField.FACTORS] = logEvents

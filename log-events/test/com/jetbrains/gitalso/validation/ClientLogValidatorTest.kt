@@ -21,7 +21,7 @@ class ClientLogValidatorTest {
                 Action.COMMIT,
                 "1",
                 mapOf(
-                        LogField.FACTORS to mapOf("123_111" to mapOf(Factor.SCORES to arrayOf(1.0, 1.1, 1.2))),
+                        LogField.FACTORS to mapOf("(123, 111)" to mapOf(Factor.SCORES to arrayOf(1.0, 1.1, 1.2))),
                         LogField.REPOSITORY to "1"
                 )
         )
@@ -53,7 +53,7 @@ class ClientLogValidatorTest {
                 "1\t" +
                 "INVALID_ACTION_TEST\t" +
                 "1\t" +
-                "{\"FACTORS\":{\"123_111\":{\"SCORES\":[1.00,1.10,1.20]}},\"REPOSITORY\":\"1\"}"
+                "{\"FACTORS\":{\"(123, 111)\":{\"SCORES\":[1.00,1.10,1.20]}},\"REPOSITORY\":\"1\"}"
 
         assertNull(ClientLogValidator.validate(eventJson))
     }
@@ -67,7 +67,7 @@ class ClientLogValidatorTest {
                 "1\t" +
                 "COMMIT\t" +
                 "1\t" +
-                "{\"FACTORS\":{\"123_111\":{\"SCORES\":[1.00,1.10,1.20]}},\"REPOSITORY_INVALID\":\"1\"}"
+                "{\"FACTORS\":{\"(123, 111)\":{\"SCORES\":[1.00,1.10,1.20]}},\"REPOSITORY_INVALID\":\"1\"}"
 
         assertNull(ClientLogValidator.validate(eventJson))
     }
@@ -81,7 +81,7 @@ class ClientLogValidatorTest {
                 "1\t" +
                 "COMMIT\t" +
                 "1\t" +
-                "{\"FACTORS\":{\"123_111\":{\"SCORES_INVALID\":[1.00,1.10,1.20]}},\"REPOSITORY\":\"1\"}"
+                "{\"FACTORS\":{\"(123, 111)\":{\"SCORES_INVALID\":[1.00,1.10,1.20]}},\"REPOSITORY\":\"1\"}"
 
         assertNull(ClientLogValidator.validate(eventJson))
     }
@@ -95,7 +95,7 @@ class ClientLogValidatorTest {
                 "1\t" +
                 "COMMIT\t" +
                 "1\t" +
-                "{\"FACTORS\":{\"123_111\":{\"SCORES\":[\"A\",1.10,1.20]}},\"REPOSITORY\":\"1\"}"
+                "{\"FACTORS\":{\"(123, 111)\":{\"SCORES\":[\"A\",1.10,1.20]}},\"REPOSITORY\":\"1\"}"
 
         assertNull(ClientLogValidator.validate(eventJson))
     }
@@ -109,7 +109,7 @@ class ClientLogValidatorTest {
                 "1\t" +
                 "COMMIT\t" +
                 "1\t" +
-                "{\"FACTORS\":{\"123_111\":{\"SCORES\":\"A\"}},\"REPOSITORY\":\"1\"}"
+                "{\"FACTORS\":{\"(123, 111)\":{\"SCORES\":\"A\"}},\"REPOSITORY\":\"1\"}"
 
         assertNull(ClientLogValidator.validate(eventJson))
     }
@@ -123,7 +123,7 @@ class ClientLogValidatorTest {
                 "1\t" +
                 "COMMIT\t" +
                 "1\t" +
-                "{\"FACTORS\":{\"123_111\":{\"SCORES\":[1.11,1.10,1.20]}},\"REPOSITORY\":\"1\"}"
+                "{\"FACTORS\":{\"(123, 111)\":{\"SCORES\":[1.11,1.10,1.20]}},\"REPOSITORY\":\"1\"}"
 
         assertNotNull(ClientLogValidator.validate(eventJson))
     }
@@ -151,7 +151,7 @@ class ClientLogValidatorTest {
                 "1\t" +
                 "COMMIT\t" +
                 "1\t" +
-                "{\"FACTORS\":{\"123_111\":{\"SCORES\":{\"A\":5.5}}},\"REPOSITORY\":\"1\"}"
+                "{\"FACTORS\":{\"(123, 111)\":{\"SCORES\":{\"A\":5.5}}},\"REPOSITORY\":\"1\"}"
         assertNotNull(ClientLogValidator.validate(eventJson))
     }
 
@@ -164,7 +164,7 @@ class ClientLogValidatorTest {
                 "1\t" +
                 "COMMIT\t" +
                 "1\t" +
-                "{\"FACTORS\":{\"123_111\":{\"SCORES\":{\"A\":\"5.5\"}}},\"REPOSITORY\":\"1\"}"
+                "{\"FACTORS\":{\"(123, 111)\":{\"SCORES\":{\"A\":\"5.5\"}}},\"REPOSITORY\":\"1\"}"
         assertNull(ClientLogValidator.validate(eventJson))
     }
 
