@@ -2,7 +2,7 @@ package com.jetbrains.gitalso.validation
 
 import com.jetbrains.gitalso.validation.result.ValidationResult
 
-class ServerLogValidator(private val result: ValidationResult) : LogValidator() {
+class ServerLogValidator(val result: ValidationResult) : LogValidator() {
     fun validate(lines: Collection<String>) {
         lines.forEach {
             if (validate(it) != null) {
