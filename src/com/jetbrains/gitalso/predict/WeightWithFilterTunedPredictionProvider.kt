@@ -4,7 +4,7 @@ import com.jetbrains.gitalso.commitInfo.Commit
 import com.jetbrains.gitalso.commitInfo.CommittedFile
 import kotlin.math.min
 
-class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.6, private val m: Double = 4.7, private val commitSize: Double = 5.0) {
+class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.8, private val m: Double = 4.7, private val commitSize: Double = 5.0) {
 
     private class VoteProvider(private val m: Double) {
         var result = 0.0
@@ -55,16 +55,20 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.6,
         return answer
     }
 
-    // TODO: add prediction result
-    fun commitPredict(commit: Commit, maxPredictedFileCount: Int = 5): List<CommittedFile> {
+
+    fun commitPredict(commit: Commit, maxPredictedFileCount: Int = 5): PredictionResult {
         val candidates = HashMap<CommittedFile, Double>()
         val votes = ArrayList<Pair<CommittedFile, Double>>()
+
+        val scores = HashMap<Pair<CommittedFile, CommittedFile>, Number>()
+
 
         for (file in commit.files) {
             val currentVotes = vote(file, commit)
             for ((currentFile, currentVote) in currentVotes) {
                 votes.add(Pair(currentFile, currentVote))
                 candidates.putIfAbsent(currentFile, 0.0)
+                scores[Pair(file, currentFile)] = currentVote
                 candidates[currentFile] = candidates[currentFile]!! + currentVote
             }
         }
@@ -74,11 +78,15 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.6,
                 .filter { it.second > minProb }
                 .sortedBy { (_, value) -> value }
                 .reversed()
+                .filter { it.first.path.virtualFile != null }
 
         val sliceBy = min(sortedCandidates.size, maxPredictedFileCount)
 
-        return sortedCandidates
+        val prediction = sortedCandidates
                 .map { it.first }
                 .subList(0, sliceBy)
+
+
+        return PredictionResult(scores.filter { (pair, _) -> pair.second in prediction }, prediction)
     }
 }

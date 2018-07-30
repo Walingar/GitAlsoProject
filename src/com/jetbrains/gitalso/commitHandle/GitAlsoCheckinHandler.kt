@@ -37,7 +37,6 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
     private fun getRoot(file: FilePath) = VcsUtil.getVcsRootFor(project, file)
 
 
-    // TODO: add log create and send from PredictionResult
     override fun beforeCheckin(executor: CommitExecutor?, additionalDataConsumer: PairConsumer<Any, Any>?): ReturnResult {
         if (root == null) {
             return ReturnResult.COMMIT
@@ -47,8 +46,10 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
         val filesFromRoot = files().filter { getRoot(it) == root }
         val commit = repository.getCommit(getFilePath(root), filesFromRoot) ?: return ReturnResult.COMMIT
 
-        val files = WeightWithFilterTunedPredictionProvider()
-                .commitPredict(commit).mapNotNull { it.path.virtualFile }
+        val result = WeightWithFilterTunedPredictionProvider()
+                .commitPredict(commit)
+
+        val files = result.prediction.mapNotNull { it.path.virtualFile }
 
         if (files.isEmpty()) {
             return ReturnResult.COMMIT
