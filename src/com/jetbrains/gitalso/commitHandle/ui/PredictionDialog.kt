@@ -13,7 +13,7 @@ import javax.swing.*
 class PredictionDialog(project: Project, private val root: VirtualFile, private val drawable: Set<VirtualFile>, private val color: Color) : DialogWrapper(project) {
     init {
         init()
-        title = "Files"
+        title = "GitAlso plugin"
     }
 
     override fun createActions(): Array<Action> {
