@@ -3,6 +3,7 @@ package com.jetbrains.gitalso.commitInfo
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.FilePath
 import com.intellij.vcs.log.impl.VcsProjectLog
+import com.jetbrains.gitalso.storage.log.hash.HashProvider
 import com.sun.deploy.util.Base64Wrapper.encodeToString
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
@@ -21,15 +22,8 @@ class CommittedFile(project: Project, val path: FilePath) {
     }
 
 
-    val id by lazy {
-        val p = 31
-        var hash = 0
-        var pPow = 1
-        for (ch in path.path) {
-            hash += (ch - 'a' + 1) * pPow
-            pPow *= p
-        }
-        hash
+    private val id by lazy {
+        HashProvider.hash(path.path)
     }
 
     val names get() = indexData.getKnownNames(path)
