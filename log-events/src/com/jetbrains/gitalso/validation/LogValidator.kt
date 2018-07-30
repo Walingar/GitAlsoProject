@@ -23,7 +23,7 @@ abstract class LogValidator {
                 is Map<*, *> -> value.all { (_, value) ->
                     value != null && type.isAssignableFrom(value::class.java)
                 }
-                else -> value::class == type
+                else ->  type.isAssignableFrom(value::class.java)
             }
 
     private fun isFactorsValuesValid(map: Map<*, *>) =
@@ -36,13 +36,17 @@ abstract class LogValidator {
             }
 
     private fun isFactorsKeyValid(key: String): Boolean {
-        val splitKey = key.split('_')
+        if (!key.startsWith('(') || !key.endsWith(')')) {
+            return false
+        }
+
+        val splitKey = key.substring(1 until key.length - 1).split(',')
         if (splitKey.size != 2) {
             return false
         }
         return try {
-            splitKey[0].toLong()
-            splitKey[1].toLong()
+            splitKey[0].trim().toLong()
+            splitKey[1].trim().toLong()
             true
         } catch (e: NumberFormatException) {
             false

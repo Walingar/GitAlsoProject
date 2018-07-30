@@ -15,11 +15,13 @@ data class PredictionResult(val scores: Map<Pair<CommittedFile, CommittedFile>, 
         val userID = PermanentInstallationID.get()
         val sessionID = "1"
         val bucket = "-1"
+        val factors = HashMap<String, Map<Factor, Any>>()
+        for ((key, value) in scores) {
+            factors[key.toString()] = mapOf(Factor.SCORES to value)
+        }
         val fields = mapOf(
                 LogField.REPOSITORY to repository,
-                LogField.FACTORS to mapOf(
-                        Factor.SCORES to scores
-                )
+                LogField.FACTORS to factors
         )
 
         return LogEvent(timestamp, recorderID, recorderVersion, userID, sessionID, action, bucket, fields)

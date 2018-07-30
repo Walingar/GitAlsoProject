@@ -4,6 +4,7 @@ import com.jetbrains.gitalso.log.Action
 import com.jetbrains.gitalso.log.Factor
 import com.jetbrains.gitalso.log.LogEvent
 import com.jetbrains.gitalso.log.LogField
+import junit.framework.Assert
 import junit.framework.TestCase.*
 import org.junit.Test
 
@@ -165,5 +166,26 @@ class ClientLogValidatorTest {
                 "1\t" +
                 "{\"FACTORS\":{\"123_111\":{\"SCORES\":{\"A\":\"5.5\"}}},\"REPOSITORY\":\"1\"}"
         assertNull(ClientLogValidator.validate(eventJson))
+    }
+
+    @Test
+    fun testGeneratedLogCANCEL() {
+        val eventJson = "1532944761029\tgit-also\t1\tf83ce224-0b90-4d92-9c6b-4015ed97e81d\t1\tCANCEL\t-1\t{\"REPOSITORY\":\"G2iYaqFXdwle9OSYmdGlNppH23rRo2uN/pSiSqRwRhk\\u003d\",\"FACTORS\":{\"(960044793, 845646880)\":{\"SCORES\":0.51},\"(1591886002, -174624003)\":{\"SCORES\":0.42},\"(960044793, -174624003)\":{\"SCORES\":0.51},\"(1591886002, 845646880)\":{\"SCORES\":0.43}}}"
+
+        Assert.assertNotNull(ClientLogValidator.validate(eventJson))
+    }
+
+    @Test
+    fun testGeneratedLogNotWatched() {
+        val eventJson = "1532944722254\tgit-also\t1\tf83ce224-0b90-4d92-9c6b-4015ed97e81d\t1\tNOT_WATCHED\t-1\t{\"REPOSITORY\":\"G2iYaqFXdwle9OSYmdGlNppH23rRo2uN/pSiSqRwRhk\\u003d\",\"FACTORS\":{}}"
+
+        Assert.assertNotNull(ClientLogValidator.validate(eventJson))
+    }
+
+    @Test
+    fun testGeneratedLogNotIndexed() {
+        val eventJson = "1532944643569\tgit-also\t1\tf83ce224-0b90-4d92-9c6b-4015ed97e81d\t1\tNOT_INDEXED\t-1\t{\"REPOSITORY\":\"G2iYaqFXdwle9OSYmdGlNppH23rRo2uN/pSiSqRwRhk\\u003d\",\"FACTORS\":{}}"
+
+        Assert.assertNotNull(ClientLogValidator.validate(eventJson))
     }
 }

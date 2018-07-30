@@ -7,6 +7,9 @@ import com.intellij.vcs.log.impl.VcsProjectLog
 import com.intellij.vcsUtil.VcsUtil
 import com.jetbrains.gitalso.commitInfo.Commit
 import com.jetbrains.gitalso.commitInfo.CommittedFile
+import java.nio.charset.StandardCharsets
+import java.security.MessageDigest
+import java.util.*
 import kotlin.math.min
 
 class IDEARepositoryInfo(private val project: Project) : RepositoryInfo {
@@ -74,6 +77,15 @@ class IDEARepositoryInfo(private val project: Project) : RepositoryInfo {
         }
 
         return commit
+    }
+
+    override fun toString(): String {
+        val digest = MessageDigest.getInstance("SHA-256")
+        if (project.basePath == null) {
+            return "null"
+        }
+        val hash = digest.digest(project.basePath!!.toByteArray(StandardCharsets.UTF_8))
+        return Base64.getEncoder().encodeToString(hash)
     }
 
 }

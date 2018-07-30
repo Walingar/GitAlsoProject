@@ -21,16 +21,20 @@ class CommittedFile(project: Project, val path: FilePath) {
     }
 
 
-    val id
-        get() = {
-            val digest = MessageDigest.getInstance("SHA-256")
-            val hash = digest.digest(path.path.toByteArray(StandardCharsets.UTF_8))
-            Base64.getEncoder().encodeToString(hash)
+    val id by lazy {
+        val p = 31
+        var hash = 0
+        var pPow = 1
+        for (ch in path.path) {
+            hash += (ch - 'a' + 1) * pPow
+            pPow *= p
         }
+        hash
+    }
 
     val names get() = indexData.getKnownNames(path)
 
-    override fun toString() = id()!!
+    override fun toString() = id.toString()
 
     override fun hashCode() = path.hashCode()
 
