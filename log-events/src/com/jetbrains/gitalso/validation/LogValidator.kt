@@ -20,6 +20,9 @@ abstract class LogValidator {
                 is List<*> -> value.all {
                     it != null && type.isAssignableFrom(it::class.java)
                 }
+                is Map<*, *> -> value.all { (key, value) ->
+                    key is String && value != null && type.isAssignableFrom(value::class.java)
+                }
                 else -> value::class == type
             }
 

@@ -128,7 +128,7 @@ class ClientLogValidatorTest {
     }
 
     @Test
-    fun testValidateValidEmptyKey() {
+    fun testValidateInvalidEmptyKey() {
         val eventJson = "1532074221\t" +
                 "gitalso\t" +
                 "1.0\t" +
@@ -141,5 +141,29 @@ class ClientLogValidatorTest {
         assertNull(ClientLogValidator.validate(eventJson))
     }
 
+    @Test
+    fun testValidateValidMapScoresKey() {
+        val eventJson = "1532074221\t" +
+                "gitalso\t" +
+                "1.0\t" +
+                "testID\t" +
+                "1\t" +
+                "COMMIT\t" +
+                "1\t" +
+                "{\"FACTORS\":{\"123_111\":{\"SCORES\":{\"A\":5.5}}},\"REPOSITORY\":\"1\"}"
+        assertNotNull(ClientLogValidator.validate(eventJson))
+    }
 
+    @Test
+    fun testValidateInvalidMapScoresKey() {
+        val eventJson = "1532074221\t" +
+                "gitalso\t" +
+                "1.0\t" +
+                "testID\t" +
+                "1\t" +
+                "COMMIT\t" +
+                "1\t" +
+                "{\"FACTORS\":{\"123_111\":{\"SCORES\":{\"A\":\"5.5\"}}},\"REPOSITORY\":\"1\"}"
+        assertNull(ClientLogValidator.validate(eventJson))
+    }
 }
