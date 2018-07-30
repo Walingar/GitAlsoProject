@@ -4,7 +4,7 @@ import com.jetbrains.gitalso.json.GitAlsoJsonSerializer
 
 class LogEvent(
         val timestamp: Long,
-        val recorderId: String,
+        val recorderID: String,
         val recorderVersion: String,
         val userID: String,
         val sessionID: String,
@@ -14,7 +14,7 @@ class LogEvent(
 
 
     override fun toString() = "$timestamp\t" +
-            "$recorderId\t" +
+            "$recorderID\t" +
             "$recorderVersion\t" +
             "$userID\t" +
             "$sessionID\t" +
@@ -29,7 +29,7 @@ class LogEvent(
         other as LogEvent
 
         if (timestamp != other.timestamp) return false
-        if (recorderId != other.recorderId) return false
+        if (recorderID != other.recorderID) return false
         if (recorderVersion != other.recorderVersion) return false
         if (userID != other.userID) return false
         if (sessionID != other.sessionID) return false
@@ -48,7 +48,7 @@ class LogEvent(
 
     override fun hashCode(): Int {
         var result = timestamp.hashCode()
-        result = 31 * result + recorderId.hashCode()
+        result = 31 * result + recorderID.hashCode()
         result = 31 * result + recorderVersion.hashCode()
         result = 31 * result + userID.hashCode()
         result = 31 * result + sessionID.hashCode()

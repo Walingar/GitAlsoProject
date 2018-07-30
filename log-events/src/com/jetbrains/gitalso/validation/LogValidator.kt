@@ -20,8 +20,8 @@ abstract class LogValidator {
                 is List<*> -> value.all {
                     it != null && type.isAssignableFrom(it::class.java)
                 }
-                is Map<*, *> -> value.all { (key, value) ->
-                    key is String && value != null && type.isAssignableFrom(value::class.java)
+                is Map<*, *> -> value.all { (_, value) ->
+                    value != null && type.isAssignableFrom(value::class.java)
                 }
                 else -> value::class == type
             }
@@ -110,10 +110,6 @@ abstract class LogValidator {
         } catch (e: JsonSyntaxException) {
             null
         } ?: return null
-
-        if (factors.containsKey(LogField.INVALID.toString())) {
-            return null
-        }
 
         if (!isJsonValid(factors)) {
             return null

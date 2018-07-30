@@ -2,6 +2,7 @@ package com.jetbrains.gitalso.storage.log
 
 import com.intellij.openapi.application.PathManager
 import com.jetbrains.gitalso.storage.FilePathProvider
+import com.jetbrains.gitalso.storage.log.send.LogSender
 import java.io.File
 import java.io.FileFilter
 
@@ -38,6 +39,7 @@ class LogFilePathProvider : FilePathProvider {
             var current = 0
             while (size >= MAX_ALLOWED_SEND_SIZE) {
                 size -= files[current].length()
+                LogSender.send(files[current].readText(), true)
                 files[current].delete()
                 current++
             }

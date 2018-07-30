@@ -10,7 +10,7 @@ import org.apache.commons.codec.binary.Base64OutputStream
 import java.io.ByteArrayOutputStream
 import java.util.zip.GZIPOutputStream
 
-// TODO: update it
+// TODO: update it need? It think no
 object LogSender {
     private const val infoUrl = "https://www.jetbrains.com/config/features-service-status.json"
     private val LOG = logger<LogSender>()
