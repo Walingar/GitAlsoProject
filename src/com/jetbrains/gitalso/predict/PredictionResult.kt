@@ -29,6 +29,18 @@ data class PredictionResult(
     var repository = "null"
     var sessionID = 1
 
+    private fun putIfNotEmptyValue(map: MutableMap<LogField, Any>, field: LogField, value: Collection<*>) {
+        if (value.isNotEmpty()) {
+            map[field] = value
+        }
+    }
+
+    private fun putIfNotEmptyValue(map: MutableMap<LogField, Any>, field: LogField, value: Map<*, *>) {
+        if (value.isNotEmpty()) {
+            map[field] = value
+        }
+    }
+
     fun getLogEvent(
             stateBefore: State,
             stateAfter: State,
@@ -47,14 +59,28 @@ data class PredictionResult(
                     Factor.COMMITS to commits[key]!!)
         }
 
-        val fields = mapOf(
+        val dependentFields = HashMap<LogField, Any>()
+
+        putIfNotEmptyValue(dependentFields,
+                LogField.PREDICTION_MODIFIED,
+                predictionModified.map { HashProvider.hash(it.path) })
+
+        putIfNotEmptyValue(dependentFields,
+                LogField.PREDICTION_UNMODIFIED,
+                predictionUnmodified.map { HashProvider.hash(it.path) })
+
+        putIfNotEmptyValue(dependentFields,
+                LogField.FACTORS,
+                factors)
+
+        putIfNotEmptyValue(dependentFields,
+                LogField.FILES,
+                commit.map { it.toString() })
+
+        val fields = dependentFields + mapOf(
                 LogField.STATE_BEFORE to stateBefore,
                 LogField.STATE_AFTER to stateAfter,
-                LogField.REPOSITORY to repository,
-                LogField.FACTORS to factors,
-                LogField.PREDICTION_MODIFIED to predictionModified.map { HashProvider.hash(it.path) },
-                LogField.PREDICTION_UNMODIFIED to predictionUnmodified.map { HashProvider.hash(it.path) },
-                LogField.FILES to commit.map { it.toString() }
+                LogField.REPOSITORY to repository
         )
 
         return LogEvent(timestamp, recorderID, recorderVersion, userID, sessionID.toString(), action, bucket, fields)
