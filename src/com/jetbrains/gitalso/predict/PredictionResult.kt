@@ -54,7 +54,7 @@ data class PredictionResult(
                 LogField.FACTORS to factors,
                 LogField.PREDICTION_MODIFIED to predictionModified.map { HashProvider.hash(it.path) },
                 LogField.PREDICTION_UNMODIFIED to predictionUnmodified.map { HashProvider.hash(it.path) },
-                LogField.FILES to commit
+                LogField.FILES to commit.map { it.toString() }
         )
 
         return LogEvent(timestamp, recorderID, recorderVersion, userID, sessionID.toString(), action, bucket, fields)
