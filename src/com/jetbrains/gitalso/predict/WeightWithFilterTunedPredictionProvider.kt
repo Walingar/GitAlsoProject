@@ -73,20 +73,26 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.8,
             }
         }
 
-        val sortedCandidates = candidates
+        val sortedPrediction = candidates
                 .toList()
-                .filter { it.second > minProb }
                 .sortedBy { (_, value) -> value }
                 .reversed()
-                .filter { it.first.path.virtualFile != null }
 
-        val sliceBy = min(sortedCandidates.size, maxPredictedFileCount)
+        val filteredCandidates = sortedPrediction.filter { it.second > minProb }
 
-        val prediction = sortedCandidates
+        val sliceBy = min(filteredCandidates.size, maxPredictedFileCount)
+
+        val prediction = filteredCandidates
                 .map { it.first }
                 .subList(0, sliceBy)
 
+        val topCandidates = sortedPrediction
+                .map { it.first }
+                .subList(0, min(sortedPrediction.size, 5))
 
-        return PredictionResult(scores.filter { (pair, _) -> pair.second in prediction }, prediction)
+        val predictionScores = scores.filter { (pair, _) -> pair.second in prediction }
+        val topScores = scores.filter { (pair, _) -> pair.second in topCandidates }
+
+        return PredictionResult(commit.files.toList(), predictionScores, prediction, topScores)
     }
 }
