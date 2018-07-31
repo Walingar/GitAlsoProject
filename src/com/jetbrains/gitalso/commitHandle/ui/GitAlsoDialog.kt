@@ -7,6 +7,8 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.components.labels.LinkLabel
 import com.intellij.ui.components.labels.LinkListener
 import com.intellij.vcsUtil.VcsUtil
+import com.jetbrains.gitalso.log.State
+import com.jetbrains.gitalso.storage.log.Logger
 import java.awt.*
 import javax.swing.*
 
@@ -53,6 +55,11 @@ class GitAlsoDialog(private val project: Project, modifiedFiles: Set<VirtualFile
 
         val textLabel = JLabel("$textPrefix $leafs ${if (leafs == 1) "file" else "files"}.")
         val link = LinkLabel("show", null, LinkListener<Any> { _, _ ->
+            if (textPrefix == "commit") {
+                Logger.simpleActionLog(com.jetbrains.gitalso.log.Action.SHOW_MODIFIED, State.SHOW_MAIN_DIALOG, State.SHOW_MODIFIED)
+            } else {
+                Logger.simpleActionLog(com.jetbrains.gitalso.log.Action.SHOW_UNMODIFIED, State.SHOW_MAIN_DIALOG, State.SHOW_UNMODIFIED)
+            }
             PredictionDialog(project, root, drawable, color).show()
         })
 
