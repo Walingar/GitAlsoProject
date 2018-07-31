@@ -61,6 +61,11 @@ class GitAlsoDialog(private val project: Project, modifiedFiles: Set<VirtualFile
                 Logger.simpleActionLog(com.jetbrains.gitalso.log.Action.SHOW_UNMODIFIED, State.SHOW_MAIN_DIALOG, State.SHOW_UNMODIFIED)
             }
             PredictionDialog(project, root, drawable, color).show()
+            if (textPrefix == "commit") {
+                Logger.simpleActionLog(com.jetbrains.gitalso.log.Action.CLOSE_MODIFIED, State.SHOW_MODIFIED, State.SHOW_MAIN_DIALOG)
+            } else {
+                Logger.simpleActionLog(com.jetbrains.gitalso.log.Action.CLOSE_UNMODIFIED, State.SHOW_UNMODIFIED, State.SHOW_MAIN_DIALOG)
+            }
         })
 
         panel.add(textLabel)
