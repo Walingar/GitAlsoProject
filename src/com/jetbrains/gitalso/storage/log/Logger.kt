@@ -18,7 +18,7 @@ object Logger {
     }
 
     fun simpleActionLog(action: Action, stateBefore: State, stateAfter: State) {
-        val result = PredictionResult(HashMap(), ArrayList())
+        val result = PredictionResult()
         result.sessionID = sessionId
         result.repository = repository
         log(result.getLogEvent(stateBefore, stateAfter, action, HashMap()))

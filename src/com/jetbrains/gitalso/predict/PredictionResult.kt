@@ -8,7 +8,12 @@ import com.jetbrains.gitalso.log.LogEvent
 import com.jetbrains.gitalso.log.LogField
 import com.jetbrains.gitalso.log.State
 
-data class PredictionResult(val scores: Map<Pair<CommittedFile, CommittedFile>, Number>, val prediction: Collection<CommittedFile>) {
+data class PredictionResult(
+        val commit: List<CommittedFile> = ArrayList(),
+        val scores: Map<Pair<CommittedFile, CommittedFile>, Number> = HashMap(),
+        val prediction: Collection<CommittedFile> = ArrayList(),
+        val topScores: Map<Pair<CommittedFile, CommittedFile>, Number> = HashMap()
+) {
     private val timestamp by lazy {
         System.currentTimeMillis()
     }
@@ -25,10 +30,12 @@ data class PredictionResult(val scores: Map<Pair<CommittedFile, CommittedFile>, 
             stateBefore: State,
             stateAfter: State,
             action: Action,
-            commits: Map<Pair<CommittedFile, CommittedFile>, Set<Long>>
+            commits: Map<Pair<CommittedFile, CommittedFile>, Set<Long>>,
+            predictionModified: List<CommittedFile> = ArrayList(),
+            predictionUnmodified: List<CommittedFile> = ArrayList()
     ): LogEvent {
         val factors = HashMap<String, Map<Factor, Any>>()
-        for ((key, value) in scores) {
+        for ((key, value) in topScores) {
             if (key !in commits) {
                 continue
             }
@@ -41,7 +48,10 @@ data class PredictionResult(val scores: Map<Pair<CommittedFile, CommittedFile>, 
                 LogField.STATE_BEFORE to stateBefore,
                 LogField.STATE_AFTER to stateAfter,
                 LogField.REPOSITORY to repository,
-                LogField.FACTORS to factors
+                LogField.FACTORS to factors,
+                LogField.PREDICTION_MODIFIED to predictionModified,
+                LogField.PREDICTION_UNMODIFIED to predictionUnmodified,
+                LogField.FILES to commit
         )
 
         return LogEvent(timestamp, recorderID, recorderVersion, userID, sessionID.toString(), action, bucket, fields)
