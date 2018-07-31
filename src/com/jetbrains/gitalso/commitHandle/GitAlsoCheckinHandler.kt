@@ -47,20 +47,12 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
     private fun ClosedRange<Int>.random() =
             Random().nextInt((endInclusive + 1) - start) + start
 
-    private fun createPredictionDialog(files: Collection<VirtualFile>): GitAlsoDialog {
-        val modifiedFiles = files.filter { isModified(it) }.toSet()
-        val unmodifiedFiles = files.filter { !isModified(it) }.toSet()
-
-        return GitAlsoDialog(project, modifiedFiles, unmodifiedFiles)
-    }
-
     private fun getCommitTimesFromPrediction(
             commit: Commit,
-            prediction: Collection<CommittedFile>
+            topPrediction: Collection<CommittedFile>
     ): Map<Pair<CommittedFile, CommittedFile>, Set<Long>> {
-
         val commits = HashMap<Pair<CommittedFile, CommittedFile>, HashSet<Long>>()
-        val predictionSet = prediction.toSet()
+        val predictionSet = topPrediction.toSet()
 
         for (file in commit.files) {
             for (fileCommit in file.commits) {
@@ -107,26 +99,33 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
         result.sessionID = sessionId
         result.repository = repository.toString()
 
-        val commits = getCommitTimesFromPrediction(commit, result.prediction)
+        val commits = getCommitTimesFromPrediction(commit, result.topPrediction)
 
         val files = result.prediction.mapNotNull { it.path.virtualFile }
 
         // prediction is empty
         if (files.isEmpty()) {
-            Logger.log(result.getLogEvent(State.BEFORE_COMMIT, State.NOT_SHOWED, Action.COMMIT_CLICKED, commits))
+            val event = result.getLogEvent(State.BEFORE_COMMIT, State.NOT_SHOWED, Action.COMMIT_CLICKED, commits)
+            Logger.log(event)
             return ReturnResult.COMMIT
         }
 
-        val dialog = createPredictionDialog(files)
+        val modifiedFiles = files.filter { isModified(it) }.toSet()
+        val unmodifiedFiles = files.filter { !isModified(it) }.toSet()
+
+        val dialog = GitAlsoDialog(project, modifiedFiles, unmodifiedFiles)
+
+        val event = result.getLogEvent(State.BEFORE_COMMIT, State.SHOW_MAIN_DIALOG, Action.COMMIT_CLICKED, commits, modifiedFiles.toList(), unmodifiedFiles.toList())
+        Logger.log(event)
 
         dialog.show()
 
         return if (dialog.exitCode == 1) {
-            Logger.log(result.getLogEvent(State.SHOW_MAIN_DIALOG, State.AFTER_COMMIT, Action.CANCEL, commits))
+            Logger.simpleActionLog(Action.CANCEL, State.SHOW_MAIN_DIALOG, State.AFTER_COMMIT)
             ReturnResult.CANCEL
         } else {
-            Logger.log(result.getLogEvent(State.SHOW_MAIN_DIALOG, State.AFTER_COMMIT, Action.COMMIT, commits))
-            return ReturnResult.COMMIT
+            Logger.simpleActionLog(Action.COMMIT, State.SHOW_MAIN_DIALOG, State.AFTER_COMMIT)
+            ReturnResult.COMMIT
         }
 
     }
