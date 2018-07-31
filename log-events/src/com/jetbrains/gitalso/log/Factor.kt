@@ -1,5 +1,6 @@
 package com.jetbrains.gitalso.log
 
 enum class Factor(val internalType: Class<*>) {
-    SCORES(Number::class.java) // TODO: come up with factors
+    COMMITS(Number::class.java),
+    SCORES(Number::class.java)
 }
