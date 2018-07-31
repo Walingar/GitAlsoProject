@@ -3,16 +3,21 @@ package com.jetbrains.gitalso.storage.log
 import com.jetbrains.gitalso.log.LogEvent
 import com.jetbrains.gitalso.storage.log.send.LogSender
 import com.jetbrains.gitalso.validation.ClientLogValidator
+import java.io.File
 
 class LogFileManager {
     private val logFileProvider = LogFilePathProvider()
 
+    private fun sendFile(file: File) {
+        if (LogSender.send(file.readText(), true)) {
+            file.delete()
+        }
+    }
+
     private fun sendFiles() {
         val files = logFileProvider.getDataFiles()
         for (file in files) {
-            if (LogSender.send(file.readText(), true)) {
-                file.delete()
-            }
+            sendFile(file)
         }
     }
 
@@ -26,5 +31,6 @@ class LogFileManager {
             return
         }
         file.writeText(event.toString())
+        //sendFile(file)
     }
 }
