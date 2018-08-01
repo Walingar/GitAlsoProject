@@ -83,10 +83,12 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.8,
         val prediction = filteredCandidates
                 .map { it.first }
                 .subList(0, min(filteredCandidates.size, maxPredictedFileCount))
+                .filter { it.path.virtualFile != null }
 
         val topCandidates = sortedPrediction
                 .map { it.first }
                 .subList(0, min(sortedPrediction.size, 5))
+                .filter { it.path.virtualFile != null }
 
         val predictionScores = scores.filter { (pair, _) -> pair.second in prediction }
         val topScores = scores.filter { (pair, _) -> pair.second in topCandidates }
