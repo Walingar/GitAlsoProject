@@ -6,6 +6,7 @@ import com.jetbrains.gitalso.log.LogEvent
 import com.jetbrains.gitalso.log.LogField
 import com.jetbrains.gitalso.validation.result.ArrayListValidationResult
 import org.junit.Test
+import com.jetbrains.gitalso.log.State
 
 import org.junit.Assert.*
 
@@ -20,11 +21,19 @@ class ServerLogValidatorTest {
                 val logEvents = HashMap<String, Any>()
                 for (file1 in 1..10) {
                     for (file2 in 1..10) {
-                        logEvents["($file1, $file2)"] = mapOf(Factor.SCORES to arrayOf(1.0, 1.1, 1.2))
+                        logEvents["($file1, $file2)"] = mapOf(
+                                Factor.SCORES to arrayOf(1.0, 1.1, 1.2),
+                                Factor.COMMITS to (1..10).toList())
                     }
                 }
                 eventJson[LogField.FACTORS] = logEvents
                 eventJson[LogField.REPOSITORY] = "1"
+                val states = State.values().toList().shuffled()
+                eventJson[LogField.STATE_BEFORE] = states[0]
+                eventJson[LogField.STATE_AFTER] = states[1]
+                eventJson[LogField.FILES] = (1..10).toList()
+                eventJson[LogField.PREDICTION_MODIFIED] = (1..5).toList()
+                eventJson[LogField.PREDICTION_UNMODIFIED] = (6..10).toList()
                 val event = LogEvent(
                         time.toLong(),
                         "gitalso",
