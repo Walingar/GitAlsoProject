@@ -8,7 +8,7 @@ import java.io.FileFilter
 class LogFilePathProvider : FilePathProvider {
 
     companion object {
-        const val MAX_ALLOWED_SEND_SIZE = 2 * 1024
+        const val MAX_ALLOWED_SEND_SIZE = 2 * 1024 * 1024
     }
 
     private val logDirectory = File(PathManager.getSystemPath()).resolve(File("git-also/log"))
