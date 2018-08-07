@@ -47,9 +47,9 @@ data class PredictionResult(
             action: Action,
             time: Long,
             commits: Map<Pair<CommittedFile, CommittedFile>, Set<Long>>,
+            commitsAuthorMask: Map<Pair<CommittedFile, CommittedFile>, List<Number>> = mapOf(),
             predictionModified: List<VirtualFile> = ArrayList(),
-            predictionUnmodified: List<VirtualFile> = ArrayList(),
-            commitsAuthorMask: Map<Pair<CommittedFile, CommittedFile>, List<Number>> = mapOf()
+            predictionUnmodified: List<VirtualFile> = ArrayList()
     ): LogEvent {
         val factors = HashMap<String, HashMap<Factor, Any>>()
         for ((key, value) in topScores) {
