@@ -24,7 +24,7 @@ class ServerLogValidatorTest {
                         logEvents["($file1, $file2)"] = mapOf(
                                 Factor.SCORES to arrayOf(1.0, 1.1, 1.2),
                                 Factor.COMMITS to (1..10).toList(),
-                                Factor.COMMITS_SAME_AUTHOR to (5..10).map{}.toList())
+                                Factor.COMMITS_SAME_AUTHOR to (5..10).toList())
                     }
                 }
                 eventJson[LogField.FACTORS] = logEvents
@@ -35,7 +35,7 @@ class ServerLogValidatorTest {
                 eventJson[LogField.FILES] = (1..10).toList()
                 eventJson[LogField.PREDICTION_MODIFIED] = (1..5).toList()
                 eventJson[LogField.PREDICTION_UNMODIFIED] = (6..10).toList()
-                eventJson[LogField.TIME] = "100"
+                eventJson[LogField.TIME] = 100
                 val event = LogEvent(
                         time.toLong(),
                         "gitalso",

@@ -23,13 +23,17 @@ class ClientLogValidatorTest {
                 Action.COMMIT,
                 "1",
                 mapOf(
-                        LogField.FACTORS to mapOf("(123, 111)" to mapOf(Factor.SCORES to arrayOf(1.0, 1.1, 1.2))),
+                        LogField.FACTORS to mapOf("(123, 111)" to mapOf(
+                                Factor.SCORES to arrayOf(1.0, 1.1, 1.2),
+                                Factor.COMMITS to listOf(1, 2, 3),
+                                Factor.COMMITS_SAME_AUTHOR to listOf(2, 3))),
                         LogField.REPOSITORY to "1",
                         LogField.PREDICTION_UNMODIFIED to listOf("1", "2", "4"),
                         LogField.PREDICTION_MODIFIED to listOf("5", "6"),
                         LogField.FILES to listOf("11", "22", "33"),
                         LogField.STATE_BEFORE to State.BEFORE_COMMIT,
-                        LogField.STATE_AFTER to State.SHOW_MAIN_DIALOG
+                        LogField.STATE_AFTER to State.SHOW_MAIN_DIALOG,
+                        LogField.TIME to 32
                 )
         )
         print(event)
