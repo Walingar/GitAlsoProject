@@ -72,6 +72,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
         if (root == null) {
             return ReturnResult.COMMIT
         }
+        val startTime = System.currentTimeMillis()
 
         val sessionId = (0 until Int.MAX_VALUE).random()
         val repository = IDEARepositoryInfo(project)
@@ -102,10 +103,11 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
         val commits = getCommitTimesFromPrediction(commit, result.topPrediction)
 
         val files = result.prediction.mapNotNull { it.path.virtualFile }
+        val time = System.currentTimeMillis() - startTime
 
         // prediction is empty
         if (files.isEmpty()) {
-            val event = result.getLogEvent(State.BEFORE_COMMIT, State.NOT_SHOWED, Action.COMMIT_CLICKED, commits)
+            val event = result.getLogEvent(State.BEFORE_COMMIT, State.NOT_SHOWED, Action.COMMIT_CLICKED, time, commits)
             Logger.log(event)
             return ReturnResult.COMMIT
         }
@@ -115,7 +117,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
 
         val dialog = GitAlsoDialog(project, modifiedFiles, unmodifiedFiles)
 
-        val event = result.getLogEvent(State.BEFORE_COMMIT, State.SHOW_MAIN_DIALOG, Action.COMMIT_CLICKED, commits, modifiedFiles.toList(), unmodifiedFiles.toList())
+        val event = result.getLogEvent(State.BEFORE_COMMIT, State.SHOW_MAIN_DIALOG, Action.COMMIT_CLICKED, time, commits, modifiedFiles.toList(), unmodifiedFiles.toList())
         Logger.log(event)
 
         dialog.show()

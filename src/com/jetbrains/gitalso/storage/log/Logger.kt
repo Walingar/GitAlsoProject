@@ -17,10 +17,10 @@ object Logger {
         logManager.log(event)
     }
 
-    fun simpleActionLog(action: Action, stateBefore: State, stateAfter: State) {
+    fun simpleActionLog(action: Action, stateBefore: State, stateAfter: State, time: Long = 0) {
         val result = PredictionResult()
         result.sessionID = sessionId
         result.repository = repository
-        log(result.getLogEvent(stateBefore, stateAfter, action, HashMap()))
+        log(result.getLogEvent(stateBefore, stateAfter, action, time, HashMap()))
     }
 }

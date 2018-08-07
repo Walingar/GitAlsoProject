@@ -45,18 +45,23 @@ data class PredictionResult(
             stateBefore: State,
             stateAfter: State,
             action: Action,
+            time: Long,
             commits: Map<Pair<CommittedFile, CommittedFile>, Set<Long>>,
             predictionModified: List<VirtualFile> = ArrayList(),
-            predictionUnmodified: List<VirtualFile> = ArrayList()
+            predictionUnmodified: List<VirtualFile> = ArrayList(),
+            commitsAuthorMask: Map<Pair<CommittedFile, CommittedFile>, List<Number>> = mapOf()
     ): LogEvent {
-        val factors = HashMap<String, Map<Factor, Any>>()
+        val factors = HashMap<String, HashMap<Factor, Any>>()
         for ((key, value) in topScores) {
             if (key !in commits) {
                 continue
             }
-            factors[key.toString()] = mapOf(
+            factors[key.toString()] = hashMapOf(
                     Factor.SCORES to value,
                     Factor.COMMITS to commits[key]!!)
+            if (key in commitsAuthorMask) {
+                factors[key.toString()]!![Factor.COMMITS_AUTHOR_MASK] = commitsAuthorMask[key]!!
+            }
         }
 
         val dependentFields = HashMap<LogField, Any>()
@@ -76,6 +81,10 @@ data class PredictionResult(
         putIfNotEmptyValue(dependentFields,
                 LogField.FILES,
                 commit.map { it.toString() })
+
+        if (time != 0L) {
+            dependentFields[LogField.TIME] = time
+        }
 
         val fields = dependentFields + mapOf(
                 LogField.STATE_BEFORE to stateBefore,
