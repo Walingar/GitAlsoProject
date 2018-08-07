@@ -8,5 +8,5 @@ enum class LogField(val internalType: Class<*>) {
     PREDICTION_UNMODIFIED(List::class.java),
     STATE_BEFORE(String::class.java),
     STATE_AFTER(String::class.java),
-    TIME(String::class.java)
+    TIME(Number::class.java)
 }
