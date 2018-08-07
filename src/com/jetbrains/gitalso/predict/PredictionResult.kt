@@ -47,7 +47,7 @@ data class PredictionResult(
             action: Action,
             time: Long,
             commits: Map<Pair<CommittedFile, CommittedFile>, Set<Long>>,
-            commitsAuthorMask: Map<Pair<CommittedFile, CommittedFile>, Set<Long>> = mapOf(),
+            commitsAuthor: Map<Pair<CommittedFile, CommittedFile>, Set<Long>> = mapOf(),
             predictionModified: List<VirtualFile> = ArrayList(),
             predictionUnmodified: List<VirtualFile> = ArrayList()
     ): LogEvent {
@@ -59,8 +59,8 @@ data class PredictionResult(
             factors[key.toString()] = hashMapOf(
                     Factor.SCORES to value,
                     Factor.COMMITS to commits[key]!!)
-            if (key in commitsAuthorMask && commitsAuthorMask[key]!!.isNotEmpty()) {
-                factors[key.toString()]!![Factor.COMMITS_AUTHOR_MASK] = commitsAuthorMask[key]!!
+            if (key in commitsAuthor && commitsAuthor[key]!!.isNotEmpty()) {
+                factors[key.toString()]!![Factor.COMMITS_SAME_AUTHOR] = commitsAuthor[key]!!
             }
         }
 

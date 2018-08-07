@@ -16,15 +16,12 @@ import com.jetbrains.gitalso.commitInfo.Commit
 import com.jetbrains.gitalso.commitInfo.CommittedFile
 import com.jetbrains.gitalso.log.Action
 import com.jetbrains.gitalso.log.State
-import com.jetbrains.gitalso.predict.PredictionResult
 import com.jetbrains.gitalso.predict.WeightWithFilterTunedPredictionProvider
 import com.jetbrains.gitalso.repository.IDEARepositoryInfo
 import com.jetbrains.gitalso.storage.log.Logger
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.collections.HashSet
-import kotlin.math.min
 
 
 class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHandler() {
@@ -111,7 +108,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
         result.repository = repository.toString()
 
         val commits = getCommitTimesFromPrediction(commit, result.topPrediction)
-        val commitsAuthorMask = getCommitsAuthorMask(commits, repository.author)
+        val commitsAuthor = getCommitsAuthorMask(commits, repository.author)
         val files = result.prediction.mapNotNull { it.path.virtualFile }
         val time = System.currentTimeMillis() - startTime
 
@@ -123,7 +120,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
                     Action.COMMIT_CLICKED,
                     time,
                     prepare(commits),
-                    prepare(commitsAuthorMask)
+                    prepare(commitsAuthor)
             )
             Logger.log(event)
             return ReturnResult.COMMIT
@@ -140,7 +137,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
                 Action.COMMIT_CLICKED,
                 time,
                 prepare(commits),
-                prepare(commitsAuthorMask),
+                prepare(commitsAuthor),
                 modifiedFiles.toList(),
                 unmodifiedFiles.toList()
         )
