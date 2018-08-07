@@ -25,9 +25,9 @@ class Commit(project: Project, val id: Int) {
     val author
         get() =
             if (id != -1) {
-                indexData.getAuthor(id).toString()
+                indexData.getAuthor(id)
             } else {
-                "null"
+                null
             }
 
 

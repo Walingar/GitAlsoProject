@@ -24,6 +24,10 @@ class IDEARepositoryInfo(private val project: Project) : RepositoryInfo {
         predictable = dataManager != null && dataManager.dataPack.isFull
     }
 
+    val author by lazy {
+        dataManager!!.currentUser[project.baseDir!!]
+    }
+
     private val dataGetter by lazy {
         VcsProjectLog.getInstance(project).dataManager!!.index.dataGetter!!
     }
