@@ -66,6 +66,23 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
         return commits
     }
 
+    private fun getCommitsAuthorMask(commits: Map<Pair<CommittedFile, CommittedFile>, Set<Commit>>, author: VcsUser?): Map<Pair<CommittedFile, CommittedFile>, Set<Commit>> {
+        if (author == null) {
+            return mapOf()
+        }
+        val authorMask = HashMap<Pair<CommittedFile, CommittedFile>, HashSet<Commit>>()
+        for ((pair, set) in commits) {
+            authorMask.putIfAbsent(pair, hashSetOf())
+            for (commit in set) {
+                if (commit.author == author) {
+                    authorMask[pair]!!.add(commit)
+                }
+            }
+        }
+
+        return authorMask
+    }
+
     private fun prepare(map: Map<Pair<CommittedFile, CommittedFile>, Set<Commit>>) =
             map.map { (key, value) ->
                 key to value
@@ -153,23 +170,6 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
             ReturnResult.COMMIT
         }
 
-    }
-
-    private fun getCommitsAuthorMask(commits: Map<Pair<CommittedFile, CommittedFile>, Set<Commit>>, author: VcsUser?): Map<Pair<CommittedFile, CommittedFile>, Set<Commit>> {
-        if (author == null) {
-            return mapOf()
-        }
-        val authorMask = HashMap<Pair<CommittedFile, CommittedFile>, HashSet<Commit>>()
-        for ((pair, set) in commits) {
-            authorMask.putIfAbsent(pair, hashSetOf())
-            for (commit in set) {
-                if (commit.author == author) {
-                    authorMask[pair]!!.add(commit)
-                }
-            }
-        }
-
-        return authorMask
     }
 
 }
