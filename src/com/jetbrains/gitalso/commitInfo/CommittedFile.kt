@@ -4,9 +4,6 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.FilePath
 import com.intellij.vcs.log.impl.VcsProjectLog
 import com.jetbrains.gitalso.storage.log.hash.HashProvider
-import com.sun.deploy.util.Base64Wrapper.encodeToString
-import java.nio.charset.StandardCharsets
-import java.security.MessageDigest
 import java.util.*
 
 
