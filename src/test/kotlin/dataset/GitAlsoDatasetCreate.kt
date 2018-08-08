@@ -37,11 +37,6 @@ class GitAlsoDatasetCreate {
     }
 
     @Test
-    fun testGoogleTest() {
-        createAllDatasetTypes("googletest")
-    }
-
-    @Test
     fun testIJRust() {
         createAllDatasetTypes("intellij-rust")
     }

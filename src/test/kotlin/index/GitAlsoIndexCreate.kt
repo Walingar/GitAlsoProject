@@ -36,11 +36,6 @@ class GitAlsoIndexCreate {
     }
 
     @Test
-    fun testGoogleTest() {
-        createImpl("googletest")
-    }
-
-    @Test
     fun testIJRust() {
         createImpl("intellij-rust")
     }

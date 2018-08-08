@@ -38,11 +38,6 @@ class GitAlsoDatasetParse {
     }
 
     @Test
-    fun testGoogleTest() {
-        testFullDataset("googletest")
-    }
-
-    @Test
     fun testIJRust() {
         testFullDataset("intellij-rust")
     }

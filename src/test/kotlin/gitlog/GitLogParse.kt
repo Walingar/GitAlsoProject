@@ -9,7 +9,7 @@ class GitLogParse {
         val service = getGitLogAndParseIt(repositoryName)
 
         assertTrue(service.commits.isNotEmpty())
-        print(service.commits.joinToString("\n"))
+        print(service.commits.map { (_, commit) -> commit }.joinToString("\n"))
     }
 
     @Test
@@ -25,11 +25,6 @@ class GitLogParse {
     @Test
     fun testIJCommunity() {
         parseImpl("intellij-community")
-    }
-
-    @Test
-    fun testGoogleTest() {
-        parseImpl("googletest")
     }
 
     @Test
