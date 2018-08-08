@@ -21,7 +21,7 @@ class IndexFileManager(repositoryName: String) {
 
     private fun createCommitsDataIndex(service: GitAlsoService): String {
         val index = StringBuffer()
-        for (commit in service.commits) {
+        for ((_, commit) in service.commits) {
             index.append("${commit.time} ${commit.author}${System.lineSeparator()}")
         }
 
@@ -29,11 +29,13 @@ class IndexFileManager(repositoryName: String) {
     }
 
     private fun createFilesIndex(service: GitAlsoService): String {
-        val index = StringBuffer()
-        val mapIDtoFile = service.mapIDToFile
-        val time = System.currentTimeMillis()
-        for (id in 0 until service.getFileCount()) {
-            index.append("$id ${mapIDtoFile[id]!!.getName(time)}${System.lineSeparator()}")
+        val index = StringBuilder()
+        for ((_, file) in service.files) {
+            index.append("$file ")
+            for (name in file.names) {
+                index.append("$name ")
+            }
+            index.append(System.lineSeparator())
         }
 
         return index.toString()
@@ -42,11 +44,12 @@ class IndexFileManager(repositoryName: String) {
     private fun createCommitsIndex(service: GitAlsoService): String {
         val index = StringBuffer()
 
-        for (commit in service.commits) {
-            index.append("C ${commit.time}${System.lineSeparator()}")
-            for (file in commit.getFiles()) {
-                index.append("${file.id}${System.lineSeparator()}")
+        for ((_, commit) in service.commits) {
+            index.append("${commit.time} ")
+            for (file in commit.files) {
+                index.append("$file ")
             }
+            index.append(System.lineSeparator())
         }
 
         return index.toString()
