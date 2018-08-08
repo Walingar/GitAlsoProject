@@ -1,7 +1,8 @@
 package storage.index
 
 import commitInfo.Commit
-import gitLog.createGitLog
+import commitInfo.CommittedFile
+import gitLog.createFullGitLog
 import gitLog.createGitLogSinceCommit
 import gitLog.getCommitsFromGitLog
 import repository.GitAlsoService
@@ -13,7 +14,7 @@ class IndexFileManager(repositoryName: String) {
     private val basePath = File("data/repository/$repositoryName")
 
     private fun fullGitLog(service: GitAlsoService) {
-        val log = createGitLog(basePath)
+        val log = createFullGitLog(basePath)
         if (log != null) {
             getCommitsFromGitLog(log, service)
         }
@@ -55,6 +56,14 @@ class IndexFileManager(repositoryName: String) {
         return index.toString()
     }
 
+    fun write(service: GitAlsoService) {
+        filePathProvider.commitsIndexFile.writeText(createCommitsIndex(service))
+
+        filePathProvider.filesIndexFile.writeText(createFilesIndex(service))
+
+        filePathProvider.commitsDataIndexFile.writeText(createCommitsDataIndex(service))
+    }
+
     private fun parseCommitsDataIndex(index: String): Map<Long, Commit> {
         val commits = HashMap<Long, Commit>()
         for (line in index.lines()) {
@@ -63,80 +72,64 @@ class IndexFileManager(repositoryName: String) {
             }
             val splitHeader = line.split("\\s".toRegex())
             val time = splitHeader[0].toLong()
-            val author = splitHeader.subList(1, splitHeader.size).joinToString(" ")
-            commits[time] = Commit(time, author)
+            commits[time] = Commit(time)
         }
         return commits
     }
 
-    private fun parseFilesIndex(index: String): Map<Int, String> {
-        val idToFileName = HashMap<Int, String>()
+    private fun parseFilesIndex(index: String): Map<String, CommittedFile> {
+        val files = HashMap<String, CommittedFile>()
 
         for (line in index.lines()) {
             if (line.isBlank()) {
                 continue
             }
-            val (id, name) = line.split("\\s".toRegex())
-            idToFileName[id.toInt()] = name
+            val splitLine = line.split("\\s".toRegex())
+            val currentFile = splitLine[0]
+            val names = splitLine.subList(1, splitLine.size)
+            files.putIfAbsent(currentFile, CommittedFile(currentFile))
+            val currentCommittedFile = files[currentFile]!!
+
+            for (name in names) {
+                files.putIfAbsent(name, CommittedFile(name))
+                val nameFile = files[name]!!
+                currentCommittedFile.names.add(nameFile)
+            }
         }
 
-        return idToFileName
+        return files
     }
 
-    private fun parseCommitsIndex(service: GitAlsoService, index: String, commits: Map<Long, Commit>, idToFileName: Map<Int, String>) {
-        var commit = Commit(0, "Unknown")
-        val files = ArrayList<Int>()
+    private fun parseCommitsIndex(service: GitAlsoService, index: String, commits: Map<Long, Commit>, files: Map<String, CommittedFile>) {
+        for ((time, commit) in commits) {
+            service.commits[time] = commit
+        }
+
+        for ((name, file) in files) {
+            service.files[name] = file
+        }
+
         for (line in index.lines()) {
             if (line.isBlank()) {
                 continue
             }
-            if (line[0] == 'C') {
-                if (files.isNotEmpty()) {
-                    service.committedFromIndex(files, commit, idToFileName)
-                }
-                files.clear()
-                val (_, idString) = line.split("\\s".toRegex())
-                val id = idString.toLong()
-                commit = commits[id]!!
-            } else {
-                files.add(line.toInt())
+
+            val splitLine = line.split("\\s".toRegex())
+            val currentCommit = splitLine[0].toLong()
+            val commitFiles = splitLine.subList(1, splitLine.size)
+            val commit = commits[currentCommit]!!
+
+            for (name in commitFiles) {
+                val file = files[name]!!
+                file.committed(commit)
             }
         }
-
-        if (files.isNotEmpty()) {
-            service.committedFromIndex(files, commit, idToFileName)
-        }
-
     }
 
     fun read(service: GitAlsoService) {
         val commits = parseCommitsDataIndex(filePathProvider.commitsDataIndexFile.readText())
-
-        if (commits.isEmpty()) {
-            fullGitLog(service)
-        } else {
-            val idToFileName = parseFilesIndex(filePathProvider.filesIndexFile.readText())
-            parseCommitsIndex(service, filePathProvider.commitsIndexFile.readText(), commits, idToFileName)
-        }
-
-
-        val lastCommit = service.lastCommit
-        if (lastCommit != null) {
-            val log = createGitLogSinceCommit(basePath, lastCommit)
-            getCommitsFromGitLog(log!!, service)
-        } else {
-            fullGitLog(service)
-        }
-
-        write(service)
-    }
-
-    fun write(service: GitAlsoService) {
-        filePathProvider.commitsIndexFile.writeText(createCommitsIndex(service))
-
-        filePathProvider.filesIndexFile.writeText(createFilesIndex(service))
-
-        filePathProvider.commitsDataIndexFile.writeText(createCommitsDataIndex(service))
+        val files = parseFilesIndex(filePathProvider.filesIndexFile.readText())
+        parseCommitsIndex(service, filePathProvider.commitsIndexFile.readText(), commits, files)
     }
 
 }

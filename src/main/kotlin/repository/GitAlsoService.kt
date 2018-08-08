@@ -13,6 +13,7 @@ class GitAlsoService {
         fun commitFile(name: String, commit: Commit) {
             files.putIfAbsent(name, CommittedFile(name))
             val file = files[name]!!
+            file.names.add(file)
             file.committed(commit)
         }
 
