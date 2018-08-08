@@ -9,11 +9,11 @@ class RandomDatasetFileManager(repositoryName: String) : DatasetFileManager(repo
 
     override fun createDataset(service: GitAlsoService, startTime: Long, endTime: Long): List<PipeLineCommit> {
         val commits = ArrayList<PipeLineCommit>()
-        for (commit in service.commits) {
+        for ((_, commit) in service.commits) {
             if (commit.time in startTime..endTime) {
                 val files = commit
-                        .getFiles()
-                        .filter { it.getCommits().any { it.time < commit.time } }
+                        .files
+                        .filter { it.commits.any { it.time < commit.time } }
                         .map { it.id }
                         .shuffled()
                         .toList()

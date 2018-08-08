@@ -9,10 +9,10 @@ class FullDatasetFileManager(repositoryName: String) : DatasetFileManager(reposi
 
     override fun createDataset(service: GitAlsoService, startTime: Long, endTime: Long): List<PipeLineCommit> {
         val commits = ArrayList<PipeLineCommit>()
-        for (commit in service.commits) {
+        for ((_, commit) in service.commits) {
             if (commit.time in startTime..endTime) {
-                val files = commit.getFiles()
-                        .filter { it.getCommits().any { it.time < commit.time } }
+                val files = commit.files
+                        .filter { it.commits.any { it.time < commit.time } }
                         .map { it -> it.id }
                         .toList()
                 if (files.size > 1) {
