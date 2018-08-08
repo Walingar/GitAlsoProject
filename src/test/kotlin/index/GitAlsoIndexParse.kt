@@ -3,6 +3,7 @@ package index
 import getGitAlsoServiceFromIndex
 import getGitLogAndParseIt
 import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertTrue
 import org.junit.Test
 
 class GitAlsoIndexParse {
@@ -11,6 +12,7 @@ class GitAlsoIndexParse {
         val serviceFromLog = getGitLogAndParseIt(repositoryName)
 
         assertEquals(serviceFromLog.commits.size, serviceFromIndex.commits.size)
+        assertTrue(serviceFromIndex.commits.all { (time, commit) -> commit.files == serviceFromLog.commits[time]!!.files })
     }
 
     @Test

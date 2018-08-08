@@ -5,7 +5,7 @@ import commitInfo.CommittedFile
 import predict.PredictionProvider
 import kotlin.math.min
 
-class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.8, private val m2: Double = 4.7, private val commitSize: Double = 5.0) : PredictionProvider {
+class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 1.2, private val m: Double = 4.7, private val commitSize: Double = 5.0) : PredictionProvider {
 
     private class VoteProvider(private val m: Double) {
         var result = 0.0
@@ -42,7 +42,7 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.8,
 
                 val filesFileCommitFromCommit = fileCommit.files.count { it in commit.files }
                 val currentWeight = filesFileCommitFromCommit.toDouble() / commitSize
-                candidates.putIfAbsent(secondFile, VoteProvider(m2))
+                candidates.putIfAbsent(secondFile, VoteProvider(m))
 
                 candidates[secondFile]!!.vote(currentRate, currentWeight)
             }
@@ -56,41 +56,33 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.8,
         return answer
     }
 
+
     override fun commitPredict(commit: Commit, maxPredictedFileCount: Int): List<CommittedFile> {
         val candidates = HashMap<CommittedFile, Double>()
         val votes = ArrayList<Pair<CommittedFile, Double>>()
+
+        val scores = HashMap<Pair<CommittedFile, CommittedFile>, Number>()
+
 
         for (file in commit.files) {
             val currentVotes = vote(file, commit)
             for ((currentFile, currentVote) in currentVotes) {
                 votes.add(Pair(currentFile, currentVote))
                 candidates.putIfAbsent(currentFile, 0.0)
+                scores[Pair(file, currentFile)] = currentVote
                 candidates[currentFile] = candidates[currentFile]!! + currentVote
             }
         }
 
-        val filteredCandidates = HashMap<CommittedFile, Double>()
-
-        for ((file, score) in candidates) {
-            if (score > minProb) {
-                for (commitFile in commit.files) {
-                    val commitFileSize = commitFile.commits.filter { it.time < commit.time }.size.toDouble()
-                    if (file.commits.count{it.time < commit.time} / commitFileSize > 0.1) {
-                        filteredCandidates[file] = score
-                    }
-                }
-            }
-        }
-
-        val sortedCandidates = filteredCandidates
+        val sortedPrediction = candidates
                 .toList()
                 .sortedBy { (_, value) -> value }
                 .reversed()
 
-        val sliceBy = min(sortedCandidates.size, maxPredictedFileCount)
+        val filteredCandidates = sortedPrediction.filter { it.second > minProb }
 
-        return sortedCandidates
+        return filteredCandidates
                 .map { it.first }
-                .subList(0, sliceBy)
+                .subList(0, min(filteredCandidates.size, maxPredictedFileCount))
     }
 }

@@ -84,7 +84,7 @@ class IndexFileManager(repositoryName: String) {
             if (line.isBlank()) {
                 continue
             }
-            val splitLine = line.split("\\s".toRegex())
+            val splitLine = line.trim().split("\\s".toRegex())
             val currentFile = splitLine[0]
             val names = splitLine.subList(1, splitLine.size)
             files.putIfAbsent(currentFile, CommittedFile(currentFile))
@@ -114,7 +114,7 @@ class IndexFileManager(repositoryName: String) {
                 continue
             }
 
-            val splitLine = line.split("\\s".toRegex())
+            val splitLine = line.trim().split("\\s".toRegex())
             val currentCommit = splitLine[0].toLong()
             val commitFiles = splitLine.subList(1, splitLine.size)
             val commit = commits[currentCommit]!!

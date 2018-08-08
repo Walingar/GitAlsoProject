@@ -38,8 +38,8 @@ class GitAlsoEstimate(val repositoryName: String, val datasetType: DatasetType, 
                             PredictionType.WEIGHT_NEW,
                             PredictionType.WEIGHT_WITH_FILTER,
                             PredictionType.WEIGHT_WITH_FILTER_TUNED)
-                    val currentPredictionType = arrayOf(PredictionType.WEIGHT_WITH_FILTER)
-                    for (predictionType in allPredictionTypes) {
+                    val currentPredictionType = arrayOf(PredictionType.WEIGHT_WITH_FILTER_TUNED)
+                    for (predictionType in currentPredictionType) {
                         parameters += arrayOf(repository, datasetType, predictionType)
                     }
                 }
