@@ -3,9 +3,8 @@ package gitLog
 import repository.GitAlsoService
 import commitInfo.Commit
 
-fun getCommitsFromGitLog(log: String, service: GitAlsoService, maxCountFiles: Int = 20) {
+fun getCommitsFromGitLog(log: String, service: GitAlsoService, maxCountFiles: Int = 100) {
     var time = System.currentTimeMillis()
-    var author = "Unknown"
     val commit = ArrayList<List<String>>()
     val commits = HashMap<Long, Commit>()
 
@@ -18,7 +17,7 @@ fun getCommitsFromGitLog(log: String, service: GitAlsoService, maxCountFiles: In
         if (line[0].isDigit()) {
             if (commit.isNotEmpty() && commit.size <= maxCountFiles) {
                 if (time !in commits) {
-                    val currentCommit = Commit(time, author)
+                    val currentCommit = Commit(time)
                     service.committedGitLog(commit, currentCommit)
                     commits[time] = currentCommit
                 } else {
@@ -27,10 +26,6 @@ fun getCommitsFromGitLog(log: String, service: GitAlsoService, maxCountFiles: In
             }
             val splitHeader = line.split("\\s".toRegex())
             time = splitHeader[0].toLong()
-            author = splitHeader.subList(1, splitHeader.size).joinToString(" ")
-            if (author.isBlank()) {
-                author = "Unknown"
-            }
             commit.clear()
             continue
         }
@@ -39,6 +34,6 @@ fun getCommitsFromGitLog(log: String, service: GitAlsoService, maxCountFiles: In
     }
 
     if (commit.isNotEmpty() && commit.size <= maxCountFiles) {
-        service.committedGitLog(commit, Commit(time, author))
+        service.committedGitLog(commit, Commit(time))
     }
 }

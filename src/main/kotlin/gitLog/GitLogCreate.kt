@@ -25,7 +25,7 @@ private fun executeCommand(dir: File, command: List<String>): String? {
 
         return log
     } catch (e: IOException) {
-        System.err.print("ERROR: something went wrong when trying to get $command from: ${dir}")
+        System.err.print("ERROR: something went wrong when trying to get $command from: $dir")
         e.printStackTrace()
         return null
     }
@@ -56,6 +56,15 @@ fun createGitLog(dir: File): String? {
             "-50000",
             "--name-status",
             "-C",
+            "--pretty=format:%at %an")
+    return executeCommand(dir, command)
+}
+
+fun createFullGitLog(dir: File): String? {
+    val command = arrayListOf(
+            "git",
+            "log",
+            "--name-status",
             "--pretty=format:%at %an")
     return executeCommand(dir, command)
 }
