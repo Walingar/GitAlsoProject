@@ -29,11 +29,6 @@ class GitAlsoIndexParse {
     }
 
     @Test
-    fun testTestRepository() {
-        parseImpl("testRepo")
-    }
-
-    @Test
     fun testIJRust() {
         parseImpl("intellij-rust")
     }

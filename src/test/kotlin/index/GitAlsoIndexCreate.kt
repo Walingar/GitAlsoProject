@@ -31,11 +31,6 @@ class GitAlsoIndexCreate {
     }
 
     @Test
-    fun testTestRepository() {
-        createImpl("testRepo")
-    }
-
-    @Test
     fun testIJRust() {
         createImpl("intellij-rust")
     }
