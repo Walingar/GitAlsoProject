@@ -16,7 +16,7 @@ class ClientLogValidatorTest {
     fun `test validate from event`() {
         val event = LogEvent(
                 System.currentTimeMillis() / 1000,
-                "gitalso",
+                "git-also",
                 "1.0",
                 "testID",
                 "1",

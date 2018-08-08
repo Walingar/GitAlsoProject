@@ -38,7 +38,7 @@ class ServerLogValidatorTest {
                 eventJson[LogField.TIME] = 100
                 val event = LogEvent(
                         time.toLong(),
-                        "gitalso",
+                        "git-also",
                         "1.0",
                         "testID",
                         "1",
