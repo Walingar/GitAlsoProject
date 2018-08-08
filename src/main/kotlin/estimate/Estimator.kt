@@ -11,10 +11,9 @@ import java.io.File
 class Estimator(private val service: GitAlsoService) {
 
     private fun createCommit(pipeLineCommit: PipeLineCommit): Commit {
-        val mapIDToFile = service.mapIDToFile
         val commit = Commit(pipeLineCommit.time)
-        for (id in pipeLineCommit.files) {
-            commit.addFile(mapIDToFile[id]!!)
+        for (name in pipeLineCommit.files) {
+            commit.addFile(service.files[name]!!)
         }
         return commit
     }
