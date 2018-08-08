@@ -1,4 +1,5 @@
 import commitInfo.PipeLineCommit
+import gitLog.createFullGitLog
 import gitLog.createGitLog
 import gitLog.getCommitsFromGitLog
 import repository.GitAlsoService
@@ -6,7 +7,7 @@ import storage.dataset.*
 import storage.index.IndexFileManager
 import java.io.File
 
-fun getGitLog(repositoryName: String) = createGitLog(File("data/repository/$repositoryName"))
+fun getGitLog(repositoryName: String) = createFullGitLog(File("data/repository/$repositoryName"))
 
 fun getGitLogAndParseIt(repositoryName: String): GitAlsoService {
     val log = getGitLog(repositoryName)

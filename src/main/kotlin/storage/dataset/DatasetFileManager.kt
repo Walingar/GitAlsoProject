@@ -22,9 +22,9 @@ abstract class DatasetFileManager(repositoryName: String) {
             }
             val (timeString, filesString, forgottenFilesString) = commit.split(';')
             val time = timeString.toLong()
-            val files = filesString.split(", ").map { file -> file.toInt() }.toList()
+            val files = filesString.split(", ").toList()
             val forgottenFiles = if (forgottenFilesString.isNotBlank()) {
-                forgottenFilesString.split(", ").map { file -> file.toInt() }.toList()
+                forgottenFilesString.split(", ").toList()
             } else {
                 arrayListOf()
             }

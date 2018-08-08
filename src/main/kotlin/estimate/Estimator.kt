@@ -3,10 +3,8 @@ package estimate
 import commitInfo.Commit
 import commitInfo.PipeLineCommit
 import predict.PredictionProvider
-import predict.isPredictable
 import repository.GitAlsoService
 import storage.csv.PredictionResult
-import java.io.File
 
 class Estimator(private val service: GitAlsoService) {
 
