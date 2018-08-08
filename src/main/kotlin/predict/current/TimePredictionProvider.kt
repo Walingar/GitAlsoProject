@@ -30,8 +30,8 @@ class TimePredictionProvider(private val n: Int = 14, private val minProb: Doubl
 
     private fun getProbabilityWithTime(firstFile: CommittedFile, secondFile: CommittedFile, time: Long, n: Int, maxByCommit: Int): Double {
         val intersection = getRateForCommits(getIntersection(firstFile, secondFile).filter { it.time < time }, time)
-        val rateForFirstFile = getRateForCommits(firstFile.getCommits().filter { it.time < time }, time)
-        val rateForSecondFile = getRateForCommits(secondFile.getCommits().filter { it.time < time }, time)
+        val rateForFirstFile = getRateForCommits(firstFile.commits.filter { it.time < time }, time)
+        val rateForSecondFile = getRateForCommits(secondFile.commits.filter { it.time < time }, time)
         val union = rateForFirstFile + rateForSecondFile - intersection
         if (union == 0.0) {
             return 0.0
@@ -46,8 +46,8 @@ class TimePredictionProvider(private val n: Int = 14, private val minProb: Doubl
         val was = HashSet<CommittedFile>()
         val scores = ArrayList<Pair<Double, CommittedFile>>()
 
-        for (commit in firstFile.getCommits().filter { it.time < currentTime }) {
-            for (secondFile in commit.getFiles()) {
+        for (commit in firstFile.commits.filter { it.time < currentTime }) {
+            for (secondFile in commit.files) {
                 if (firstFile != secondFile && secondFile !in was) {
                     was.add(secondFile)
 
@@ -69,12 +69,12 @@ class TimePredictionProvider(private val n: Int = 14, private val minProb: Doubl
         val maxByCommit = getMaxByCommit(commit)
         val scores = HashMap<CommittedFile, Double>()
 
-        for (file in commit.getFiles()) {
+        for (file in commit.files) {
             val prediction = predictForFileInCommit(file, currentTime, n, maxByCommit, minProb)
 
 
             prediction.forEach {
-                if (it.second !in commit.getFiles()) {
+                if (it.second !in commit.files) {
                     if (it.second in scores) {
                         scores[it.second] = scores[it.second]!! + it.first
                     } else {

@@ -26,21 +26,21 @@ class CommitTimePredictionProvider(private val n: Int = 14, private val minProb:
         val candidates = HashMap<CommittedFile, Double>()
         val ratesHashMap = HashMap<CommittedFile, Double>()
 
-        for (firstFile in commit.getFiles()) {
-            val commits = firstFile.getCommits().filter { it.time < commit.time }
-            ratesHashMap[firstFile] = getRateForCommits(firstFile.getCommits().filter { it.time < commit.time })
+        for (firstFile in commit.files) {
+            val commits = firstFile.commits.filter { it.time < commit.time }
+            ratesHashMap[firstFile] = getRateForCommits(firstFile.commits.filter { it.time < commit.time })
 
             for (fileCommits in commits) {
-                for (secondFile in fileCommits.getFiles()) {
+                for (secondFile in fileCommits.files) {
                     if (secondFile == firstFile) {
                         continue
                     }
                     if (secondFile !in ratesHashMap) {
-                        ratesHashMap[secondFile] = getRateForCommits(secondFile.getCommits().filter { it.time < commit.time })
+                        ratesHashMap[secondFile] = getRateForCommits(secondFile.commits.filter { it.time < commit.time })
                     }
                     val rateForFirstFile = ratesHashMap[firstFile]!!
                     val rateForSecondFile = ratesHashMap[secondFile]!!
-                    val intersection = getRateForCommits(commits.filter { secondFile in it.getFiles() })
+                    val intersection = getRateForCommits(commits.filter { secondFile in it.files })
                     val union = rateForFirstFile + rateForSecondFile - intersection
 
                     val currentRate = (intersection * sqrt(rateForFirstFile * rateForSecondFile)) /

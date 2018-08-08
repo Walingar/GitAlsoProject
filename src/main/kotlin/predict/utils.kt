@@ -5,8 +5,8 @@ import commitInfo.CommittedFile
 
 fun getIntersection(firstFile: CommittedFile, secondFile: CommittedFile): List<Commit> {
     val intersection = ArrayList<Commit>()
-    for (firstCommit in firstFile.getCommits()) {
-        for (secondCommit in secondFile.getCommits()) {
+    for (firstCommit in firstFile.commits) {
+        for (secondCommit in secondFile.commits) {
             if (firstCommit == secondCommit) {
                 intersection.add(firstCommit)
             }
@@ -18,8 +18,8 @@ fun getIntersection(firstFile: CommittedFile, secondFile: CommittedFile): List<C
 fun getMaxByCommit(commit: Commit): Int {
     val currentTime = commit.time
     var maxByCommit = 0
-    for (file in commit.getFiles()) {
-        val temp = file.getCommits().filter { it.time < currentTime }.size
+    for (file in commit.files) {
+        val temp = file.commits.filter { it.time < currentTime }.size
         if (temp >= maxByCommit) {
             maxByCommit = temp
         }
@@ -28,9 +28,9 @@ fun getMaxByCommit(commit: Commit): Int {
 }
 
 fun isPredictable(commit: Commit, fileIDToPredict: Int): Boolean {
-    for (file in commit.getFiles()) {
-        for (fileCommit in file.getCommits().filter { it.time < commit.time }) {
-            for (secondFile in fileCommit.getFiles()) {
+    for (file in commit.files) {
+        for (fileCommit in file.commits.filter { it.time < commit.time }) {
+            for (secondFile in fileCommit.files) {
                 if (secondFile.id == fileIDToPredict) {
                     return true
                 }

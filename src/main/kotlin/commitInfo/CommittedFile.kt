@@ -1,48 +1,30 @@
 package commitInfo
 
-class CommittedFile(val id: Int) {
-    private val commits = HashSet<Commit>()
-    private val names = HashMap<Commit, String>()
+import java.util.*
 
-    fun committed(commit: Commit, name: String) {
+
+class CommittedFile(val path: String) {
+    val commits = HashSet<Commit>()
+    val names = HashSet<CommittedFile>()
+    val id = path
+
+    fun committed(commit: Commit) {
         commits.add(commit)
-        names[commit] = name
         commit.addFile(this)
     }
 
-    fun getCommits(): Collection<Commit> {
-        return commits
-    }
+    override fun toString() = path
 
-    fun getName(time: Long): String {
-        var delta = time
-        var fileName = ""
-        for ((commit, name) in names) {
-            val curDelta = time - commit.time
-            if (curDelta in 1..(delta - 1)) {
-                delta = curDelta
-                fileName = name
-            }
-        }
-        return fileName
-    }
-
-    override fun toString(): String {
-        return id.toString()
-    }
-
-    fun toString(currentCommit: Commit): CharSequence {
-        return this.getName(currentCommit.time)
-    }
+    override fun hashCode() = path.hashCode()
 
     override fun equals(other: Any?): Boolean {
-        if (other is CommittedFile) {
-            return other.id == this.id
-        }
-        return false
-    }
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
 
-    override fun hashCode(): Int {
-        return this.id
+        other as CommittedFile
+
+        if (path != other.path) return false
+
+        return true
     }
 }

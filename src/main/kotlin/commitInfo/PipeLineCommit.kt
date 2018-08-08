@@ -1,6 +1,6 @@
 package commitInfo
 
-data class PipeLineCommit(val time: Long, val files: List<Int>, val forgottenFiles: List<Int>) {
+data class PipeLineCommit(val time: Long, val files: List<String>, val forgottenFiles: List<String>) {
     override fun toString(): String {
         return "$time;${files.joinToString(", ")};${forgottenFiles.joinToString(", ")}"
     }

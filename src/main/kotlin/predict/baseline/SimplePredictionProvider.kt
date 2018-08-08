@@ -10,17 +10,17 @@ class SimplePredictionProvider : PredictionProvider {
     override fun commitPredict(commit: Commit, maxPredictedFileCount: Int): List<CommittedFile> {
         val candidates = HashMap<CommittedFile, Double>()
         val sizeHashMap = HashMap<CommittedFile, Int>()
-        for (firstFile in commit.getFiles()) {
-            val commits = firstFile.getCommits().filter { it.time < commit.time }
+        for (firstFile in commit.files) {
+            val commits = firstFile.commits.filter { it.time < commit.time }
             for (fileCommits in commits) {
-                for (secondFile in fileCommits.getFiles()) {
+                for (secondFile in fileCommits.files) {
 
                     if (secondFile !in sizeHashMap) {
-                        sizeHashMap[secondFile] = secondFile.getCommits().filter { it.time < commit.time }.size
+                        sizeHashMap[secondFile] = secondFile.commits.filter { it.time < commit.time }.size
                     }
                     val firstFileCommitCount = commits.size
                     val secondFileCommitCount = sizeHashMap[secondFile]!!
-                    val intersection = commits.count { secondFile in it.getFiles() }
+                    val intersection = commits.count { secondFile in it.files }
                     val union = firstFileCommitCount + secondFileCommitCount - intersection
 
 
@@ -35,7 +35,7 @@ class SimplePredictionProvider : PredictionProvider {
                 .toList()
                 .sortedBy { (_, value) -> value }
                 .filter { it.second > 0.25 }
-                .filter { it.first !in commit.getFiles() }
+                .filter { it.first !in commit.files }
                 .map { it.first }
                 .reversed()
 

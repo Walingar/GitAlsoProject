@@ -36,13 +36,13 @@ class TotalWeightPredictionProvider(private val minProb: Double = 0.5, private v
     }
 
     private fun fileVote(firstFile: CommittedFile, commit: Commit, filesScore: HashMap<CommittedFile, VoteProvider>) {
-        val fileCommits = firstFile.getCommits().filter { it.time < commit.time }
+        val fileCommits = firstFile.commits.filter { it.time < commit.time }
 
         for (currentCommit in fileCommits) {
-            val currentCommitSize = currentCommit.getFiles().size.toDouble()
+            val currentCommitSize = currentCommit.files.size.toDouble()
 
-            for (secondFile in currentCommit.getFiles()) {
-                if (secondFile in commit.getFiles()) {
+            for (secondFile in currentCommit.files) {
+                if (secondFile in commit.files) {
                     continue
                 }
 
@@ -58,7 +58,7 @@ class TotalWeightPredictionProvider(private val minProb: Double = 0.5, private v
 
         val voter = VoteProvider(m)
 
-        for (file in commit.getFiles()) {
+        for (file in commit.files) {
             fileVote(file, commit, filesScore)
         }
 
@@ -79,11 +79,11 @@ class TotalWeightPredictionProvider(private val minProb: Double = 0.5, private v
         val filteredCandidates = HashMap<CommittedFile, Double>()
 
         for ((file, score) in slicedCandidates) {
-            val predictedFileCommits = file.getCommits().filter { it.time < commit.time }
+            val predictedFileCommits = file.commits.filter { it.time < commit.time }
 
             if (score > minProb) {
-                for (commitFile in commit.getFiles()) {
-                    val predictedFileWithCommitFileSize = predictedFileCommits.count { commitFile in it.getFiles() }.toDouble()
+                for (commitFile in commit.files) {
+                    val predictedFileWithCommitFileSize = predictedFileCommits.count { commitFile in it.files }.toDouble()
                     val predictedFileSize = predictedFileCommits.size.toDouble()
                     if (
                             predictedFileWithCommitFileSize / predictedFileSize > 0.3

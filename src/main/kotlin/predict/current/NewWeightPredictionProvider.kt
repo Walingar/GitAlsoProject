@@ -31,13 +31,13 @@ class NewWeightPredictionProvider(private val minProb: Double = 0.57, private va
 
     private fun vote(firstFile: CommittedFile, commit: Commit): HashMap<CommittedFile, Double> {
         val candidates = HashMap<CommittedFile, VoteProvider>()
-        val commits = firstFile.getCommits().filter { it.time < commit.time }
+        val commits = firstFile.commits.filter { it.time < commit.time }
         for (fileCommit in commits) {
-            for (secondFile in fileCommit.getFiles()) {
-                if (secondFile in commit.getFiles()) {
+            for (secondFile in fileCommit.files) {
+                if (secondFile in commit.files) {
                     continue
                 }
-                val currentRate = min(1.0, commitSize / fileCommit.getFiles().size.toDouble())
+                val currentRate = min(1.0, commitSize / fileCommit.files.size.toDouble())
                 candidates.putIfAbsent(secondFile, VoteProvider(m2))
                 candidates[secondFile]!!.vote(currentRate)
             }
@@ -55,7 +55,7 @@ class NewWeightPredictionProvider(private val minProb: Double = 0.57, private va
         val candidates = HashMap<CommittedFile, Double>()
         val votes = ArrayList<Pair<CommittedFile, Double>>()
 
-        for (file in commit.getFiles()) {
+        for (file in commit.files) {
             val currentVotes = vote(file, commit)
             for ((currentFile, currentVote) in currentVotes) {
                 votes.add(Pair(currentFile, currentVote))
@@ -71,7 +71,7 @@ class NewWeightPredictionProvider(private val minProb: Double = 0.57, private va
                 .toList()
                 .sortedBy { (_, value) -> value }
                 .reversed()
-        if (commit.getFiles().size > 5) {
+        if (commit.files.size > 5) {
             return arrayListOf()
         }
 

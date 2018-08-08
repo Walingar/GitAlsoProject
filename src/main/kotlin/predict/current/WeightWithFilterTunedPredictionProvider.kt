@@ -31,16 +31,16 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.8,
 
     private fun vote(firstFile: CommittedFile, commit: Commit): HashMap<CommittedFile, Double> {
         val candidates = HashMap<CommittedFile, VoteProvider>()
-        val filteredCommits = firstFile.getCommits().filter { it.time < commit.time }
+        val filteredCommits = firstFile.commits.filter { it.time < commit.time }
         val commits = filteredCommits.sortedBy { it.time }.reversed().subList(0, min(filteredCommits.size, 10))
         for (fileCommit in commits) {
-            for (secondFile in fileCommit.getFiles()) {
-                if (secondFile in commit.getFiles()) {
+            for (secondFile in fileCommit.files) {
+                if (secondFile in commit.files) {
                     continue
                 }
-                val currentRate = min(1.0, commitSize / fileCommit.getFiles().size.toDouble())
+                val currentRate = min(1.0, commitSize / fileCommit.files.size.toDouble())
 
-                val filesFileCommitFromCommit = fileCommit.getFiles().count { it in commit.getFiles() }
+                val filesFileCommitFromCommit = fileCommit.files.count { it in commit.files }
                 val currentWeight = filesFileCommitFromCommit.toDouble() / commitSize
                 candidates.putIfAbsent(secondFile, VoteProvider(m2))
 
@@ -60,7 +60,7 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.8,
         val candidates = HashMap<CommittedFile, Double>()
         val votes = ArrayList<Pair<CommittedFile, Double>>()
 
-        for (file in commit.getFiles()) {
+        for (file in commit.files) {
             val currentVotes = vote(file, commit)
             for ((currentFile, currentVote) in currentVotes) {
                 votes.add(Pair(currentFile, currentVote))
@@ -73,9 +73,9 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.8,
 
         for ((file, score) in candidates) {
             if (score > minProb) {
-                for (commitFile in commit.getFiles()) {
-                    val commitFileSize = commitFile.getCommits().filter { it.time < commit.time }.size.toDouble()
-                    if (file.getCommits().count{it.time < commit.time} / commitFileSize > 0.1) {
+                for (commitFile in commit.files) {
+                    val commitFileSize = commitFile.commits.filter { it.time < commit.time }.size.toDouble()
+                    if (file.commits.count{it.time < commit.time} / commitFileSize > 0.1) {
                         filteredCandidates[file] = score
                     }
                 }

@@ -10,20 +10,20 @@ class RandomPredictionProvider : PredictionProvider {
         val currentTime = commit.time
         val allFiles = HashSet<CommittedFile>()
 
-        for (file in commit.getFiles()) {
-            for (fileCommit in file.getCommits()) {
+        for (file in commit.files) {
+            for (fileCommit in file.commits) {
                 if (fileCommit.time > currentTime) {
                     continue
                 }
 
-                for (otherFile in fileCommit.getFiles()) {
+                for (otherFile in fileCommit.files) {
                     if (otherFile !in allFiles) {
                         allFiles += otherFile
                     }
                 }
             }
         }
-        val prediction = allFiles.filter { it !in commit.getFiles() }
+        val prediction = allFiles.filter { it !in commit.files }
         return prediction.shuffled().subList(0, Integer.min(prediction.size, maxPredictedFileCount))
     }
 
