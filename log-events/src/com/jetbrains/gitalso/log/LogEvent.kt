@@ -8,8 +8,8 @@ class LogEvent(
         val recorderVersion: String,
         val userID: String,
         val sessionID: String,
-        var action: Action,
         val bucket: String,
+        var action: Action,
         val fields: Map<LogField, Any>) {
 
 
@@ -18,8 +18,8 @@ class LogEvent(
             "$recorderVersion\t" +
             "$userID\t" +
             "$sessionID\t" +
-            "$action\t" +
             "$bucket\t" +
+            "$action\t" +
             GitAlsoJsonSerializer.toJson(fields)
 
     override fun equals(other: Any?): Boolean {

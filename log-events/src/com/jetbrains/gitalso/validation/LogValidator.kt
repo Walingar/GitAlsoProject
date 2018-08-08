@@ -23,7 +23,7 @@ abstract class LogValidator {
                 is Map<*, *> -> value.all { (_, value) ->
                     value != null && type.isAssignableFrom(value::class.java)
                 }
-                else ->  type.isAssignableFrom(value::class.java)
+                else -> type.isAssignableFrom(value::class.java)
             }
 
     private fun isFactorsValuesValid(map: Map<*, *>) =
@@ -99,13 +99,13 @@ abstract class LogValidator {
         val userID = elements[3]
         val sessionID = elements[4]
 
+        val bucket = elements[5]
+
         val action = try {
-            Action.valueOf(elements[5])
+            Action.valueOf(elements[6])
         } catch (e: IllegalArgumentException) {
             null
         } ?: return null
-
-        val bucket = elements[6]
 
         val factorsString = elements.subList(7, elements.size).joinToString("\t")
 
@@ -122,6 +122,6 @@ abstract class LogValidator {
                 .map { (key, value) -> Pair(LogField.valueOf(key), value) }
                 .toMap()
 
-        return LogEvent(timestamp, recorderID, recorderVersion, userID, sessionID, action, bucket, validFactors)
+        return LogEvent(timestamp, recorderID, recorderVersion, userID, sessionID, bucket, action, validFactors)
     }
 }

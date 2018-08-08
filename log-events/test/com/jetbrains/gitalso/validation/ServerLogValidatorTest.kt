@@ -42,8 +42,8 @@ class ServerLogValidatorTest {
                         "1.0",
                         "testID",
                         "1",
+                        "-1",
                         action,
-                        "1",
                         eventJson
                 )
                 events += event.toString()

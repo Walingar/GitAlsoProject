@@ -92,6 +92,6 @@ data class PredictionResult(
                 LogField.REPOSITORY to repository
         )
 
-        return LogEvent(timestamp, recorderID, recorderVersion, userID, sessionID.toString(), action, bucket, fields)
+        return LogEvent(timestamp, recorderID, recorderVersion, userID, sessionID.toString(), bucket, action, fields)
     }
 }
