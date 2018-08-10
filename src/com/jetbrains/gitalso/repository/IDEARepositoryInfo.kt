@@ -36,8 +36,9 @@ class IDEARepositoryInfo(private val project: Project) : RepositoryInfo {
         val structureFilter = VcsLogStructureFilterImpl(setOf(file))
         val fileCommits = dataGetter.filter(listOf(structureFilter))
         val refs = dataManager!!.dataPack.refsModel
+        val root = VcsUtil.getVcsRootFor(project, file)
         val branchRef = refs.branches.find { vcsRef ->
-            vcsRef.root == VcsUtil.getVcsRootFor(project, file) && vcsRef.name == "master"
+            vcsRef.root == root && vcsRef.name == "master"
         } ?: return listOf()
         val containedInBranchCondition = dataManager.dataPack.permanentGraph
                 .getContainedInBranchCondition(listOf(
