@@ -4,6 +4,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.openapi.vcs.FilePath
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.ui.JBColor
 import com.intellij.ui.components.labels.LinkLabel
 import com.intellij.ui.components.labels.LinkListener
 import com.intellij.vcsUtil.VcsUtil
@@ -18,7 +19,7 @@ class GitAlsoDialog(private val project: Project, modifiedFiles: Set<VirtualFile
     private val root = project.baseDir!!
 
     private val blueColor = Color(56, 117, 214)
-    private val blackColor = Color.BLACK
+    private val blackColor = JBColor.BLACK
 
     private fun getDrawable(files: Set<VirtualFile>): Set<VirtualFile> {
         val drawable = HashSet<VirtualFile>()
