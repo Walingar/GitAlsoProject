@@ -34,10 +34,16 @@ class IDEARepositoryInfo(private val project: Project) : RepositoryInfo {
 
     private fun getCommitHashesWithFile(file: FilePath): Collection<Int> {
         val structureFilter = VcsLogStructureFilterImpl(setOf(file))
-        val containedInBranchCondition = dataManager!!.containingBranchesGetter.getContainedInBranchCondition("master", VcsUtil.getVcsRootFor(project, file)!!)
-        // solution with distinct is not good, because commits can have common author time
-        // TODO: find how to filter commits by structure without repetitions
-        return dataGetter.filter(listOf(structureFilter)).filter { containedInBranchCondition.value(dataManager.getCommitId(it)) }.distinctBy { dataGetter.getAuthorTime(it) }
+        val fileCommits = dataGetter.filter(listOf(structureFilter))
+        val refs = dataManager!!.dataPack.refsModel
+        val branchRef = refs.branches.find { vcsRef ->
+            vcsRef.root == VcsUtil.getVcsRootFor(project, file) && vcsRef.name == "master"
+        } ?: return listOf()
+        val containedInBranchCondition = dataManager.dataPack.permanentGraph
+                .getContainedInBranchCondition(listOf(
+                        dataManager.getCommitIndex(branchRef.commitHash, branchRef.root)
+                ))
+        return fileCommits.filter { containedInBranchCondition.value(it) }
     }
 
     private fun getCommittedFile(file: FilePath) = if (file in files) {
