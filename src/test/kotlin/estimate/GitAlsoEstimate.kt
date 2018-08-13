@@ -14,7 +14,6 @@ import org.junit.runners.Parameterized
 import predict.baseline.RandomPredictionProvider
 import predict.baseline.SimplePredictionProvider
 import predict.current.*
-import java.util.concurrent.Executors
 
 
 @RunWith(Parameterized::class)

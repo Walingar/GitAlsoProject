@@ -5,7 +5,7 @@ import commitInfo.CommittedFile
 import predict.PredictionProvider
 import kotlin.math.min
 
-class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 2.0, private val m: Double = 1.6, private val commitSize: Double = 8.0) : PredictionProvider {
+class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.9, private val m: Double = 3.2, private val commitSize: Double = 8.0) : PredictionProvider {
 
     private class VoteProvider(private val m: Double) {
         var result = 0.0
@@ -32,16 +32,14 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 2.0,
     private fun vote(firstFile: CommittedFile, commit: Commit): HashMap<CommittedFile, Double> {
         val candidates = HashMap<CommittedFile, VoteProvider>()
         val filteredCommits = firstFile.commits.filter { it.time < commit.time }
-        val commits = filteredCommits.sortedBy { it.time }.reversed().subList(0, min(filteredCommits.size, 10))
+        val commits = filteredCommits.sortedBy { it.time }.reversed().subList(0, min(filteredCommits.size, 20))
         for (fileCommit in commits) {
             for (secondFile in fileCommit.files) {
                 if (secondFile in commit.files) {
                     continue
                 }
                 val currentRate = min(1.0, commitSize / fileCommit.files.size.toDouble())
-
-                val filesFileCommitFromCommit = fileCommit.files.count { it in commit.files }
-                val currentWeight = filesFileCommitFromCommit.toDouble() / commitSize
+                val currentWeight = 1.0
                 candidates.putIfAbsent(secondFile, VoteProvider(m))
 
                 candidates[secondFile]!!.vote(currentRate, currentWeight)
