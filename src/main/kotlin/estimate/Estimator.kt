@@ -56,7 +56,7 @@ class Estimator(private val service: GitAlsoService) {
             }
         }
         println()
-        println(sizeCounter.toDouble() / counterNonEmpty)
+        //println(sizeCounter.toDouble() / counterNonEmpty)
 
         return PredictionResult(rightAtFirst, rightPrediction, wrongPrediction, silentPrediction)
     }

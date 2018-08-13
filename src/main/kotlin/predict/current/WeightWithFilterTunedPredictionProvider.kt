@@ -5,7 +5,7 @@ import commitInfo.CommittedFile
 import predict.PredictionProvider
 import kotlin.math.min
 
-class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.8, private val m: Double = 4.7, private val commitSize: Double = 5.0) : PredictionProvider {
+class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 2.0, private val m: Double = 1.6, private val commitSize: Double = 8.0) : PredictionProvider {
 
     private class VoteProvider(private val m: Double) {
         var result = 0.0

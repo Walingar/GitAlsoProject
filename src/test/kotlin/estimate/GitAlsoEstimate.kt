@@ -14,6 +14,7 @@ import org.junit.runners.Parameterized
 import predict.baseline.RandomPredictionProvider
 import predict.baseline.SimplePredictionProvider
 import predict.current.*
+import java.util.concurrent.Executors
 
 
 @RunWith(Parameterized::class)
@@ -115,6 +116,34 @@ class GitAlsoEstimate(val repositoryName: String, val datasetType: DatasetType, 
         val predictionProvider2 = getPredictionProvider(compareWith)
         val estimator = Estimator(service)
         estimator.compareTwoPredictionProviders(dataset, predictionProvider1, predictionProvider2)
+    }
+
+    private fun score(result: PredictionResult) = result.wrong * (-5) + result.right * (2) + result.silent
+
+    private fun estimate(repositoryName: String, datasetType: DatasetType, predictionType: PredictionType) {
+        val dir = File("temp/$repositoryName/$datasetType")
+        dir.mkdirs()
+
+        val outputFile = dir.resolve("temp.log")
+        outputFile.createNewFile()
+        outputFile.writeText("minProb, m, fileSize, score\n")
+
+        val service = getGitAlsoServiceFromIndex(repositoryName)
+        val dataset = getDatasetFromFile(repositoryName, datasetType)
+        val estimator = Estimator(service)
+        var s = 0
+        for (minProb in listOf(0.0)) {
+            for (m in 1..100) {
+                for (fileSize in 1..10) {
+                    val predictionProvider = WeightWithFilterTunedPredictionProvider(minProb, m.toDouble() / 10, fileSize.toDouble())
+                    val result = estimator.predictForDatasetWithForgottenFiles(dataset, predictionProvider)
+                    val score = score(result)
+                    outputFile.appendText("$minProb, $m, $fileSize, $score\n")
+                    s++
+                    print(s)
+                }
+            }
+        }
     }
 
     @Test
