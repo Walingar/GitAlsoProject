@@ -13,6 +13,10 @@ object Logger {
     var sessionId = 1
     var repository = "0"
 
+    fun sendLogs() {
+        logManager.sendFiles()
+    }
+
     fun log(event: LogEvent) {
         logManager.log(event)
     }

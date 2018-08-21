@@ -1,6 +1,9 @@
 package com.jetbrains.gitalso.commitHandle
 
+import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.vcs.CheckinProjectPanel
 import com.intellij.openapi.vcs.FilePath
 import com.intellij.openapi.vcs.FileStatus
@@ -27,6 +30,7 @@ import kotlin.collections.HashSet
 class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHandler() {
     private val project: Project = panel.project
     private val root = project.baseDir
+    private val title = "GitAlso plugin"
 
     private fun files(): List<FilePath> {
         return panel.files.map { file -> getFilePath(file.absolutePath) }
@@ -92,8 +96,22 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
                         .toSet()
             }.toMap()
 
+    private fun sendLogs() {
+        ApplicationManager.getApplication().executeOnPooledThread {
+            Logger.sendLogs()
+        }
+    }
+
     override fun beforeCheckin(executor: CommitExecutor?, additionalDataConsumer: PairConsumer<Any, Any>?): ReturnResult {
+        if (DumbService.getInstance(project).isDumb) {
+            Messages.showErrorDialog(project, "Cannot commit right now because IDE updates the indices " +
+                    "of the project in the background. Please try again later.",
+                    title)
+            return ReturnResult.CANCEL
+        }
+
         if (root == null) {
+            sendLogs()
             return ReturnResult.COMMIT
         }
         val startTime = System.currentTimeMillis()
@@ -109,12 +127,14 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
         // idea is not indexed
         if (commit == null) {
             Logger.simpleActionLog(Action.COMMIT_CLICKED, State.BEFORE_COMMIT, State.NOT_INDEXED)
+            sendLogs()
             return ReturnResult.COMMIT
         }
 
         // a lot of files are not interesting for prediction and so slow
         if (commit.files.size > 25) {
             Logger.simpleActionLog(Action.COMMIT_CLICKED, State.BEFORE_COMMIT, State.A_LOT_OF_FILES)
+            sendLogs()
             return ReturnResult.COMMIT
         }
 
@@ -140,6 +160,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
                     prepare(commitsAuthor)
             )
             Logger.log(event)
+            sendLogs()
             return ReturnResult.COMMIT
         }
 
@@ -164,9 +185,11 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
 
         return if (dialog.exitCode == 1) {
             Logger.simpleActionLog(Action.CANCEL, State.SHOW_MAIN_DIALOG, State.AFTER_COMMIT)
+            sendLogs()
             ReturnResult.CANCEL
         } else {
             Logger.simpleActionLog(Action.COMMIT, State.SHOW_MAIN_DIALOG, State.AFTER_COMMIT)
+            sendLogs()
             ReturnResult.COMMIT
         }
 

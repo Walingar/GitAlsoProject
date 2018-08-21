@@ -14,7 +14,7 @@ class LogFileManager {
         }
     }
 
-    private fun sendFiles() {
+    fun sendFiles() {
         val files = logFileProvider.getDataFiles()
         for (file in files) {
             sendFile(file)
@@ -22,7 +22,6 @@ class LogFileManager {
     }
 
     fun log(event: LogEvent) {
-        //sendFiles()
         logFileProvider.cleanupOldFiles()
         val file = logFileProvider.newLogFile()
         val logString = event.toString()
@@ -31,6 +30,5 @@ class LogFileManager {
             return
         }
         file.writeText(event.toString())
-        //sendFile(file)
     }
 }
