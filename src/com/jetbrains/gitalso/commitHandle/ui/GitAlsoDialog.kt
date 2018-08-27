@@ -18,7 +18,7 @@ class GitAlsoDialog(private val project: Project, modifiedFiles: Set<VirtualFile
     private val unmodifiedDrawable: Set<VirtualFile>
     private val root = project.baseDir!!
 
-    private val blueColor = JBColor(Color(56, 117, 214), Color(47, 101, 202))
+    private val blueColor = JBColor(Color(56, 117, 214), Color(104, 151, 187))
     private val blackColor = JBColor.BLACK
 
     private fun getDrawable(files: Set<VirtualFile>): Set<VirtualFile> {
