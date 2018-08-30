@@ -1,10 +1,14 @@
 <idea-plugin>
-    <id>com.jetbrains.GitAlso</id>
+    <id>com.jetbrains.gitalso</id>
     <name>GitAlso</name>
-    <version>0.0.6</version>
+    <version>0.1.0</version>
     <vendor email="walingar@mail.ru" url="http://www.jetbrains.com">JetBrains</vendor>
 
-    <description>This plugin predicts files which developer may forgot to modify or add to VCS.</description>
+    <description><![CDATA[
+        The plugin predicts files which developer might have forgotten to modify or to add to VCS.
+        Note that the plugin collects anonymised data about your commits and sends it to JetBrains.
+        This data helps us to improve our recommendations. The plugin does not send any of your personal data like file names or code. We will not be able to identify you or the project that you are working on.
+    ]]></description>
 
     <idea-version since-build="183.1182"/>
 
