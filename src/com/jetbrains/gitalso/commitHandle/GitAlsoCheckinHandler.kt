@@ -91,7 +91,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
             map.map { (key, value) ->
                 key to value
                         .map {
-                            it.time ?: -1
+                            it.id.toLong()
                         }
                         .toSet()
             }.toMap()
