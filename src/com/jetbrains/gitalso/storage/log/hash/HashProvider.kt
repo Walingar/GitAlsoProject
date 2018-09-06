@@ -20,7 +20,7 @@ object HashProvider {
 
     fun hash(st: String): Long {
         val md = MessageDigest.getInstance("SHA-256")
-        md.update(st.toByteArray())
+        md.update(SaltProvider.addSalt(st.toByteArray()))
         return bytesToLong(md.digest())
     }
 }
