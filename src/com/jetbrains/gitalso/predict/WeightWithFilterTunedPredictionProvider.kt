@@ -4,7 +4,7 @@ import com.jetbrains.gitalso.commitInfo.Commit
 import com.jetbrains.gitalso.commitInfo.CommittedFile
 import kotlin.math.min
 
-class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.9, private val m: Double = 3.2, private val commitSize: Double = 8.0) {
+class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.6, private val m: Double = 3.2, private val commitSize: Double = 8.0) {
 
     private class VoteProvider(private val m: Double) {
         var result = 0.0
@@ -76,16 +76,22 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.9,
                 .sortedBy { (_, value) -> value }
                 .reversed()
 
-        val filteredCandidates = sortedPrediction.filter { it.second > minProb }
+        val filteredCandidates = sortedPrediction.filter { it.second > minProb + commit.files.size * 0.1 }
+
+        var sliceBy = maxPredictedFileCount
+
+        while (sliceBy + 1 < filteredCandidates.size && filteredCandidates[sliceBy].second == filteredCandidates[sliceBy + 1].second) {
+            sliceBy++
+        }
 
         val prediction = filteredCandidates
                 .map { it.first }
-                .subList(0, min(filteredCandidates.size, maxPredictedFileCount))
+                .subList(0, min(filteredCandidates.size, sliceBy))
                 .filter { it.path.virtualFile != null }
 
         val topCandidates = sortedPrediction
                 .map { it.first }
-                .subList(0, min(sortedPrediction.size, maxPredictedFileCount))
+                .subList(0, min(sortedPrediction.size, sliceBy))
                 .filter { it.path.virtualFile != null }
 
         val predictionScores = scores.filter { (pair, _) -> pair.second in prediction }
