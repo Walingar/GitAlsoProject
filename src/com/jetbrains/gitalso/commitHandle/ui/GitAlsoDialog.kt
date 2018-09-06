@@ -21,6 +21,8 @@ class GitAlsoDialog(private val project: Project, modifiedFiles: Set<VirtualFile
     private val blueColor = JBColor(Color(56, 117, 214), Color(104, 151, 187))
     private val blackColor = JBColor.BLACK
 
+    override fun getDimensionServiceKey() = "com.jetbrains.gitalso.commitHandle.ui.GitAlsoDialog"
+
     private fun getDrawable(files: Set<VirtualFile>): Set<VirtualFile> {
         val drawable = HashSet<VirtualFile>()
         for (file in files) {

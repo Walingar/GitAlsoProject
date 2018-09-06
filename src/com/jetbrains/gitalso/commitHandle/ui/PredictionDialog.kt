@@ -20,6 +20,8 @@ class PredictionDialog(project: Project, private val root: VirtualFile, private 
         title = "GitAlso plugin"
     }
 
+    override fun getDimensionServiceKey() = "com.jetbrains.gitalso.commitHandle.ui.PredictionDialog"
+
     override fun createActions(): Array<Action> {
         return arrayOf(DialogWrapperExitAction("Close", 0))
     }
