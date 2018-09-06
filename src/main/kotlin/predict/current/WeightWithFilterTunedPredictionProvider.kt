@@ -5,7 +5,7 @@ import commitInfo.CommittedFile
 import predict.PredictionProvider
 import kotlin.math.min
 
-class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.9, private val m: Double = 3.2, private val commitSize: Double = 8.0) : PredictionProvider {
+class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.6, private val m: Double = 3.2, private val commitSize: Double = 8.0) : PredictionProvider {
 
     private class VoteProvider(private val m: Double) {
         var result = 0.0
@@ -80,10 +80,16 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.9,
                 .sortedBy { (_, value) -> value }
                 .reversed()
 
-        val filteredCandidates = sortedPrediction.filter { it.second > minProb }
+        val filteredCandidates = sortedPrediction.filter { it.second >= minProb + commit.files.size * 0.1 }
+
+        var sliceBy = maxPredictedFileCount
+
+        while (sliceBy + 1 < filteredCandidates.size && filteredCandidates[sliceBy].second == filteredCandidates[sliceBy + 1].second) {
+            sliceBy++
+        }
 
         return filteredCandidates
                 .map { it.first }
-                .subList(0, min(filteredCandidates.size, maxPredictedFileCount))
+                .subList(0, min(filteredCandidates.size, sliceBy))
     }
 }
