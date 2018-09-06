@@ -80,7 +80,7 @@ data class PredictionResult(
 
         putIfNotEmptyValue(dependentFields,
                 LogField.FILES,
-                commit.map { it.toString() })
+                commit.map { it.toString().toLong() })
 
         if (time != 0L) {
             dependentFields[LogField.TIME] = time
