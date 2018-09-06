@@ -80,7 +80,7 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.6,
                 .sortedBy { (_, value) -> value }
                 .reversed()
 
-        val filteredCandidates = sortedPrediction.filter { it.second >= minProb + commit.files.size * 0.1 }
+        val filteredCandidates = sortedPrediction.filter { it.second > minProb + commit.files.size * 0.1 }
 
         var sliceBy = maxPredictedFileCount
 
