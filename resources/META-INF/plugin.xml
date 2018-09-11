@@ -5,9 +5,18 @@
     <vendor email="walingar@mail.ru" url="http://www.jetbrains.com">JetBrains</vendor>
 
     <description><![CDATA[
-        The plugin predicts files which developer might have forgotten to modify or to add to VCS.
-        Note that the plugin collects anonymised data about your commits and sends it to JetBrains.
-        This data helps us to improve our recommendations. The plugin does not send any of your personal data like file names or code. We will not be able to identify you or the project that you are working on.
+        The plugin predicts files which developer might have forgotten to modify or to add to VCS.<br>
+        The plugin is designed to allow JetBrains to improve its products
+            by sending anonymous data about features and plugins used,
+            hardware and software configuration,
+            statistics on types of files,
+            number of files per project, etc.<br>
+        Please note that this will not include personal data or any sensitive information,
+            such as source code, file names, etc.<br>
+        The data sent complies with the
+            <a href="https://www.jetbrains.com/company/privacy.html">JetBrains Privacy Policy</a>
+            and the
+            <a href="https://www.jetbrains.com/legal/agreements/user.html">JetBrains User Agreement</a>.
     ]]></description>
 
     <idea-version since-build="183.1182"/>
