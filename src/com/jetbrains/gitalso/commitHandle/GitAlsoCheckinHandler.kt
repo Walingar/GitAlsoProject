@@ -29,7 +29,7 @@ import kotlin.collections.HashSet
 
 class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHandler() {
     private val project: Project = panel.project
-    private val root = project.baseDir
+    private val rootPath = project.basePath
     private val title = "GitAlso plugin"
 
     private fun files(): List<FilePath> {
@@ -98,101 +98,118 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
 
     private fun sendLogs() {
         ApplicationManager.getApplication().executeOnPooledThread {
-            Logger.sendLogs()
+            // Logger.sendLogs()
         }
     }
 
     override fun beforeCheckin(executor: CommitExecutor?, additionalDataConsumer: PairConsumer<Any, Any>?): ReturnResult {
-        if (DumbService.getInstance(project).isDumb) {
-            Messages.showErrorDialog(project, "Cannot commit right now because IDE updates the indices " +
-                    "of the project in the background. Please try again later.",
-                    title)
-            return ReturnResult.CANCEL
-        }
+        try {
+            if (DumbService.getInstance(project).isDumb) {
+                Messages.showErrorDialog(project, "Cannot commit right now because IDE updates the indices " +
+                        "of the project in the background. Please try again later.",
+                        title)
+                return ReturnResult.CANCEL
+            }
 
-        if (root == null) {
-            sendLogs()
-            return ReturnResult.COMMIT
-        }
-        val startTime = System.currentTimeMillis()
+            if (rootPath == null) {
+                sendLogs()
+                return ReturnResult.COMMIT
+            }
 
-        val sessionId = (0 until Int.MAX_VALUE).random()
-        val repository = IDEARepositoryInfo(project)
-        val filesFromRoot = files().filter { getRoot(it) == root }
-        val commit = repository.getCommit(getFilePath(root), filesFromRoot)
+            val root = VcsUtil.getFilePath(rootPath).virtualFile
+            if (root == null) {
+                sendLogs()
+                return ReturnResult.COMMIT
+            }
 
-        Logger.repository = repository.toString()
-        Logger.sessionId = sessionId
+            val startTime = System.currentTimeMillis()
 
-        // idea is not indexed
-        if (commit == null) {
-            Logger.simpleActionLog(Action.COMMIT_CLICKED, State.BEFORE_COMMIT, State.NOT_INDEXED)
-            sendLogs()
-            return ReturnResult.COMMIT
-        }
+            val sessionId = (0 until Int.MAX_VALUE).random()
+            val repository = IDEARepositoryInfo(project)
+            val filesFromRoot = files().filter { getRoot(it) == root }
+            val commit = repository.getCommit(getFilePath(root), filesFromRoot)
 
-        // a lot of files are not interesting for prediction and so slow
-        if (commit.files.size > 25) {
-            Logger.simpleActionLog(Action.COMMIT_CLICKED, State.BEFORE_COMMIT, State.A_LOT_OF_FILES)
-            sendLogs()
-            return ReturnResult.COMMIT
-        }
+            Logger.repository = repository.toString()
+            Logger.sessionId = sessionId
 
-        val result = WeightWithFilterTunedPredictionProvider()
-                .commitPredict(commit)
+            // idea is not indexed
+            if (commit == null) {
+                Logger.simpleActionLog(Action.COMMIT_CLICKED, State.BEFORE_COMMIT, State.NOT_INDEXED)
+                sendLogs()
+                return ReturnResult.COMMIT
+            }
 
-        result.sessionID = sessionId
-        result.repository = repository.toString()
+            // a lot of files are not interesting for prediction and so slow
+            if (commit.files.size > 25) {
+                Logger.simpleActionLog(Action.COMMIT_CLICKED, State.BEFORE_COMMIT, State.A_LOT_OF_FILES)
+                sendLogs()
+                return ReturnResult.COMMIT
+            }
 
-        val commits = getCommitTimesFromPrediction(commit, result.topPrediction)
-        val commitsAuthor = getCommitsAuthorMask(commits, repository.author)
-        val files = result.prediction.mapNotNull { it.path.virtualFile }
-        val time = System.currentTimeMillis() - startTime
+            val result = WeightWithFilterTunedPredictionProvider()
+                    .commitPredict(commit)
 
-        // prediction is empty
-        if (files.isEmpty()) {
+            result.sessionID = sessionId
+            result.repository = repository.toString()
+
+            val commits = getCommitTimesFromPrediction(commit, result.topPrediction)
+            val commitsAuthor = getCommitsAuthorMask(commits, repository.author)
+            val files = result.prediction.mapNotNull { it.path.virtualFile }
+            val time = System.currentTimeMillis() - startTime
+
+            // prediction is empty
+            if (files.isEmpty()) {
+                val event = result.getLogEvent(
+                        State.BEFORE_COMMIT,
+                        State.NOT_SHOWED,
+                        Action.COMMIT_CLICKED,
+                        time,
+                        prepare(commits),
+                        prepare(commitsAuthor)
+                )
+                Logger.log(event)
+                sendLogs()
+                return ReturnResult.COMMIT
+            }
+
+            val modifiedFiles = files.filter { isModified(it) }.toSet()
+            val unmodifiedFiles = files.filter { !isModified(it) }.toSet()
+
+            val dialog = GitAlsoDialog(project, modifiedFiles, unmodifiedFiles)
+
             val event = result.getLogEvent(
                     State.BEFORE_COMMIT,
-                    State.NOT_SHOWED,
+                    State.SHOW_MAIN_DIALOG,
                     Action.COMMIT_CLICKED,
                     time,
                     prepare(commits),
-                    prepare(commitsAuthor)
+                    prepare(commitsAuthor),
+                    modifiedFiles.toList(),
+                    unmodifiedFiles.toList()
             )
             Logger.log(event)
-            sendLogs()
-            return ReturnResult.COMMIT
+
+            dialog.show()
+
+            return if (dialog.exitCode == 1) {
+                Logger.simpleActionLog(Action.CANCEL, State.SHOW_MAIN_DIALOG, State.AFTER_COMMIT)
+                sendLogs()
+                ReturnResult.CANCEL
+            } else {
+                Logger.simpleActionLog(Action.COMMIT, State.SHOW_MAIN_DIALOG, State.AFTER_COMMIT)
+                sendLogs()
+                ReturnResult.COMMIT
+            }
+        } catch (e1: Exception) {
+            try {
+                // log: exception was
+                Logger.simpleActionLog(Action.COMMIT_CLICKED, State.NOT_INDEXED, State.NOT_INDEXED)
+            } catch (e2: Exception) {
+                // network exception
+            } finally {
+                return ReturnResult.COMMIT
+            }
         }
-
-        val modifiedFiles = files.filter { isModified(it) }.toSet()
-        val unmodifiedFiles = files.filter { !isModified(it) }.toSet()
-
-        val dialog = GitAlsoDialog(project, modifiedFiles, unmodifiedFiles)
-
-        val event = result.getLogEvent(
-                State.BEFORE_COMMIT,
-                State.SHOW_MAIN_DIALOG,
-                Action.COMMIT_CLICKED,
-                time,
-                prepare(commits),
-                prepare(commitsAuthor),
-                modifiedFiles.toList(),
-                unmodifiedFiles.toList()
-        )
-        Logger.log(event)
-
-        dialog.show()
-
-        return if (dialog.exitCode == 1) {
-            Logger.simpleActionLog(Action.CANCEL, State.SHOW_MAIN_DIALOG, State.AFTER_COMMIT)
-            sendLogs()
-            ReturnResult.CANCEL
-        } else {
-            Logger.simpleActionLog(Action.COMMIT, State.SHOW_MAIN_DIALOG, State.AFTER_COMMIT)
-            sendLogs()
-            ReturnResult.COMMIT
-        }
-
     }
 
 }
