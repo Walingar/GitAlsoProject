@@ -5,7 +5,7 @@
     <vendor email="walingar@mail.ru" url="http://www.jetbrains.com">JetBrains</vendor>
 
     <description><![CDATA[
-        The plugin predicts files which developer might have forgotten to modify or to add to VCS.<br>
+        The plugin predicts files which developer might have forgotten to modify or to add to VCS.<br><br>
         The plugin is designed to allow JetBrains to improve its products
             by sending anonymous data about features and plugins used,
             hardware and software configuration,
