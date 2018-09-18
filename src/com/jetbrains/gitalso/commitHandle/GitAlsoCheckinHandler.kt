@@ -98,7 +98,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
 
     private fun sendLogs() {
         ApplicationManager.getApplication().executeOnPooledThread {
-            // Logger.sendLogs()
+            Logger.sendLogs()
         }
     }
 
