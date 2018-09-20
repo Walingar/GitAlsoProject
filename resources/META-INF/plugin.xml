@@ -21,7 +21,7 @@
 
     <idea-version since-build="183.1182"/>
 
-    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.vcs</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <postStartupActivity implementation="com.jetbrains.gitalso.plugin.NotificationManager"/>
