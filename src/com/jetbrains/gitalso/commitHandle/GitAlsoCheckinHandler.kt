@@ -205,7 +205,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
                 // log: exception was
                 Logger.simpleActionLog(Action.COMMIT_CLICKED, State.NOT_INDEXED, State.NOT_INDEXED)
             } catch (e2: Exception) {
-                // network exception
+                // filesystem exception
             } finally {
                 return ReturnResult.COMMIT
             }
