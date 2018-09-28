@@ -27,6 +27,15 @@
             <a href="https://www.jetbrains.com/legal/agreements/user.html">JetBrains User Agreement</a>.
     ]]></description>
 
+    <change-notes><![CDATA[
+        0.1.01 <br>
+        <ul>
+            <li> Fix bug when plugin did not allow the user to make a commit in dumb mode.</li>
+            <li> Updated description.</li>
+        </ul>
+    ]]>
+    </change-notes>
+
     <idea-version since-build="183.1182"/>
 
     <depends>com.intellij.modules.vcs</depends>
