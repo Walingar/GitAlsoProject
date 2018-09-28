@@ -3,7 +3,6 @@ package com.jetbrains.gitalso.commitHandle
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.vcs.CheckinProjectPanel
 import com.intellij.openapi.vcs.FilePath
 import com.intellij.openapi.vcs.FileStatus
@@ -30,7 +29,6 @@ import kotlin.collections.HashSet
 class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHandler() {
     private val project: Project = panel.project
     private val rootPath = project.basePath
-    private val title = "GitAlso plugin"
 
     private fun files(): List<FilePath> {
         return panel.files.map { file -> getFilePath(file.absolutePath) }
@@ -105,10 +103,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
     override fun beforeCheckin(executor: CommitExecutor?, additionalDataConsumer: PairConsumer<Any, Any>?): ReturnResult {
         try {
             if (DumbService.getInstance(project).isDumb) {
-                Messages.showErrorDialog(project, "Cannot commit right now because IDE updates the indices " +
-                        "of the project in the background. Please try again later.",
-                        title)
-                return ReturnResult.CANCEL
+                return ReturnResult.COMMIT
             }
 
             if (rootPath == null) {
