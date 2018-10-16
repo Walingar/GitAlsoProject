@@ -45,7 +45,6 @@
         <postStartupActivity implementation="com.jetbrains.gitalso.plugin.NotificationManager"/>
         <vcsLogIndexService implementation="com.jetbrains.gitalso.repository.LogIndexService"/>
         <checkinHandlerFactory implementation="com.jetbrains.gitalso.commitHandle.GitAlsoCheckinHandlerFactory"/>
-        <projectService serviceImplementation="com.jetbrains.gitalso.plugin.ProjectStorage"/>
         <applicationService serviceImplementation="com.jetbrains.gitalso.plugin.UserStorage"/>
     </extensions>
 
