@@ -4,7 +4,7 @@ import com.jetbrains.gitalso.commitInfo.Commit
 import com.jetbrains.gitalso.commitInfo.CommittedFile
 import kotlin.math.min
 
-class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.6, private val m: Double = 3.2, private val commitSize: Double = 8.0) {
+class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.3, private val m: Double = 3.2, private val commitSize: Double = 8.0) {
 
     private class VoteProvider(private val m: Double) {
         var result = 0.0
@@ -73,10 +73,11 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.6,
 
         val sortedPrediction = candidates
                 .toList()
+                .map { (key, value) -> key to value / commit.files.size }
                 .sortedBy { (_, value) -> value }
                 .reversed()
 
-        val filteredCandidates = sortedPrediction.filter { it.second > minProb + commit.files.size * 0.1 }
+        val filteredCandidates = sortedPrediction.filter { it.second > minProb}
 
         var sliceBy = maxPredictedFileCount
 
