@@ -1,46 +1,24 @@
 package com.jetbrains.gitalso.commitHandle.ui
 
+import com.intellij.openapi.actionSystem.ActionManager
+import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
-import com.intellij.openapi.vcs.FilePath
+import com.intellij.openapi.vcs.changes.ui.ChangesTree
+import com.intellij.openapi.vcs.changes.ui.ChangesTreeImpl
+import com.intellij.openapi.vcs.changes.ui.TreeActionsToolbarPanel
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.ui.JBColor
-import com.intellij.ui.components.labels.LinkLabel
-import com.intellij.ui.components.labels.LinkListener
-import com.intellij.vcsUtil.VcsUtil
-import com.jetbrains.gitalso.log.State
-import com.jetbrains.gitalso.storage.log.Logger
+import com.intellij.ui.ScrollPaneFactory
 import java.awt.*
 import javax.swing.*
 
 class GitAlsoDialog(private val project: Project, modifiedFiles: Set<VirtualFile>, unmodifiedFiles: Set<VirtualFile>) : DialogWrapper(project) {
-    private val modifiedDrawable: Set<VirtualFile>
-    private val unmodifiedDrawable: Set<VirtualFile>
-    private val root = project.baseDir!!
-
-    private val blueColor = JBColor(Color(56, 117, 214), Color(104, 151, 187))
-    private val blackColor = JBColor.BLACK
+    private val modifiedDrawable: Set<VirtualFile> = modifiedFiles
+    private val unmodifiedDrawable: Set<VirtualFile> = unmodifiedFiles
 
     override fun getDimensionServiceKey() = "com.jetbrains.gitalso.commitHandle.ui.GitAlsoDialog"
 
-    private fun getDrawable(files: Set<VirtualFile>): Set<VirtualFile> {
-        val drawable = HashSet<VirtualFile>()
-        for (file in files) {
-            drawable.add(file)
-            var parent = file.parent
-            while (parent != null) {
-                drawable.add(parent)
-                parent = parent.parent
-            }
-        }
-
-        return drawable
-    }
-
     init {
-        modifiedDrawable = getDrawable(modifiedFiles)
-        unmodifiedDrawable = getDrawable(unmodifiedFiles)
-
         init()
         title = "GitAlso plugin"
     }
@@ -52,46 +30,36 @@ class GitAlsoDialog(private val project: Project, modifiedFiles: Set<VirtualFile
         return arrayOf(cancel, commitAnyway)
     }
 
-    private fun createPredictionPanel(textPrefix: String, drawable: Set<VirtualFile>, color: Color): JPanel {
-        val panel = JPanel(FlowLayout(FlowLayout.LEFT))
-        val leafs = drawable.count { !it.isDirectory }
+    private fun createActionsPanel(predictionTreeChange: ChangesTree): JPanel {
+        val group = DefaultActionGroup()
+        // TODO: understand how to add this action
+        // group.add(ActionManager.getInstance().getAction(ChangesTree.GROUP_BY_ACTION_GROUP))
+        val toolbar = ActionManager.getInstance().createActionToolbar("GitAlso.PredictionDialog", group, true)
+        return TreeActionsToolbarPanel(toolbar, predictionTreeChange)
+    }
 
-        val textLabel = JLabel("$textPrefix $leafs ${if (leafs == 1) "file" else "files"}.")
-        val link = LinkLabel("show", null, LinkListener<Any> { _, _ ->
-            if (textPrefix == "commit") {
-                Logger.simpleActionLog(com.jetbrains.gitalso.log.Action.SHOW_MODIFIED, State.SHOW_MAIN_DIALOG, State.SHOW_MODIFIED)
-            } else {
-                Logger.simpleActionLog(com.jetbrains.gitalso.log.Action.SHOW_UNMODIFIED, State.SHOW_MAIN_DIALOG, State.SHOW_UNMODIFIED)
-            }
-            PredictionDialog(project, root, drawable, color).show()
-            if (textPrefix == "commit") {
-                Logger.simpleActionLog(com.jetbrains.gitalso.log.Action.CLOSE_MODIFIED, State.SHOW_MODIFIED, State.SHOW_MAIN_DIALOG)
-            } else {
-                Logger.simpleActionLog(com.jetbrains.gitalso.log.Action.CLOSE_UNMODIFIED, State.SHOW_UNMODIFIED, State.SHOW_MAIN_DIALOG)
-            }
-        })
+    private fun createTreePanel(): JPanel {
+        val panel = JPanel(BorderLayout())
+        val predictionTreeChange = ChangesTreeImpl.VirtualFiles(project, false, false, (modifiedDrawable + unmodifiedDrawable).toList())
+        panel.add(createActionsPanel(predictionTreeChange), BorderLayout.PAGE_START)
+        val scrollPane = ScrollPaneFactory.createScrollPane(predictionTreeChange)
+        val screenSize = Toolkit.getDefaultToolkit().screenSize
 
-        panel.add(textLabel)
-        panel.add(link)
+        scrollPane.preferredSize = Dimension(
+                (screenSize.width * 0.2).toInt(),
+                (screenSize.height * 0.3).toInt())
+
+
+        panel.add(scrollPane, BorderLayout.CENTER)
 
         return panel
     }
 
     override fun createCenterPanel(): JComponent? {
-        val mainPanel = JPanel(GridLayout(0, 1))
-        val commonLabel = JLabel("You might have forgotten to")
-        mainPanel.add(commonLabel)
-
-        if (modifiedDrawable.isNotEmpty()) {
-            val commitPanel = createPredictionPanel("commit", modifiedDrawable, blueColor)
-            mainPanel.add(commitPanel)
-        }
-
-        if (unmodifiedDrawable.isNotEmpty()) {
-            val changePanel = createPredictionPanel("modify", unmodifiedDrawable, blackColor)
-            mainPanel.add(changePanel)
-        }
-
+        val mainPanel = JPanel(BorderLayout())
+        val commonLabel = JLabel("You might have forgotten to ${if (modifiedDrawable.isNotEmpty()) "commit/" else ""}modify ${if (modifiedDrawable.size + unmodifiedDrawable.size > 1) "these files" else "this file"}:")
+        mainPanel.add(commonLabel, BorderLayout.PAGE_START)
+        mainPanel.add(createTreePanel(), BorderLayout.CENTER)
 
         return mainPanel
     }
