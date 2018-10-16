@@ -57,6 +57,7 @@ compileTestKotlin {
 intellij {
     intellij.version "LATEST-TRUNK-SNAPSHOT"
     pluginName = "GitAlso"
+    plugins = ['Git4Idea']
     sameSinceUntilBuild = false
     updateSinceUntilBuild = false
 }
