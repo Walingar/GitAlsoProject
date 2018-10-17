@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.jetbrains.gitalso</id>
     <name>GitAlso</name>
-    <version>0.1.01</version>
+    <version>0.2.0</version>
     <vendor email="walingar@mail.ru" url="http://www.jetbrains.com">JetBrains</vendor>
 
     <description><![CDATA[
@@ -28,6 +28,12 @@
     ]]></description>
 
     <change-notes><![CDATA[
+        0.2.0 <br>
+        <ul>
+            <li> Update user interface.</li>
+            <li> Add personalization into decision function.</li>
+        </ul>
+        
         0.1.01 <br>
         <ul>
             <li> Fix bug when plugin did not allow the user to make a commit in dumb mode.</li>
