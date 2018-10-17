@@ -13,6 +13,7 @@ import com.jetbrains.gitalso.commitInfo.Commit
 import com.jetbrains.gitalso.commitInfo.CommittedFile
 import com.jetbrains.gitalso.log.Action
 import com.jetbrains.gitalso.log.State
+import com.jetbrains.gitalso.plugin.UserStorage
 import com.jetbrains.gitalso.predict.PredictionResultProcessor
 import com.jetbrains.gitalso.predict.WeightWithFilterTunedPredictionProvider
 import com.jetbrains.gitalso.repository.IDEARepositoryInfo
@@ -44,6 +45,15 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
                 return ReturnResult.COMMIT
             }
 
+            val userStorage = UserStorage.currentState
+            if (userStorage.isTurnedOff) {
+                return ReturnResult.COMMIT
+            }
+            if (userStorage.lastAction == "Cancel") {
+                userStorage.lastAction = "Commit"
+                return ReturnResult.COMMIT
+            }
+
             if (rootPath == null) {
                 return ReturnResult.COMMIT
             }
@@ -72,7 +82,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
                 return ReturnResult.COMMIT
             }
 
-            val result = WeightWithFilterTunedPredictionProvider()
+            val result = WeightWithFilterTunedPredictionProvider(minProb = userStorage.threshold)
                     .commitPredict(commit)
 
             result.sessionID = sessionId
@@ -119,9 +129,11 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
 
             return if (dialog.exitCode == 1) {
                 Logger.simpleActionLog(Action.CANCEL, State.SHOW_MAIN_DIALOG, State.AFTER_COMMIT)
+                UserStorage.userStorageUpdate(userStorage, "Cancel")
                 ReturnResult.CANCEL
             } else {
                 Logger.simpleActionLog(Action.COMMIT, State.SHOW_MAIN_DIALOG, State.AFTER_COMMIT)
+                UserStorage.userStorageUpdate(userStorage, "Commit")
                 ReturnResult.COMMIT
             }
         } catch (e1: Exception) {
