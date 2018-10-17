@@ -49,10 +49,6 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
             if (userStorage.isTurnedOff) {
                 return ReturnResult.COMMIT
             }
-            if (userStorage.lastAction == "Cancel") {
-                userStorage.lastAction = "Commit"
-                return ReturnResult.COMMIT
-            }
 
             if (rootPath == null) {
                 return ReturnResult.COMMIT
