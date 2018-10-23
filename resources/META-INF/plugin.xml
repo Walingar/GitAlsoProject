@@ -31,7 +31,6 @@
         0.2.0 <br>
         <ul>
             <li> Update user interface.</li>
-            <li> Add personalization into decision function.</li>
         </ul>
         
         0.1.01 <br>
@@ -52,12 +51,6 @@
         <vcsLogIndexService implementation="com.jetbrains.gitalso.repository.LogIndexService"/>
         <checkinHandlerFactory implementation="com.jetbrains.gitalso.commitHandle.GitAlsoCheckinHandlerFactory"/>
     </extensions>
-
-    <application-components>
-        <component>
-            <implementation-class>com.jetbrains.gitalso.plugin.UserStorage</implementation-class>
-        </component>
-    </application-components>
 
     <actions>
     </actions>
