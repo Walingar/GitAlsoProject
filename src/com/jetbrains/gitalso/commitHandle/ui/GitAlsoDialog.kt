@@ -1,6 +1,7 @@
 package com.jetbrains.gitalso.commitHandle.ui
 
 import com.intellij.openapi.actionSystem.ActionManager
+import com.intellij.openapi.actionSystem.DataProvider
 import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
@@ -12,7 +13,14 @@ import com.intellij.ui.ScrollPaneFactory
 import java.awt.*
 import javax.swing.*
 
-class GitAlsoDialog(private val project: Project, modifiedFiles: Set<VirtualFile>, unmodifiedFiles: Set<VirtualFile>) : DialogWrapper(project) {
+class GitAlsoDialog(private val project: Project, modifiedFiles: Set<VirtualFile>, unmodifiedFiles: Set<VirtualFile>) : DialogWrapper(project), DataProvider {
+    override fun getData(dataId: String) =
+            if (tree == null)
+                null
+            else
+                tree!!.getData(dataId)
+
+    private var tree: ChangesTree? = null
     private val modifiedDrawable: Set<VirtualFile> = modifiedFiles
     private val unmodifiedDrawable: Set<VirtualFile> = unmodifiedFiles
 
@@ -32,15 +40,16 @@ class GitAlsoDialog(private val project: Project, modifiedFiles: Set<VirtualFile
 
     private fun createActionsPanel(predictionTreeChange: ChangesTree): JPanel {
         val group = DefaultActionGroup()
-        // TODO: understand how to add this action
-        // group.add(ActionManager.getInstance().getAction(ChangesTree.GROUP_BY_ACTION_GROUP))
+        group.add(ActionManager.getInstance().getAction(ChangesTree.GROUP_BY_ACTION_GROUP))
         val toolbar = ActionManager.getInstance().createActionToolbar("GitAlso.PredictionDialog", group, true)
+        toolbar.setTargetComponent(predictionTreeChange)
         return TreeActionsToolbarPanel(toolbar, predictionTreeChange)
     }
 
     private fun createTreePanel(): JPanel {
-        val panel = JPanel(BorderLayout())
         val predictionTreeChange = ChangesTreeImpl.VirtualFiles(project, false, false, (modifiedDrawable + unmodifiedDrawable).toList())
+        tree = predictionTreeChange
+        val panel = JPanel(BorderLayout())
         panel.add(createActionsPanel(predictionTreeChange), BorderLayout.PAGE_START)
         val scrollPane = ScrollPaneFactory.createScrollPane(predictionTreeChange)
         val screenSize = Toolkit.getDefaultToolkit().screenSize
@@ -57,7 +66,7 @@ class GitAlsoDialog(private val project: Project, modifiedFiles: Set<VirtualFile
 
     override fun createCenterPanel(): JComponent? {
         val mainPanel = JPanel(BorderLayout())
-        val commonLabel = JLabel("You might have forgotten to ${if (modifiedDrawable.isNotEmpty()) "commit/" else ""}modify ${if (modifiedDrawable.size + unmodifiedDrawable.size > 1) "these files" else "this file"}:")
+        val commonLabel = JLabel("You might have forgotten to modify/${if (modifiedDrawable.isNotEmpty()) "commit" else ""} ${if (modifiedDrawable.size + unmodifiedDrawable.size > 1) "these files" else "this file"}:")
         mainPanel.add(commonLabel, BorderLayout.PAGE_START)
         mainPanel.add(createTreePanel(), BorderLayout.CENTER)
 
