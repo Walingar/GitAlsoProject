@@ -66,7 +66,7 @@ class GitAlsoDialog(private val project: Project, modifiedFiles: Set<VirtualFile
 
     override fun createCenterPanel(): JComponent? {
         val mainPanel = JPanel(BorderLayout())
-        val commonLabel = JLabel("You might have forgotten to modify/${if (modifiedDrawable.isNotEmpty()) "commit" else ""} ${if (modifiedDrawable.size + unmodifiedDrawable.size > 1) "these files" else "this file"}:")
+        val commonLabel = JLabel("You might have forgotten to modify${if (modifiedDrawable.isNotEmpty()) "/commit" else ""} ${if (modifiedDrawable.size + unmodifiedDrawable.size > 1) "these files" else "this file"}:")
         mainPanel.add(commonLabel, BorderLayout.PAGE_START)
         mainPanel.add(createTreePanel(), BorderLayout.CENTER)
 
