@@ -21,12 +21,11 @@ object UserStorage : PersistentStateComponent<UserStorage.State> {
 
     override fun getState() = currentState
 
-    fun UserStorage.State.userStorageUpdate(type: String) {
-        val storage = this
+    fun updateState(storage: State, type: String) {
         val gamma = 0.9
 
-        if (type == "Cancel" && step <= 0) {
-            threshold -= 0.005
+        if (type == "Cancel" && storage.step <= 0) {
+            storage.threshold -= 0.005
             storage.lastAction = type
             return
         }

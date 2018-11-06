@@ -91,7 +91,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
                 return ReturnResult.COMMIT
             }
 
-            val result = WeightWithFilterTunedPredictionProvider(minProb = 0.35)
+            val result = WeightWithFilterTunedPredictionProvider(minProb = userStorage.threshold)
                     .commitPredict(commit)
 
             result.sessionID = sessionId
@@ -138,11 +138,11 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
 
             return if (dialog.exitCode == 1) {
                 Logger.simpleActionLog(Action.CANCEL, State.SHOW_MAIN_DIALOG, State.AFTER_COMMIT)
-                // UserStorage.userStorageUpdate(userStorage, "Cancel")
+                UserStorage.updateState(userStorage, "Cancel")
                 ReturnResult.CANCEL
             } else {
                 Logger.simpleActionLog(Action.COMMIT, State.SHOW_MAIN_DIALOG, State.AFTER_COMMIT)
-                // UserStorage.userStorageUpdate(userStorage, "Commit")
+                UserStorage.updateState(userStorage, "Commit")
                 ReturnResult.COMMIT
             }
         } catch (e1: Exception) {
