@@ -5,7 +5,9 @@ import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.CheckinProjectPanel
 import com.intellij.openapi.vcs.changes.CommitExecutor
+import com.intellij.openapi.vcs.changes.ui.BooleanCommitOption
 import com.intellij.openapi.vcs.checkin.CheckinHandler
+import com.intellij.openapi.vcs.ui.RefreshableOnComponent
 import com.intellij.util.PairConsumer
 import com.intellij.vcsUtil.VcsUtil
 import com.jetbrains.gitalso.commitHandle.ui.GitAlsoDialog
@@ -13,17 +15,19 @@ import com.jetbrains.gitalso.commitInfo.Commit
 import com.jetbrains.gitalso.commitInfo.CommittedFile
 import com.jetbrains.gitalso.log.Action
 import com.jetbrains.gitalso.log.State
+import com.jetbrains.gitalso.plugin.UserStorage
 import com.jetbrains.gitalso.predict.PredictionResultProcessor
 import com.jetbrains.gitalso.predict.WeightWithFilterTunedPredictionProvider
 import com.jetbrains.gitalso.repository.IDEARepositoryInfo
 import com.jetbrains.gitalso.storage.log.Logger
+import java.util.function.Consumer
 
 class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHandler() {
     private val project: Project = panel.project
     private val rootPath = project.basePath
     private val filesProcessor = CommitFilesProcessor(panel.project)
 
-    private fun prepare(map: Map<Pair<CommittedFile, CommittedFile>, Set<Commit>>): Map<Pair<CommittedFile, CommittedFile>, Set<Long>> =
+    private fun preparePredictionData(map: Map<Pair<CommittedFile, CommittedFile>, Set<Commit>>): Map<Pair<CommittedFile, CommittedFile>, Set<Long>> =
             map.map { (key, value) ->
                 key to value
                         .map {
@@ -38,16 +42,26 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
         }
     }
 
+    override fun getBeforeCheckinConfigurationPanel(): RefreshableOnComponent? {
+        return BooleanCommitOption(
+                panel,
+                "Predict forgotten files (Exp.)",
+                true,
+                { UserStorage.state.isTurnedOn },
+                Consumer { UserStorage.state.isTurnedOn = it }
+        )
+    }
+
     override fun beforeCheckin(executor: CommitExecutor?, additionalDataConsumer: PairConsumer<Any, Any>?): ReturnResult {
         try {
             if (DumbService.getInstance(project).isDumb) {
                 return ReturnResult.COMMIT
             }
 
-//            val userStorage = UserStorage.currentState
-//            if (userStorage.isTurnedOff) {
-//                return ReturnResult.COMMIT
-//            }
+            val userStorage = UserStorage.state
+            if (!userStorage.isTurnedOn) {
+                return ReturnResult.COMMIT
+            }
 
             if (rootPath == null) {
                 return ReturnResult.COMMIT
@@ -96,8 +110,8 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
                         State.NOT_SHOWED,
                         Action.COMMIT_CLICKED,
                         time,
-                        prepare(commits),
-                        prepare(commitsAuthor)
+                        preparePredictionData(commits),
+                        preparePredictionData(commitsAuthor)
                 )
                 Logger.log(event)
                 return ReturnResult.COMMIT
@@ -113,8 +127,8 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
                     State.SHOW_MAIN_DIALOG,
                     Action.COMMIT_CLICKED,
                     time,
-                    prepare(commits),
-                    prepare(commitsAuthor),
+                    preparePredictionData(commits),
+                    preparePredictionData(commitsAuthor),
                     modifiedFiles.toList(),
                     unmodifiedFiles.toList()
             )

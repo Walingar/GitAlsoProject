@@ -4,7 +4,7 @@ import com.intellij.openapi.components.*
 import kotlin.math.max
 import kotlin.math.min
 
-@State(name = "GitAlsoUserStorage", storages = [Storage(file = "GitAlsoUserStorage.xml")])
+@State(name = "GitAlsoUserStorage", storages = [Storage(file = "gitalso.user.storage.xml")])
 object UserStorage : PersistentStateComponent<UserStorage.State> {
     class State {
         var lastAction = "Commit"

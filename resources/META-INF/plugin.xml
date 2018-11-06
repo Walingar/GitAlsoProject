@@ -53,6 +53,12 @@
         <checkinHandlerFactory implementation="com.jetbrains.gitalso.commitHandle.GitAlsoCheckinHandlerFactory"/>
     </extensions>
 
+    <application-components>
+        <component>
+            <implementation-class>com.jetbrains.gitalso.plugin.UserStorage</implementation-class>
+        </component>
+    </application-components>
+
     <actions>
     </actions>
 </idea-plugin>
