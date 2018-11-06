@@ -21,6 +21,21 @@ class IDEARepositoryInfo(private val project: Project) : RepositoryInfo {
         predictable = dataManager != null && dataManager.dataPack.isFull
     }
 
+    private val containedInBranchConditionMaster by lazy {
+        val refs = dataManager!!.dataPack.refsModel
+        val branchRef = refs.branches.find { vcsRef ->
+            vcsRef.root == root && vcsRef.name == "master"
+        }
+        if (branchRef == null) {
+            null
+        } else {
+            dataManager.dataPack.permanentGraph
+                    .getContainedInBranchCondition(listOf(
+                            dataManager.getCommitIndex(branchRef.commitHash, branchRef.root)
+                    ))
+        }
+    }
+
     val author by lazy {
         if (root != null) {
             dataManager!!.currentUser[root]
@@ -36,16 +51,7 @@ class IDEARepositoryInfo(private val project: Project) : RepositoryInfo {
     private fun getCommitHashesWithFile(file: FilePath): Collection<Int> {
         val structureFilter = VcsLogStructureFilterImpl(setOf(file))
         val fileCommits = dataGetter.filter(listOf(structureFilter))
-        val refs = dataManager!!.dataPack.refsModel
-        val root = VcsUtil.getVcsRootFor(project, file)
-        val branchRef = refs.branches.find { vcsRef ->
-            vcsRef.root == root && vcsRef.name == "master"
-        } ?: return listOf()
-        val containedInBranchCondition = dataManager.dataPack.permanentGraph
-                .getContainedInBranchCondition(listOf(
-                        dataManager.getCommitIndex(branchRef.commitHash, branchRef.root)
-                ))
-        return fileCommits.filter { containedInBranchCondition.value(it) }
+        return fileCommits.filter { containedInBranchConditionMaster?.value(it) ?: false }
     }
 
     private fun getCommittedFile(file: FilePath) = if (file in files) {
