@@ -8,24 +8,25 @@ import com.intellij.vcsUtil.VcsUtil
 import com.jetbrains.gitalso.commitInfo.Commit
 import com.jetbrains.gitalso.commitInfo.CommittedFile
 import com.jetbrains.gitalso.storage.log.hash.HashProvider
-import java.nio.charset.StandardCharsets
-import java.security.MessageDigest
 import java.util.*
-import kotlin.math.min
 
 class IDEARepositoryInfo(private val project: Project) : RepositoryInfo {
     private val dataManager = VcsProjectLog.getInstance(project).dataManager
     private val predictable: Boolean
     private val commits = HashSet<Int>()
     private val files = HashMap<FilePath, CommittedFile>()
-
+    private val root = VcsUtil.getFilePath(project.basePath).virtualFile
 
     init {
         predictable = dataManager != null && dataManager.dataPack.isFull
     }
 
     val author by lazy {
-        dataManager!!.currentUser[project.baseDir!!]
+        if (root != null) {
+            dataManager!!.currentUser[root]
+        } else {
+            null
+        }
     }
 
     private val dataGetter by lazy {
