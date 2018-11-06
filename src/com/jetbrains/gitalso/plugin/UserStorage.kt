@@ -21,6 +21,11 @@ object UserStorage : PersistentStateComponent<UserStorage.State> {
 
     override fun getState() = currentState
 
+    fun resetState(storage: State) {
+        storage.step = 0.0
+        storage.threshold = 0.35
+    }
+
     fun updateState(storage: State, type: String) {
         val gamma = 0.9
 
