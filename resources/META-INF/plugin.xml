@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.jetbrains.gitalso</id>
     <name>GitAlso</name>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
     <vendor email="walingar@mail.ru" url="http://www.jetbrains.com">JetBrains</vendor>
 
     <description><![CDATA[
@@ -28,6 +28,12 @@
     ]]></description>
 
     <change-notes><![CDATA[
+        0.3.0 <br>
+        <ul>
+            <li> Add personalization in predictions.</li>
+            <li> Add checkbox in commit dialog.</li>
+            <li> Increase calculation speed.</li>
+        </ul>
         0.2.0 <br>
         <ul>
             <li> Update user interface.</li>
