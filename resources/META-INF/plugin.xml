@@ -66,5 +66,13 @@
     </application-components>
 
     <actions>
+        <group id="com.jetbrains.gitalso.plugin.action.GitAlsoActionGroup"
+               class="com.jetbrains.gitalso.plugin.action.GitAlsoActionGroup" text="GitAlso" popup="true">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </group>
+        <action id="com.jetbrains.gitalso.plugin.action.UserStorageConfigureAction"
+                class="com.jetbrains.gitalso.plugin.action.UserStorageConfigureAction" text="Adjust triggering level">
+            <add-to-group group-id="com.jetbrains.gitalso.plugin.action.GitAlsoActionGroup" anchor="first"/>
+        </action>
     </actions>
 </idea-plugin>
