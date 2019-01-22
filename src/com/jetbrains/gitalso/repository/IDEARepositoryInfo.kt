@@ -10,7 +10,7 @@ import com.jetbrains.gitalso.commitInfo.CommittedFile
 import com.jetbrains.gitalso.storage.log.hash.HashProvider
 import java.util.*
 
-class IDEARepositoryInfo(private val project: Project) : RepositoryInfo {
+class IDEARepositoryInfo(private val project: Project) {
     private val dataManager = VcsProjectLog.getInstance(project).dataManager
     private val predictable: Boolean
     private val commits = HashSet<Int>()
@@ -80,7 +80,7 @@ class IDEARepositoryInfo(private val project: Project) : RepositoryInfo {
         return getCommittedFile(file)
     }
 
-    override fun getCommit(root: FilePath, files: Collection<FilePath>): Commit? {
+    fun getCommit(root: FilePath, files: Collection<FilePath>): Commit? {
         if (
                 files.isEmpty() ||
                 !predictable ||

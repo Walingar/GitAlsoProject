@@ -1,11 +1,9 @@
 package com.jetbrains.gitalso.storage.log.hash
 
 import com.intellij.openapi.application.PathManager
-import com.jetbrains.gitalso.storage.FilePathProvider
 import java.io.File
-import java.io.FileFilter
 
-class SaltFilePathProvider : FilePathProvider {
+class SaltFilePathProvider {
 
     private val saltDirectory = File(PathManager.getSystemPath()).resolve(File("git-also/salt"))
     private val saltFileName = "salt"
@@ -20,22 +18,10 @@ class SaltFilePathProvider : FilePathProvider {
         return saltFile
     }
 
-    override fun getDataFiles(): List<File> {
-        val directory = getDataDirectory()
-
-        return directory.listFiles(FileFilter { it.isFile }).sortedBy { it.name }
-    }
-
-    override fun getDataDirectory(): File {
+    private fun getDataDirectory(): File {
         if (!saltDirectory.exists()) {
             saltDirectory.mkdirs()
         }
         return saltDirectory
     }
-
-
-    // it is useless there
-    override fun cleanupOldFiles() {
-    }
-
 }

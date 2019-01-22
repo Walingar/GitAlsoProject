@@ -1,11 +1,10 @@
 package com.jetbrains.gitalso.storage.log
 
 import com.intellij.openapi.application.PathManager
-import com.jetbrains.gitalso.storage.FilePathProvider
 import java.io.File
 import java.io.FileFilter
 
-class LogFilePathProvider : FilePathProvider {
+class LogFilePathProvider {
 
     companion object {
         const val MAX_ALLOWED_SEND_SIZE = 2 * 1024 * 1024
@@ -30,7 +29,7 @@ class LogFilePathProvider : FilePathProvider {
         return newFile
     }
 
-    override fun cleanupOldFiles() {
+    fun cleanupOldFiles() {
         var size = 0L
         val files = getDataFiles()
         files.forEach { size += it.length() }
@@ -44,14 +43,14 @@ class LogFilePathProvider : FilePathProvider {
         }
     }
 
-    override fun getDataDirectory(): File {
+    private fun getDataDirectory(): File {
         if (!logDirectory.exists()) {
             logDirectory.mkdirs()
         }
         return logDirectory
     }
 
-    override fun getDataFiles(): List<File> {
+    fun getDataFiles(): List<File> {
         val directory = getDataDirectory()
 
         return directory.listFiles(FileFilter { it.isFile }).sortedBy { getSuffix(it.name) }
