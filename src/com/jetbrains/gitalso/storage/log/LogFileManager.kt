@@ -9,7 +9,7 @@ class LogFileManager {
     private val logFileProvider = LogFilePathProvider()
 
     private fun sendFile(file: File) {
-        if (LogSender.send(file.readText(), true)) {
+        if (LogSender.send(file.reader(), true)) {
             file.delete()
         }
     }
