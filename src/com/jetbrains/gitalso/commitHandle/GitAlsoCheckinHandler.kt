@@ -1,7 +1,6 @@
 package com.jetbrains.gitalso.commitHandle
 
 import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.CheckinProjectPanel
 import com.intellij.openapi.vcs.changes.CommitExecutor
@@ -138,11 +137,11 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
 
             return if (dialog.exitCode == 1) {
                 Logger.simpleActionLog(Action.CANCEL, State.SHOW_MAIN_DIALOG, State.AFTER_COMMIT)
-                UserStorage.updateState(userStorage, "Cancel")
+                UserStorage.updateState(userStorage, UserStorage.UserAction.CANCEL)
                 ReturnResult.CANCEL
             } else {
                 Logger.simpleActionLog(Action.COMMIT, State.SHOW_MAIN_DIALOG, State.AFTER_COMMIT)
-                UserStorage.updateState(userStorage, "Commit")
+                UserStorage.updateState(userStorage, UserStorage.UserAction.COMMIT)
                 ReturnResult.COMMIT
             }
         } catch (e1: Exception) {

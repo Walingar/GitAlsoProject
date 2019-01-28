@@ -1,13 +1,15 @@
 package com.jetbrains.gitalso.plugin
 
-import com.intellij.openapi.components.*
+import com.intellij.openapi.components.PersistentStateComponent
+import com.intellij.openapi.components.State
+import com.intellij.openapi.components.Storage
 import kotlin.math.max
 import kotlin.math.min
 
 @State(name = "GitAlsoUserStorage", storages = [Storage(file = "gitalso.user.storage.xml")])
 object UserStorage : PersistentStateComponent<UserStorage.State> {
     class State {
-        var lastAction = "Commit"
+        var lastAction = UserAction.COMMIT
         var step = 0.0
         var threshold = 0.35
         var isTurnedOn = true
@@ -26,10 +28,15 @@ object UserStorage : PersistentStateComponent<UserStorage.State> {
         storage.threshold = 0.35
     }
 
-    fun updateState(storage: State, type: String) {
+    enum class UserAction {
+        COMMIT,
+        CANCEL
+    }
+
+    fun updateState(storage: State, type: UserAction) {
         val gamma = 0.9
 
-        if (type == "Cancel" && storage.step <= 0) {
+        if (type == UserAction.CANCEL && storage.step <= 0) {
             storage.threshold -= 0.005
             storage.lastAction = type
             return
@@ -38,13 +45,12 @@ object UserStorage : PersistentStateComponent<UserStorage.State> {
 
         storage.step *= gamma
         storage.step = when (type) {
-            "Commit" -> {
+            UserAction.COMMIT -> {
                 min(((1 - storage.threshold) / 7), storage.step + 0.05)
             }
-            "Cancel" -> {
+            UserAction.CANCEL -> {
                 max(-(storage.threshold / 7), storage.step - 0.05)
             }
-            else -> 0.0
         }
         storage.threshold = min(max(storage.threshold + storage.step, 0.15), 1.0)
     }
