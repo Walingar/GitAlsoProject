@@ -57,6 +57,8 @@
         <postStartupActivity implementation="com.jetbrains.gitalso.plugin.NotificationManager"/>
         <vcsLogIndexService implementation="com.jetbrains.gitalso.repository.LogIndexService"/>
         <checkinHandlerFactory implementation="com.jetbrains.gitalso.commitHandle.GitAlsoCheckinHandlerFactory"/>
+        <projectConfigurable groupId="project.propVCSSupport.Mappings"
+                             instance="com.jetbrains.gitalso.plugin.config.GitAlsoConfigurationPanel"/>
     </extensions>
 
     <application-components>
@@ -64,15 +66,4 @@
             <implementation-class>com.jetbrains.gitalso.plugin.UserStorage</implementation-class>
         </component>
     </application-components>
-
-    <actions>
-        <group id="com.jetbrains.gitalso.plugin.action.GitAlsoActionGroup"
-               class="com.jetbrains.gitalso.plugin.action.GitAlsoActionGroup" text="GitAlso" popup="true">
-            <add-to-group group-id="ToolsMenu" anchor="last"/>
-        </group>
-        <action id="com.jetbrains.gitalso.plugin.action.UserStorageConfigureAction"
-                class="com.jetbrains.gitalso.plugin.action.UserStorageConfigureAction" text="Adjust triggering level">
-            <add-to-group group-id="com.jetbrains.gitalso.plugin.action.GitAlsoActionGroup" anchor="first"/>
-        </action>
-    </actions>
 </idea-plugin>
