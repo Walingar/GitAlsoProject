@@ -63,9 +63,9 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
             val root = VcsUtil.getFilePath(rootPath).virtualFile!!
 
             val sessionId = (0 until Int.MAX_VALUE).random()
-            val repository = IDEARepositoryInfo(project)
+            val repository = IDEARepositoryInfo(panel.roots.first(), dataManager, dataGetter)
             val filesFromRoot = PanelProcessor.files(panel)
-            val commit = repository.getCommit(root, filesFromRoot)
+            val commit = repository.getCommit(filesFromRoot)
 
             Logger.repository = repository.toString()
 

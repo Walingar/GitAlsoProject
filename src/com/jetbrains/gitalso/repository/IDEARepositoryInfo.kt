@@ -1,24 +1,21 @@
 package com.jetbrains.gitalso.repository
 
-import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.FilePath
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.vcs.log.data.VcsLogData
 import com.intellij.vcs.log.data.VcsLogStructureFilterImpl
-import com.intellij.vcs.log.impl.VcsProjectLog
-import com.intellij.vcsUtil.VcsUtil
+import com.intellij.vcs.log.data.index.IndexDataGetter
 import com.jetbrains.gitalso.commitInfo.Commit
 import com.jetbrains.gitalso.commitInfo.CommittedFile
 import com.jetbrains.gitalso.storage.log.hash.HashProvider
 import java.util.*
 
-class IDEARepositoryInfo(private val project: Project) {
-    private val dataManager = VcsProjectLog.getInstance(project).dataManager
+class IDEARepositoryInfo(private val root: VirtualFile, private val dataManager: VcsLogData, private val dataGetter: IndexDataGetter) {
     private val commits = HashSet<Int>()
     private val files = HashMap<FilePath, CommittedFile>()
-    private val root = VcsUtil.getFilePath(project.basePath).virtualFile
 
     private val containedInBranchConditionMaster by lazy {
-        val refs = dataManager!!.dataPack.refsModel
+        val refs = dataManager.dataPack.refsModel
         val branchRef = refs.branches.find { vcsRef ->
             vcsRef.root == root && vcsRef.name == "master"
         }
@@ -32,17 +29,7 @@ class IDEARepositoryInfo(private val project: Project) {
         }
     }
 
-    val author by lazy {
-        if (root != null) {
-            dataManager!!.currentUser[root]
-        } else {
-            null
-        }
-    }
-
-    private val dataGetter by lazy {
-        VcsProjectLog.getInstance(project).dataManager!!.index.dataGetter!!
-    }
+    val author = dataManager.currentUser[root]
 
     private fun getCommitHashesWithFile(file: FilePath): Collection<Int> {
         val structureFilter = VcsLogStructureFilterImpl(setOf(file))
@@ -53,7 +40,7 @@ class IDEARepositoryInfo(private val project: Project) {
     private fun getCommittedFile(file: FilePath) = if (file in files) {
         files[file]!!
     } else {
-        val committedFile = CommittedFile(project, file)
+        val committedFile = CommittedFile(file)
         files[file] = committedFile
         committedFile
     }
@@ -67,7 +54,11 @@ class IDEARepositoryInfo(private val project: Project) {
             }
             commits.add(commitID)
 
-            val commit = Commit(project, commitID)
+            val commit = Commit(
+                    commitID,
+                    dataGetter.getAuthorTime(commitID) ?: 0,
+                    dataGetter.getAuthor(commitID)?.name ?: ""
+            )
             for (commitFile in dataGetter.getChangedPaths(commitID)) {
                 getCommittedFile(commitFile).committed(commit)
             }
@@ -76,8 +67,8 @@ class IDEARepositoryInfo(private val project: Project) {
         return getCommittedFile(file)
     }
 
-    fun getCommit(root: VirtualFile, files: Collection<FilePath>): Commit {
-        val commit = Commit(project, -1)
+    fun getCommit(files: Collection<FilePath>): Commit {
+        val commit = Commit(-1)
 
         for (file in files) {
             commit.addFile(createCommittedFile(file))
@@ -86,6 +77,5 @@ class IDEARepositoryInfo(private val project: Project) {
         return commit
     }
 
-    override fun toString() = if (project.basePath == null) "null" else HashProvider.hash(project.basePath!!).toString()
-
+    override fun toString() = HashProvider.hash(root.path).toString()
 }
