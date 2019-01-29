@@ -1,16 +1,11 @@
 package com.jetbrains.gitalso.commitInfo
 
-import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.FilePath
-import com.intellij.vcs.log.impl.VcsProjectLog
 import com.jetbrains.gitalso.storage.log.hash.HashProvider
 import java.util.*
 
 
-class CommittedFile(project: Project, val path: FilePath) {
-    private val projectLog = VcsProjectLog.getInstance(project)
-    private val indexData = projectLog.dataManager!!.index.dataGetter!!
-
+class CommittedFile(val path: FilePath) {
     val commits = HashSet<Commit>()
 
     fun committed(commit: Commit) {
@@ -18,12 +13,9 @@ class CommittedFile(project: Project, val path: FilePath) {
         commit.addFile(this)
     }
 
-
     private val id by lazy {
         HashProvider.hash(path.path)
     }
-
-    val names get() = indexData.getKnownNames(path)
 
     override fun toString() = id.toString()
 
