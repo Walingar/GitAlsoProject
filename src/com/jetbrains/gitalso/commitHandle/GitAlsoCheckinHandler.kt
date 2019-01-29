@@ -53,10 +53,6 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
 
     override fun beforeCheckin(executor: CommitExecutor?, additionalDataConsumer: PairConsumer<Any, Any>?): ReturnResult {
         try {
-            if (DumbService.getInstance(project).isDumb) {
-                return ReturnResult.COMMIT
-            }
-
             val userStorage = UserStorage.state
             if (!userStorage.isTurnedOn) {
                 return ReturnResult.COMMIT
@@ -76,6 +72,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHan
             val commit = repository.getCommit(filesProcessor.getFilePath(root), filesFromRoot)
 
             Logger.repository = repository.toString()
+
             Logger.sessionId = sessionId
 
             // idea is not indexed
