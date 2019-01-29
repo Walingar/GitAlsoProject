@@ -50,7 +50,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
 
             val changeListManager = ChangeListManager.getInstance(project)
 
-            val files: List<PredictedFile> = WeightWithFilterTunedPredictionProvider(minProb = userStorage.threshold)
+            val predictedFiles: List<PredictedFile> = WeightWithFilterTunedPredictionProvider(minProb = userStorage.threshold)
                     .commitPredict(commit)
                     .map {
                         val currentChange = changeListManager.getChange(it.path)
@@ -63,11 +63,11 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
 
 
             // prediction is empty
-            if (files.isEmpty()) {
+            if (predictedFiles.isEmpty()) {
                 return ReturnResult.COMMIT
             }
 
-            val dialog = GitAlsoDialog(project, files)
+            val dialog = GitAlsoDialog(project, predictedFiles)
             dialog.show()
 
             return if (dialog.exitCode == 1) {
