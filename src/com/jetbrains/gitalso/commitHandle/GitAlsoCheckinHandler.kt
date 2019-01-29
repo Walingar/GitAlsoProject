@@ -1,7 +1,9 @@
 package com.jetbrains.gitalso.commitHandle
 
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.vcs.CheckinProjectPanel
+import com.intellij.openapi.vcs.changes.ChangeListManager
 import com.intellij.openapi.vcs.changes.CommitExecutor
 import com.intellij.openapi.vcs.changes.ui.BooleanCommitOption
 import com.intellij.openapi.vcs.checkin.CheckinHandler
@@ -11,6 +13,9 @@ import com.intellij.vcs.log.data.VcsLogData
 import com.intellij.vcs.log.data.index.IndexDataGetter
 import com.jetbrains.gitalso.commitHandle.ui.GitAlsoDialog
 import com.jetbrains.gitalso.plugin.UserStorage
+import com.jetbrains.gitalso.predict.PredictedChange
+import com.jetbrains.gitalso.predict.PredictedFile
+import com.jetbrains.gitalso.predict.PredictedFilePath
 import com.jetbrains.gitalso.predict.WeightWithFilterTunedPredictionProvider
 import com.jetbrains.gitalso.repository.IDEARepositoryInfo
 import java.util.function.Consumer
@@ -43,14 +48,19 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
             val filesFromRoot = PanelProcessor.files(panel)
             val commit = repository.getCommit(filesFromRoot)
 
-            // a lot of files are not interesting for prediction and so slow
-            if (commit.files.size > 25) {
-                return ReturnResult.COMMIT
-            }
+            val changeListManager = ChangeListManager.getInstance(project)
 
-            val files = WeightWithFilterTunedPredictionProvider(minProb = userStorage.threshold)
+            val files: List<PredictedFile> = WeightWithFilterTunedPredictionProvider(minProb = userStorage.threshold)
                     .commitPredict(commit)
-                    .mapNotNull { it.path.virtualFile }
+                    .map {
+                        val currentChange = changeListManager.getChange(it.path)
+                        if (currentChange != null) {
+                            PredictedChange(currentChange)
+                        } else {
+                            PredictedFilePath(it.path)
+                        }
+                    }
+
 
             // prediction is empty
             if (files.isEmpty()) {

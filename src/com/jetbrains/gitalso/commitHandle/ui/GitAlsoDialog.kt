@@ -6,10 +6,9 @@ import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.openapi.vcs.changes.ui.ChangesTree
-import com.intellij.openapi.vcs.changes.ui.ChangesTreeImpl
 import com.intellij.openapi.vcs.changes.ui.TreeActionsToolbarPanel
-import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.ScrollPaneFactory
+import com.jetbrains.gitalso.predict.PredictedFile
 import java.awt.BorderLayout
 import java.awt.Dimension
 import java.awt.Toolkit
@@ -18,7 +17,7 @@ import javax.swing.JComponent
 import javax.swing.JLabel
 import javax.swing.JPanel
 
-class GitAlsoDialog(private val project: Project, private val files: List<VirtualFile>) : DialogWrapper(project), DataProvider {
+class GitAlsoDialog(private val project: Project, private val files: List<PredictedFile>) : DialogWrapper(project), DataProvider {
     override fun getData(dataId: String) =
             if (tree == null)
                 null
@@ -50,7 +49,7 @@ class GitAlsoDialog(private val project: Project, private val files: List<Virtua
     }
 
     private fun createTreePanel(): JPanel {
-        val predictionTreeChange = ChangesTreeImpl.VirtualFiles(
+        val predictionTreeChange = PredictedFilesTreeImpl(
                 project,
                 false,
                 false,
