@@ -8,6 +8,8 @@ import com.intellij.openapi.vcs.changes.ui.BooleanCommitOption
 import com.intellij.openapi.vcs.checkin.CheckinHandler
 import com.intellij.openapi.vcs.ui.RefreshableOnComponent
 import com.intellij.util.PairConsumer
+import com.intellij.vcs.log.data.VcsLogData
+import com.intellij.vcs.log.data.index.IndexDataGetter
 import com.intellij.vcsUtil.VcsUtil
 import com.jetbrains.gitalso.commitHandle.ui.GitAlsoDialog
 import com.jetbrains.gitalso.commitInfo.Commit
@@ -21,7 +23,7 @@ import com.jetbrains.gitalso.repository.IDEARepositoryInfo
 import com.jetbrains.gitalso.storage.log.Logger
 import java.util.function.Consumer
 
-class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel) : CheckinHandler() {
+class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val dataManager: VcsLogData, private val dataGetter: IndexDataGetter) : CheckinHandler() {
     private val project: Project = panel.project
     private val rootPath = project.basePath
     private val filesProcessor = CommitFilesProcessor(panel.project)
