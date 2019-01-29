@@ -8,7 +8,7 @@ import com.jetbrains.gitalso.predict.PredictedFile
 import com.jetbrains.gitalso.predict.PredictedFilePath
 
 class PredictedFilesTreeImpl(
-        private val project: Project,
+        project: Project,
         showCheckboxes: Boolean = false,
         highlightProblems: Boolean = false,
         files: List<PredictedFile> = emptyList()
