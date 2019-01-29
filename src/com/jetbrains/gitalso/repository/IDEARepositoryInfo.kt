@@ -2,8 +2,8 @@ package com.jetbrains.gitalso.repository
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.FilePath
+import com.intellij.vcs.log.data.VcsLogStructureFilterImpl
 import com.intellij.vcs.log.impl.VcsProjectLog
-import com.intellij.vcs.log.visible.filters.VcsLogFilterObject
 import com.intellij.vcsUtil.VcsUtil
 import com.jetbrains.gitalso.commitInfo.Commit
 import com.jetbrains.gitalso.commitInfo.CommittedFile
@@ -49,7 +49,7 @@ class IDEARepositoryInfo(private val project: Project) {
     }
 
     private fun getCommitHashesWithFile(file: FilePath): Collection<Int> {
-        val structureFilter = VcsLogFilterObject.fromPaths(setOf(file))
+        val structureFilter = VcsLogStructureFilterImpl(setOf(file))
         val fileCommits = dataGetter.filter(listOf(structureFilter))
         return fileCommits.filter { containedInBranchConditionMaster?.value(it) ?: false }
     }
