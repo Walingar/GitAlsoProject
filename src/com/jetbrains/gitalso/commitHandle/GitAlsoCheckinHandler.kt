@@ -1,7 +1,6 @@
 package com.jetbrains.gitalso.commitHandle
 
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.vcs.CheckinProjectPanel
 import com.intellij.openapi.vcs.changes.ChangeListManager
 import com.intellij.openapi.vcs.changes.CommitExecutor
@@ -12,9 +11,9 @@ import com.intellij.util.PairConsumer
 import com.intellij.vcs.log.data.VcsLogData
 import com.intellij.vcs.log.data.index.IndexDataGetter
 import com.jetbrains.gitalso.commitHandle.ui.GitAlsoDialog
+import com.jetbrains.gitalso.commitInfo.CommittedFile
 import com.jetbrains.gitalso.plugin.UserStorage
 import com.jetbrains.gitalso.predict.PredictedChange
-import com.jetbrains.gitalso.predict.PredictedFile
 import com.jetbrains.gitalso.predict.PredictedFilePath
 import com.jetbrains.gitalso.predict.WeightWithFilterTunedPredictionProvider
 import com.jetbrains.gitalso.repository.IDEARepositoryInfo
@@ -34,33 +33,49 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
         )
     }
 
+    private fun getPredictedFiles(isAmend: Boolean, threshold: Double) = mutableListOf<CommittedFile>()
+            .apply {
+                for (root in panel.roots) {
+                    if (!dataManager.index.isIndexed(root)) {
+                        continue
+                    }
+                    val repository = IDEARepositoryInfo(root, dataGetter)
+                    val filesFromRoot = PanelProcessor.files(panel).toMutableList()
+                    if (isAmend) {
+                        val ref = dataManager.dataPack.refsModel.findBranch(root, "HEAD")
+                        if (ref != null) {
+                            filesFromRoot.addAll(
+                                    dataGetter.getChangedPaths(
+                                            dataManager.storage.getCommitIndex(ref.commitHash, root)
+                                    )
+                            )
+                        }
+                    }
+                    val commit = repository.getCommit(filesFromRoot)
+
+                    addAll(WeightWithFilterTunedPredictionProvider(minProb = threshold)
+                            .commitPredict(commit)
+                    )
+                }
+            }
+            .map {
+                val changeListManager = ChangeListManager.getInstance(project)
+                val currentChange = changeListManager.getChange(it.path)
+                if (currentChange != null) {
+                    PredictedChange(currentChange)
+                } else {
+                    PredictedFilePath(it.path)
+                }
+            }
+
     override fun beforeCheckin(executor: CommitExecutor?, additionalDataConsumer: PairConsumer<Any, Any>?): ReturnResult {
         try {
             val userStorage = UserStorage.state
-            if (!userStorage.isTurnedOn) {
-                return ReturnResult.COMMIT
-            }
-            if (panel.files.size > 25) {
+            if (!userStorage.isTurnedOn || panel.files.size > 25) {
                 return ReturnResult.COMMIT
             }
 
-            val repository = IDEARepositoryInfo(panel.roots.first(), dataManager, dataGetter)
-            val filesFromRoot = PanelProcessor.files(panel)
-            val commit = repository.getCommit(filesFromRoot)
-
-            val changeListManager = ChangeListManager.getInstance(project)
-
-            val predictedFiles: List<PredictedFile> = WeightWithFilterTunedPredictionProvider(minProb = userStorage.threshold)
-                    .commitPredict(commit)
-                    .map {
-                        val currentChange = changeListManager.getChange(it.path)
-                        if (currentChange != null) {
-                            PredictedChange(currentChange)
-                        } else {
-                            PredictedFilePath(it.path)
-                        }
-                    }
-
+            val predictedFiles = getPredictedFiles(PanelProcessor.isAmend(panel), userStorage.threshold)
 
             // prediction is empty
             if (predictedFiles.isEmpty()) {

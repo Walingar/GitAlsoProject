@@ -2,14 +2,13 @@ package com.jetbrains.gitalso.repository
 
 import com.intellij.openapi.vcs.FilePath
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.vcs.log.data.VcsLogData
 import com.intellij.vcs.log.data.VcsLogStructureFilterImpl
 import com.intellij.vcs.log.data.index.IndexDataGetter
 import com.jetbrains.gitalso.commitInfo.Commit
 import com.jetbrains.gitalso.commitInfo.CommittedFile
 import java.util.*
 
-class IDEARepositoryInfo(private val root: VirtualFile, private val dataManager: VcsLogData, private val dataGetter: IndexDataGetter) {
+class IDEARepositoryInfo(private val root: VirtualFile, private val dataGetter: IndexDataGetter) {
     private val commits = HashSet<Int>()
     private val files = HashMap<FilePath, CommittedFile>()
 
