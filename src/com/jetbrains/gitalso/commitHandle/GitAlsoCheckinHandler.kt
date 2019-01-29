@@ -22,7 +22,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
     override fun getBeforeCheckinConfigurationPanel(): RefreshableOnComponent? {
         return BooleanCommitOption(
                 panel,
-                "Predict forgotten files (Exp.)",
+                "Predict forgotten files",
                 true,
                 { UserStorage.state.isTurnedOn },
                 Consumer { UserStorage.state.isTurnedOn = it }
