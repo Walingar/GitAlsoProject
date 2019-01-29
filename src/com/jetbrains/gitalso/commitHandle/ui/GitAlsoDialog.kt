@@ -74,8 +74,7 @@ class GitAlsoDialog(private val project: Project, private val files: List<Virtua
 
     override fun createCenterPanel(): JComponent? {
         val mainPanel = JPanel(BorderLayout())
-        val commonLabel = JLabel(
-                "You might have forgotten to modify/commit " +
+        val commonLabel = JLabel("You might have forgotten to modify/commit " +
                 "${if (files.size > 1) "these files" else "this file"}:")
         mainPanel.add(commonLabel, BorderLayout.PAGE_START)
         mainPanel.add(createTreePanel(), BorderLayout.CENTER)
