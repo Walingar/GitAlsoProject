@@ -62,8 +62,6 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
 
             val root = VcsUtil.getFilePath(rootPath).virtualFile!!
 
-            val startTime = System.currentTimeMillis()
-
             val sessionId = (0 until Int.MAX_VALUE).random()
             val repository = IDEARepositoryInfo(project)
             val filesFromRoot = PanelProcessor.files(panel)
@@ -90,7 +88,6 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
             val commits = PredictionResultProcessor.getCommitTimesFromPrediction(commit, result.topPrediction)
             val commitsAuthor = PredictionResultProcessor.getCommitsAuthorMask(commits, author)
             val files = result.prediction.mapNotNull { it.path.virtualFile }
-            val time = System.currentTimeMillis() - startTime
 
             // prediction is empty
             if (files.isEmpty()) {
@@ -98,7 +95,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
                         State.BEFORE_COMMIT,
                         State.NOT_SHOWED,
                         Action.COMMIT_CLICKED,
-                        time,
+                        0L,
                         preparePredictionData(commits),
                         preparePredictionData(commitsAuthor)
                 )
@@ -107,6 +104,9 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
             }
 
             val dialog = GitAlsoDialog(project, files)
+            val time = getExecutionTime {
+                dialog.show()
+            }
 
             val event = result.getLogEvent(
                     State.BEFORE_COMMIT,
@@ -119,8 +119,6 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
                     emptyList()
             )
             Logger.log(event)
-
-            dialog.show()
 
             return if (dialog.exitCode == 1) {
                 Logger.simpleActionLog(Action.CANCEL, State.SHOW_MAIN_DIALOG, State.AFTER_COMMIT)
