@@ -12,8 +12,6 @@ import com.intellij.vcs.log.data.VcsLogData
 import com.intellij.vcs.log.data.index.IndexDataGetter
 import com.intellij.vcsUtil.VcsUtil
 import com.jetbrains.gitalso.commitHandle.ui.GitAlsoDialog
-import com.jetbrains.gitalso.commitInfo.Commit
-import com.jetbrains.gitalso.commitInfo.CommittedFile
 import com.jetbrains.gitalso.log.Action
 import com.jetbrains.gitalso.log.State
 import com.jetbrains.gitalso.plugin.UserStorage
@@ -27,15 +25,6 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
     private val project: Project = panel.project
     private val rootPath = project.basePath
     private val LOG = com.intellij.openapi.diagnostic.Logger.getInstance(GitAlsoCheckinHandler::class.java)
-
-    private fun preparePredictionData(map: Map<Pair<CommittedFile, CommittedFile>, Set<Commit>>): Map<Pair<CommittedFile, CommittedFile>, Set<Long>> =
-            map.map { (key, value) ->
-                key to value
-                        .map {
-                            it.id.toLong()
-                        }
-                        .toSet()
-            }.toMap()
 
     private fun sendLogs() {
         ApplicationManager.getApplication().executeOnPooledThread {
