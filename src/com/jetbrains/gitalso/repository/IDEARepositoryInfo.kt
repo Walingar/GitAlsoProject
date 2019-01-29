@@ -13,27 +13,9 @@ class IDEARepositoryInfo(private val root: VirtualFile, private val dataManager:
     private val commits = HashSet<Int>()
     private val files = HashMap<FilePath, CommittedFile>()
 
-    private val containedInBranchConditionMaster by lazy {
-        val refs = dataManager.dataPack.refsModel
-        val branchRef = refs.branches.find { vcsRef ->
-            vcsRef.root == root && vcsRef.name == "master"
-        }
-        if (branchRef == null) {
-            null
-        } else {
-            dataManager.dataPack.permanentGraph
-                    .getContainedInBranchCondition(listOf(
-                            dataManager.getCommitIndex(branchRef.commitHash, branchRef.root)
-                    ))
-        }
-    }
-
-    val author = dataManager.currentUser[root]
-
     private fun getCommitHashesWithFile(file: FilePath): Collection<Int> {
         val structureFilter = VcsLogStructureFilterImpl(setOf(file))
-        val fileCommits = dataGetter.filter(listOf(structureFilter))
-        return fileCommits.filter { containedInBranchConditionMaster?.value(it) ?: false }
+        return dataGetter.filter(listOf(structureFilter))
     }
 
     private fun getCommittedFile(file: FilePath) = if (file in files) {
