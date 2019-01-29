@@ -13,10 +13,6 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.3,
 
         private fun R() = if (votesCounter != 0.0) votesSum / votesCounter else 0.0
 
-        override fun toString(): String {
-            return result.toString()
-        }
-
         fun vote(rate: Double, weight: Double) {
 
             votesCounter += weight
@@ -31,7 +27,10 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.3,
     private fun vote(firstFile: CommittedFile, commit: Commit): HashMap<CommittedFile, Double> {
         val candidates = HashMap<CommittedFile, VoteProvider>()
         val filteredCommits = firstFile.commits
-        val commits = filteredCommits.sortedBy { it.time }.reversed().subList(0, min(filteredCommits.size, 20))
+        val commits = filteredCommits
+                .sortedBy { it.time }
+                .reversed()
+                .take(min(filteredCommits.size, 20))
         for (fileCommit in commits) {
             for (secondFile in fileCommit.files) {
                 if (secondFile in commit.files) {
