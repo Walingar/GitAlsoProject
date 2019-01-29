@@ -10,6 +10,7 @@ import com.intellij.openapi.vcs.ui.RefreshableOnComponent
 import com.intellij.util.PairConsumer
 import com.intellij.vcs.log.data.VcsLogData
 import com.intellij.vcs.log.data.index.IndexDataGetter
+import com.intellij.vcsUtil.VcsUtil
 import com.jetbrains.gitalso.commitHandle.ui.GitAlsoDialog
 import com.jetbrains.gitalso.commitInfo.CommittedFile
 import com.jetbrains.gitalso.plugin.UserStorage
@@ -40,7 +41,10 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
                         continue
                     }
                     val repository = IDEARepositoryInfo(root, dataGetter)
-                    val filesFromRoot = PanelProcessor.files(panel).toMutableList()
+
+                    val filesFromRoot = PanelProcessor.files(panel)
+                            .filter { VcsUtil.getVcsRootFor(project, it) == root }
+                            .toMutableList()
                     if (isAmend) {
                         val ref = dataManager.dataPack.refsModel.findBranch(root, "HEAD")
                         if (ref != null) {
