@@ -1,7 +1,6 @@
 package com.jetbrains.gitalso.commitInfo
 
 import com.intellij.openapi.vcs.FilePath
-import com.jetbrains.gitalso.storage.log.hash.HashProvider
 import java.util.*
 
 
@@ -13,11 +12,7 @@ class CommittedFile(val path: FilePath) {
         commit.addFile(this)
     }
 
-    private val id by lazy {
-        HashProvider.hash(path.path)
-    }
-
-    override fun toString() = id.toString()
+    override fun toString() = path.path
 
     override fun hashCode() = path.hashCode()
 

@@ -62,10 +62,6 @@ intellij {
     updateSinceUntilBuild = false
 }
 
-dependencies {
-    compile project(":log-events")
-}
-
 allprojects {
     dependencies {
         compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"

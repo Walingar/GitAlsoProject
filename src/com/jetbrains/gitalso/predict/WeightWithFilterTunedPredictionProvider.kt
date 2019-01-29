@@ -54,7 +54,7 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.3,
     }
 
 
-    fun commitPredict(commit: Commit, maxPredictedFileCount: Int = 5): PredictionResult {
+    fun commitPredict(commit: Commit, maxPredictedFileCount: Int = 5): List<CommittedFile> {
         val candidates = HashMap<CommittedFile, Double>()
         val votes = ArrayList<Pair<CommittedFile, Double>>()
 
@@ -77,7 +77,7 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.3,
                 .sortedBy { (_, value) -> value }
                 .reversed()
 
-        val filteredCandidates = sortedPrediction.filter { it.second > minProb}
+        val filteredCandidates = sortedPrediction.filter { it.second > minProb }
 
         var sliceBy = maxPredictedFileCount
 
@@ -85,19 +85,10 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.3,
             sliceBy++
         }
 
-        val prediction = filteredCandidates
+
+        return filteredCandidates
                 .map { it.first }
                 .subList(0, min(filteredCandidates.size, sliceBy))
                 .filter { it.path.virtualFile != null }
-
-        val topCandidates = sortedPrediction
-                .map { it.first }
-                .subList(0, min(sortedPrediction.size, sliceBy))
-                .filter { it.path.virtualFile != null }
-
-        val predictionScores = scores.filter { (pair, _) -> pair.second in prediction }
-        val topScores = scores.filter { (pair, _) -> pair.second in topCandidates }
-
-        return PredictionResult(commit.files.toList(), predictionScores, prediction, topScores, topCandidates)
     }
 }

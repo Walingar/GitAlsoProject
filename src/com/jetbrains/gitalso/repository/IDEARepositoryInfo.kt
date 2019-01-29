@@ -7,7 +7,6 @@ import com.intellij.vcs.log.data.VcsLogStructureFilterImpl
 import com.intellij.vcs.log.data.index.IndexDataGetter
 import com.jetbrains.gitalso.commitInfo.Commit
 import com.jetbrains.gitalso.commitInfo.CommittedFile
-import com.jetbrains.gitalso.storage.log.hash.HashProvider
 import java.util.*
 
 class IDEARepositoryInfo(private val root: VirtualFile, private val dataManager: VcsLogData, private val dataGetter: IndexDataGetter) {
@@ -77,5 +76,5 @@ class IDEARepositoryInfo(private val root: VirtualFile, private val dataManager:
         return commit
     }
 
-    override fun toString() = HashProvider.hash(root.path).toString()
+    override fun toString() = root.path
 }

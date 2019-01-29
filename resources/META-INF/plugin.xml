@@ -54,7 +54,6 @@
     <depends>Git4Idea</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <postStartupActivity implementation="com.jetbrains.gitalso.plugin.NotificationManager"/>
         <vcsLogIndexService implementation="com.jetbrains.gitalso.repository.LogIndexService"/>
         <checkinHandlerFactory implementation="com.jetbrains.gitalso.commitHandle.GitAlsoCheckinHandlerFactory"/>
         <projectConfigurable groupId="project.propVCSSupport.Mappings"

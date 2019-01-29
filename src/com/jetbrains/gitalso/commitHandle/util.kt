@@ -1,22 +1,18 @@
 package com.jetbrains.gitalso.commitHandle
 
-import com.jetbrains.gitalso.commitInfo.Commit
-import com.jetbrains.gitalso.commitInfo.CommittedFile
+import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.vcs.log.VcsRef
+import com.intellij.vcs.log.data.RefsModel
 import java.util.*
 
 fun ClosedRange<Int>.random() = Random().nextInt((endInclusive + 1) - start) + start
 
-fun getExecutionTime(task: () -> Unit): Long {
-    val startTime = System.currentTimeMillis()
-    task()
-    return System.currentTimeMillis() - startTime
+fun RefsModel.findBranch(root: VirtualFile, branchName: String): VcsRef? {
+    val branches = this.allRefsByRoot[root]?.streamBranches() ?: return null
+    return branches
+            .filter { vcsRef ->
+                vcsRef.name == branchName
+            }
+            .findFirst()
+            .orElse(null)
 }
-
-fun preparePredictionData(map: Map<Pair<CommittedFile, CommittedFile>, Set<Commit>>): Map<Pair<CommittedFile, CommittedFile>, Set<Long>> =
-        map.map { (key, value) ->
-            key to value
-                    .map {
-                        it.id.toLong()
-                    }
-                    .toSet()
-        }.toMap()
