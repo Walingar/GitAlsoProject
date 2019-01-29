@@ -13,7 +13,10 @@ object PanelProcessor {
 
     fun isAmend(panel: CheckinProjectPanel): Boolean {
         if (panel !is CommitChangeListDialog) return false
-        val gitCheckinOptions = panel.additionalComponents.filterIsInstance(GitCheckinEnvironment.GitCheckinOptions::class.java).firstOrNull()
+        val gitCheckinOptions = panel
+                .additionalComponents
+                .filterIsInstance(GitCheckinEnvironment.GitCheckinOptions::class.java)
+                .firstOrNull()
                 ?: return false
         return gitCheckinOptions.isAmend
     }
