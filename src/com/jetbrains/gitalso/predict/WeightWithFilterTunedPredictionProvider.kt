@@ -30,7 +30,7 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.3,
         val commits = filteredCommits
                 .sortedBy { it.time }
                 .reversed()
-                .take(min(filteredCommits.size, 20))
+                .take(20)
         for (fileCommit in commits) {
             for (secondFile in fileCommit.files) {
                 if (secondFile in commit.files) {
@@ -78,16 +78,9 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.3,
 
         val filteredCandidates = sortedPrediction.filter { it.second > minProb }
 
-        var sliceBy = maxPredictedFileCount
-
-        while (sliceBy + 1 < filteredCandidates.size && filteredCandidates[sliceBy].second == filteredCandidates[sliceBy + 1].second) {
-            sliceBy++
-        }
-
-
         return filteredCandidates
                 .map { it.first }
-                .subList(0, min(filteredCandidates.size, sliceBy))
+                .take(maxPredictedFileCount)
                 .filter { it.path.virtualFile != null }
     }
 }
