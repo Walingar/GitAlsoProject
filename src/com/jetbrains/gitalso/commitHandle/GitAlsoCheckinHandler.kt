@@ -60,11 +60,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
                 return ReturnResult.COMMIT
             }
 
-            if (rootPath == null) {
-                return ReturnResult.COMMIT
-            }
-
-            val root = VcsUtil.getFilePath(rootPath).virtualFile ?: return ReturnResult.COMMIT
+            val root = VcsUtil.getFilePath(rootPath).virtualFile!!
 
             val startTime = System.currentTimeMillis()
 
