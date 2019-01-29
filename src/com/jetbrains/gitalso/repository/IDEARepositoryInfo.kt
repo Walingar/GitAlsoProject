@@ -2,6 +2,7 @@ package com.jetbrains.gitalso.repository
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.FilePath
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.vcs.log.data.VcsLogStructureFilterImpl
 import com.intellij.vcs.log.impl.VcsProjectLog
 import com.intellij.vcsUtil.VcsUtil
@@ -75,7 +76,7 @@ class IDEARepositoryInfo(private val project: Project) {
         return getCommittedFile(file)
     }
 
-    fun getCommit(root: FilePath, files: Collection<FilePath>): Commit {
+    fun getCommit(root: VirtualFile, files: Collection<FilePath>): Commit {
         val commit = Commit(project, -1)
 
         for (file in files) {

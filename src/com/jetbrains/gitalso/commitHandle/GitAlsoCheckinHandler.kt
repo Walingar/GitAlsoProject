@@ -26,7 +26,6 @@ import java.util.function.Consumer
 class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val dataManager: VcsLogData, private val dataGetter: IndexDataGetter) : CheckinHandler() {
     private val project: Project = panel.project
     private val rootPath = project.basePath
-    private val filesProcessor = CommitFilesProcessor(panel.project)
 
     private fun preparePredictionData(map: Map<Pair<CommittedFile, CommittedFile>, Set<Commit>>): Map<Pair<CommittedFile, CommittedFile>, Set<Long>> =
             map.map { (key, value) ->
@@ -66,8 +65,8 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
 
             val sessionId = (0 until Int.MAX_VALUE).random()
             val repository = IDEARepositoryInfo(project)
-            val filesFromRoot = PanelProcessor.files(panel).filter { filesProcessor.getRoot(it) == root }
-            val commit = repository.getCommit(filesProcessor.getFilePath(root), filesFromRoot)
+            val filesFromRoot = PanelProcessor.files(panel)
+            val commit = repository.getCommit(root, filesFromRoot)
 
             Logger.repository = repository.toString()
 
