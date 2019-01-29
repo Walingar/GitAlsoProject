@@ -26,6 +26,7 @@ import java.util.function.Consumer
 class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val dataManager: VcsLogData, private val dataGetter: IndexDataGetter) : CheckinHandler() {
     private val project: Project = panel.project
     private val rootPath = project.basePath
+    private val LOG = com.intellij.openapi.diagnostic.Logger.getInstance(GitAlsoCheckinHandler::class.java)
 
     private fun preparePredictionData(map: Map<Pair<CommittedFile, CommittedFile>, Set<Commit>>): Map<Pair<CommittedFile, CommittedFile>, Set<Long>> =
             map.map { (key, value) ->
@@ -130,15 +131,9 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
                 UserStorage.updateState(userStorage, UserStorage.UserAction.COMMIT)
                 ReturnResult.COMMIT
             }
-        } catch (e1: Exception) {
-            try {
-                // log: exception was
-                Logger.simpleActionLog(Action.COMMIT_CLICKED, State.NOT_INDEXED, State.NOT_INDEXED)
-            } catch (e2: Exception) {
-                // filesystem exception
-            } finally {
-                return ReturnResult.COMMIT
-            }
+        } catch (e: Exception) {
+            LOG.info("Unexpected problem with GitAlso prediction: $e")
+            return ReturnResult.COMMIT
         } finally {
             sendLogs()
         }
