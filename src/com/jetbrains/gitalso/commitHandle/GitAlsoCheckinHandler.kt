@@ -110,10 +110,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
                 return ReturnResult.COMMIT
             }
 
-            val modifiedFiles = files.filter { filesProcessor.isModified(it) }.toSet()
-            val unmodifiedFiles = files.filter { filesProcessor.isUnmodified(it) }.toSet()
-
-            val dialog = GitAlsoDialog(project, modifiedFiles, unmodifiedFiles)
+            val dialog = GitAlsoDialog(project, files)
 
             val event = result.getLogEvent(
                     State.BEFORE_COMMIT,
@@ -122,8 +119,8 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
                     time,
                     preparePredictionData(commits),
                     preparePredictionData(commitsAuthor),
-                    modifiedFiles.toList(),
-                    unmodifiedFiles.toList()
+                    files,
+                    emptyList()
             )
             Logger.log(event)
 

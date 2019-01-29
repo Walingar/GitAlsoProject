@@ -10,10 +10,15 @@ import com.intellij.openapi.vcs.changes.ui.ChangesTreeImpl
 import com.intellij.openapi.vcs.changes.ui.TreeActionsToolbarPanel
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.ScrollPaneFactory
-import java.awt.*
-import javax.swing.*
+import java.awt.BorderLayout
+import java.awt.Dimension
+import java.awt.Toolkit
+import javax.swing.Action
+import javax.swing.JComponent
+import javax.swing.JLabel
+import javax.swing.JPanel
 
-class GitAlsoDialog(private val project: Project, modifiedFiles: Set<VirtualFile>, unmodifiedFiles: Set<VirtualFile>) : DialogWrapper(project), DataProvider {
+class GitAlsoDialog(private val project: Project, private val files: List<VirtualFile>) : DialogWrapper(project), DataProvider {
     override fun getData(dataId: String) =
             if (tree == null)
                 null
@@ -21,8 +26,6 @@ class GitAlsoDialog(private val project: Project, modifiedFiles: Set<VirtualFile
                 tree!!.getData(dataId)
 
     private var tree: ChangesTree? = null
-    private val modifiedDrawable: Set<VirtualFile> = modifiedFiles
-    private val unmodifiedDrawable: Set<VirtualFile> = unmodifiedFiles
 
     override fun getDimensionServiceKey() = "com.jetbrains.gitalso.commitHandle.ui.GitAlsoDialog"
 
@@ -47,7 +50,12 @@ class GitAlsoDialog(private val project: Project, modifiedFiles: Set<VirtualFile
     }
 
     private fun createTreePanel(): JPanel {
-        val predictionTreeChange = ChangesTreeImpl.VirtualFiles(project, false, false, (modifiedDrawable + unmodifiedDrawable).toList())
+        val predictionTreeChange = ChangesTreeImpl.VirtualFiles(
+                project,
+                false,
+                false,
+                files
+        )
         tree = predictionTreeChange
         val panel = JPanel(BorderLayout())
         panel.add(createActionsPanel(predictionTreeChange), BorderLayout.PAGE_START)
@@ -66,7 +74,9 @@ class GitAlsoDialog(private val project: Project, modifiedFiles: Set<VirtualFile
 
     override fun createCenterPanel(): JComponent? {
         val mainPanel = JPanel(BorderLayout())
-        val commonLabel = JLabel("You might have forgotten to modify${if (modifiedDrawable.isNotEmpty()) "/commit" else ""} ${if (modifiedDrawable.size + unmodifiedDrawable.size > 1) "these files" else "this file"}:")
+        val commonLabel = JLabel(
+                "You might have forgotten to modify/commit " +
+                "${if (files.size > 1) "these files" else "this file"}:")
         mainPanel.add(commonLabel, BorderLayout.PAGE_START)
         mainPanel.add(createTreePanel(), BorderLayout.CENTER)
 
