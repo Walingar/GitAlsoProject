@@ -51,6 +51,9 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
                             )
                         }
                     }
+                    if (filesFromRoot.size > 25) {
+                        continue
+                    }
                     val commit = repository.getCommit(filesFromRoot)
 
                     addAll(WeightWithFilterTunedPredictionProvider(minProb = threshold)
