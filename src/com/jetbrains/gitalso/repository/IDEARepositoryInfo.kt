@@ -12,14 +12,9 @@ import java.util.*
 
 class IDEARepositoryInfo(private val project: Project) {
     private val dataManager = VcsProjectLog.getInstance(project).dataManager
-    private val predictable: Boolean
     private val commits = HashSet<Int>()
     private val files = HashMap<FilePath, CommittedFile>()
     private val root = VcsUtil.getFilePath(project.basePath).virtualFile
-
-    init {
-        predictable = dataManager != null && dataManager.dataPack.isFull
-    }
 
     private val containedInBranchConditionMaster by lazy {
         val refs = dataManager!!.dataPack.refsModel
@@ -80,15 +75,7 @@ class IDEARepositoryInfo(private val project: Project) {
         return getCommittedFile(file)
     }
 
-    fun getCommit(root: FilePath, files: Collection<FilePath>): Commit? {
-        if (
-                files.isEmpty() ||
-                !predictable ||
-                root.virtualFile == null ||
-                !dataManager!!.index.isIndexed(root.virtualFile!!)) {
-            return null
-        }
-
+    fun getCommit(root: FilePath, files: Collection<FilePath>): Commit {
         val commit = Commit(project, -1)
 
         for (file in files) {

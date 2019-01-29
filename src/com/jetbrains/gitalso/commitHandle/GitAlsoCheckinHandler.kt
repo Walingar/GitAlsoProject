@@ -77,11 +77,6 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
 
             Logger.sessionId = sessionId
 
-            // idea is not indexed
-            if (commit == null) {
-                Logger.simpleActionLog(Action.COMMIT_CLICKED, State.BEFORE_COMMIT, State.NOT_INDEXED)
-                return ReturnResult.COMMIT
-            }
 
             // a lot of files are not interesting for prediction and so slow
             if (commit.files.size > 25) {
