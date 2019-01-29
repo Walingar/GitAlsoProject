@@ -17,13 +17,14 @@ class IDEARepositoryInfo(private val root: VirtualFile, private val dataGetter: 
         return dataGetter.filter(listOf(structureFilter))
     }
 
-    private fun getCommittedFile(file: FilePath) = if (file in files) {
-        files[file]!!
-    } else {
-        val committedFile = CommittedFile(file)
-        files[file] = committedFile
-        committedFile
-    }
+    private fun getCommittedFile(file: FilePath) =
+            if (file in files) {
+                files[file]!!
+            } else {
+                val committedFile = CommittedFile(file)
+                files[file] = committedFile
+                committedFile
+            }
 
     private fun createCommittedFile(file: FilePath): CommittedFile {
         val commitHashes = getCommitHashesWithFile(file)
