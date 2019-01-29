@@ -55,8 +55,7 @@ class IDEARepositoryInfo(private val root: VirtualFile, private val dataManager:
 
             val commit = Commit(
                     commitID,
-                    dataGetter.getAuthorTime(commitID) ?: 0,
-                    dataGetter.getAuthor(commitID)?.name ?: ""
+                    dataGetter.getAuthorTime(commitID) ?: 0
             )
             for (commitFile in dataGetter.getChangedPaths(commitID)) {
                 getCommittedFile(commitFile).committed(commit)

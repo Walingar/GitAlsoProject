@@ -17,11 +17,4 @@ object PanelProcessor {
                 ?: return false
         return gitCheckinOptions.isAmend
     }
-
-    fun getAuthor(panel: CheckinProjectPanel): String? {
-        if (panel !is CommitChangeListDialog) return null
-        val gitCheckinOptions = panel.additionalComponents.filterIsInstance(GitCheckinEnvironment.GitCheckinOptions::class.java).firstOrNull()
-                ?: return null
-        return gitCheckinOptions.author
-    }
 }
