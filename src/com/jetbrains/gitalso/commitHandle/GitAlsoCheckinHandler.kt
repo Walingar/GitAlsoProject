@@ -11,6 +11,7 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.util.PairConsumer
 import com.intellij.vcs.log.data.VcsLogData
 import com.intellij.vcs.log.data.index.IndexDataGetter
+import com.intellij.vcs.log.util.VcsLogUtil.findBranch
 import com.intellij.vcsUtil.VcsUtil
 import com.jetbrains.gitalso.commitHandle.ui.GitAlsoDialog
 import com.jetbrains.gitalso.commitInfo.CommittedFile
@@ -43,7 +44,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
                 .filter { VcsUtil.getVcsRootFor(project, it) == root }
                 .toMutableList()
         if (isAmend) {
-            val ref = dataManager.dataPack.refsModel.findBranch(root, "HEAD")
+            val ref = findBranch(dataManager.dataPack.refsModel, root, "HEAD")
             if (ref != null) {
                 filesFromRoot.addAll(
                         dataGetter.getChangedPaths(
