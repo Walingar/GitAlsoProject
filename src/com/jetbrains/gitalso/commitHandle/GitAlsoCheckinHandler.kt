@@ -55,8 +55,9 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
         if (filesFromRoot.size > 25) {
             return emptyList()
         }
-        val commit = repository.getCommit(filesFromRoot)
-        return WeightWithFilterTunedPredictionProvider(minProb = threshold).commitPredict(commit)
+
+        return WeightWithFilterTunedPredictionProvider(minProb = threshold)
+                .commitPredict(repository.getCommit(filesFromRoot))
     }
 
     private fun getPredictedFiles(isAmend: Boolean, threshold: Double) = mutableListOf<CommittedFile>()
