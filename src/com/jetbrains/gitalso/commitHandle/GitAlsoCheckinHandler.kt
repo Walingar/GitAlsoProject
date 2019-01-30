@@ -7,6 +7,7 @@ import com.intellij.openapi.vcs.changes.CommitExecutor
 import com.intellij.openapi.vcs.changes.ui.BooleanCommitOption
 import com.intellij.openapi.vcs.checkin.CheckinHandler
 import com.intellij.openapi.vcs.ui.RefreshableOnComponent
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.util.PairConsumer
 import com.intellij.vcs.log.data.VcsLogData
 import com.intellij.vcs.log.data.index.IndexDataGetter
@@ -23,6 +24,7 @@ import java.util.function.Consumer
 class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val dataManager: VcsLogData, private val dataGetter: IndexDataGetter) : CheckinHandler() {
     private val project: Project = panel.project
     private val LOG = com.intellij.openapi.diagnostic.Logger.getInstance(GitAlsoCheckinHandler::class.java)
+    private val changeListManager = ChangeListManager.getInstance(project)
 
     override fun getBeforeCheckinConfigurationPanel(): RefreshableOnComponent? {
         return BooleanCommitOption(
@@ -34,39 +36,39 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
         )
     }
 
+    private fun getPredictedCommittedFiles(root: VirtualFile, isAmend: Boolean, threshold: Double): List<CommittedFile> {
+        val repository = IDEARepositoryInfo(root, dataGetter)
+
+        val filesFromRoot = PanelProcessor.files(panel)
+                .filter { VcsUtil.getVcsRootFor(project, it) == root }
+                .toMutableList()
+        if (isAmend) {
+            val ref = dataManager.dataPack.refsModel.findBranch(root, "HEAD")
+            if (ref != null) {
+                filesFromRoot.addAll(
+                        dataGetter.getChangedPaths(
+                                dataManager.storage.getCommitIndex(ref.commitHash, root)
+                        )
+                )
+            }
+        }
+        if (filesFromRoot.size > 25) {
+            return emptyList()
+        }
+        val commit = repository.getCommit(filesFromRoot)
+        return WeightWithFilterTunedPredictionProvider(minProb = threshold).commitPredict(commit)
+    }
+
     private fun getPredictedFiles(isAmend: Boolean, threshold: Double) = mutableListOf<CommittedFile>()
             .apply {
                 for (root in panel.roots) {
                     if (!dataManager.index.isIndexed(root)) {
                         continue
                     }
-                    val repository = IDEARepositoryInfo(root, dataGetter)
-
-                    val filesFromRoot = PanelProcessor.files(panel)
-                            .filter { VcsUtil.getVcsRootFor(project, it) == root }
-                            .toMutableList()
-                    if (isAmend) {
-                        val ref = dataManager.dataPack.refsModel.findBranch(root, "HEAD")
-                        if (ref != null) {
-                            filesFromRoot.addAll(
-                                    dataGetter.getChangedPaths(
-                                            dataManager.storage.getCommitIndex(ref.commitHash, root)
-                                    )
-                            )
-                        }
-                    }
-                    if (filesFromRoot.size > 25) {
-                        continue
-                    }
-                    val commit = repository.getCommit(filesFromRoot)
-
-                    addAll(WeightWithFilterTunedPredictionProvider(minProb = threshold)
-                            .commitPredict(commit)
-                    )
+                    addAll(getPredictedCommittedFiles(root, isAmend, threshold))
                 }
             }
             .map {
-                val changeListManager = ChangeListManager.getInstance(project)
                 val currentChange = changeListManager.getChange(it.path)
                 if (currentChange != null) {
                     PredictedChange(currentChange)
