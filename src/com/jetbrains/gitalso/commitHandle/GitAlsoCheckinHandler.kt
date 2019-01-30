@@ -26,7 +26,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
     private val LOG = com.intellij.openapi.diagnostic.Logger.getInstance(GitAlsoCheckinHandler::class.java)
     private val changeListManager = ChangeListManager.getInstance(project)
 
-    override fun getBeforeCheckinConfigurationPanel(): RefreshableOnComponent? {
+    override fun getBeforeCheckinConfigurationPanel(): RefreshableOnComponent {
         return BooleanCommitOption(
                 panel,
                 "Predict forgotten files",
