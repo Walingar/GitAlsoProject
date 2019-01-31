@@ -57,7 +57,8 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.3)
         }
 
         return candidates
-                .filterValues { it / commit.files.size > minProb }
+                .mapValues { it.value / commit.files.size }
+                .filterValues { it > minProb }
                 .toList()
                 .sortedByDescending { it.second }
                 .take(maxPredictedFileCount)

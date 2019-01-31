@@ -64,7 +64,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
         }
 
         return WeightWithFilterTunedPredictionProvider(minProb = threshold)
-                .commitPredict(repository.getCommit(filesSet))
+                .predictCommittedFiles(repository.getCommit(filesSet))
     }
 
     private fun getPredictedFiles(rootFiles: Map<VirtualFile, Collection<FilePath>>, isAmend: Boolean, threshold: Double): List<PredictedFile> {
