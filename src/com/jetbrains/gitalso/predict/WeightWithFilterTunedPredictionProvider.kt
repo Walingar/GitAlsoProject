@@ -18,8 +18,8 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.3,
             return (v / (m + v)) * R + (m / (m + v)) * 0.25
         }
 
-        fun vote(rate: Double, weight: Double) {
-            votesCounter += weight
+        fun vote(rate: Double) {
+            votesCounter += 1.0
             votesSum += rate
         }
     }
@@ -37,10 +37,9 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.3,
                     continue
                 }
                 val currentRate = min(1.0, commitSize / fileCommit.files.size.toDouble())
-                val currentWeight = 1.0
                 candidates.putIfAbsent(secondFile, VoteProvider(m))
 
-                candidates[secondFile]!!.vote(currentRate, currentWeight)
+                candidates[secondFile]!!.vote(currentRate)
             }
         }
 
