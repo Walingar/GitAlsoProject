@@ -24,7 +24,7 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.3,
         }
     }
 
-    private fun vote(firstFile: CommittedFile, commit: Commit): HashMap<CommittedFile, Double> {
+    private fun vote(firstFile: CommittedFile, commit: Commit): Map<CommittedFile, Double> {
         val candidates = HashMap<CommittedFile, VoteProvider>()
         val filteredCommits = firstFile.commits
         val commits = filteredCommits
