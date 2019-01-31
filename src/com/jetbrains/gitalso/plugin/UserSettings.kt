@@ -23,7 +23,7 @@ class UserSettings : PersistentStateComponent<UserSettings.Companion.State> {
     private var currentState: UserSettings.Companion.State = State()
 
     var threshold: Double
-        get() = currentState.threshold
+        get() = Math.round(currentState.threshold * 1000) / 1000.0
         set(value) {
             safeUpdateThreshold(value)
         }
