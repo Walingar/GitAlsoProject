@@ -44,7 +44,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <vcsLogIndexService implementation="com.jetbrains.gitalso.repository.LogIndexService"/>
         <checkinHandlerFactory implementation="com.jetbrains.gitalso.commitHandle.GitAlsoCheckinHandlerFactory"/>
-        <projectConfigurable groupId="project.propVCSSupport.Mappings"
+        <applicationConfigurable groupId="project.propVCSSupport.Mappings"
                              instance="com.jetbrains.gitalso.plugin.config.GitAlsoConfigurationPanel"/>
     </extensions>
 
