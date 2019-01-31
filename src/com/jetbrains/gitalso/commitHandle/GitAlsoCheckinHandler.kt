@@ -5,6 +5,7 @@ import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.ThrowableComputable
 import com.intellij.openapi.vcs.CheckinProjectPanel
+import com.intellij.openapi.vcs.FilePath
 import com.intellij.openapi.vcs.changes.ChangeListManager
 import com.intellij.openapi.vcs.changes.CommitExecutor
 import com.intellij.openapi.vcs.changes.ui.BooleanCommitOption
@@ -15,7 +16,6 @@ import com.intellij.util.PairConsumer
 import com.intellij.vcs.log.data.VcsLogData
 import com.intellij.vcs.log.data.index.IndexDataGetter
 import com.intellij.vcs.log.util.VcsLogUtil.findBranch
-import com.intellij.vcsUtil.VcsUtil
 import com.jetbrains.gitalso.commitHandle.ui.GitAlsoDialog
 import com.jetbrains.gitalso.commitInfo.CommittedFile
 import com.jetbrains.gitalso.plugin.UserStorage
@@ -45,39 +45,37 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
         )
     }
 
-    private fun getPredictedCommittedFiles(root: VirtualFile, isAmend: Boolean, threshold: Double): List<CommittedFile> {
-        val repository = IDEARepositoryInfo(root, dataGetter)
 
-        val filesFromRoot = panel.files()
-                .filter { VcsUtil.getVcsRootFor(project, it) == root }
-                .toMutableSet()
+    private fun getPredictedCommittedFiles(files: Collection<FilePath>, root: VirtualFile, isAmend: Boolean, threshold: Double): List<CommittedFile> {
+        val repository = IDEARepositoryInfo(root, dataGetter)
+        val filesSet = files.toMutableSet()
         if (isAmend) {
             val ref = findBranch(dataManager.dataPack.refsModel, root, "HEAD")
             if (ref != null) {
-                filesFromRoot.addAll(
+                filesSet.addAll(
                         dataGetter.getChangedPaths(
                                 dataManager.storage.getCommitIndex(ref.commitHash, root)
                         )
                 )
             }
         }
-        if (filesFromRoot.size > 25) {
+        if (filesSet.size > 25) {
             return emptyList()
         }
 
         return WeightWithFilterTunedPredictionProvider(minProb = threshold)
-                .commitPredict(repository.getCommit(filesFromRoot))
+                .commitPredict(repository.getCommit(filesSet))
     }
 
-    private fun getPredictedFiles(isAmend: Boolean, threshold: Double): List<PredictedFile> {
-        val files = mutableListOf<CommittedFile>()
-        for (root in panel.roots) {
+    private fun getPredictedFiles(rootFiles: Map<VirtualFile, Collection<FilePath>>, isAmend: Boolean, threshold: Double): List<PredictedFile> {
+        val predictedCommittedFiles = mutableListOf<CommittedFile>()
+        for ((root, files) in rootFiles) {
             if (!dataManager.index.isIndexed(root)) {
                 continue
             }
-            files.addAll(getPredictedCommittedFiles(root, isAmend, threshold))
+            predictedCommittedFiles.addAll(getPredictedCommittedFiles(files, root, isAmend, threshold))
         }
-        return files.map {
+        return predictedCommittedFiles.map {
             val currentChange = changeListManager.getChange(it.path)
             if (currentChange != null) {
                 PredictedChange(currentChange)
@@ -96,10 +94,11 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
 
             val isAmend = panel.isAmend()
             val threshold = userStorage.threshold
+            val rootFiles = panel.getRootFiles(project)
             val predictedFiles = ProgressManager.getInstance()
                     .runProcessWithProgressSynchronously(
                             ThrowableComputable<List<PredictedFile>, Exception> {
-                                getPredictedFiles(isAmend, threshold)
+                                getPredictedFiles(rootFiles, isAmend, threshold)
                             },
                             "GitAlso Plugin",
                             true,
