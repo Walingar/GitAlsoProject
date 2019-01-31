@@ -5,10 +5,13 @@ import java.util.*
 
 
 class CommittedFile(val path: FilePath) {
-    val commits = HashSet<Commit>()
+    private val _commits = HashSet<Commit>()
+
+    val commits: Set<Commit>
+        get() = _commits
 
     fun committed(commit: Commit) {
-        commits.add(commit)
+        _commits.add(commit)
         commit.addFile(this)
     }
 
