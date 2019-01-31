@@ -1,10 +1,13 @@
 package com.jetbrains.gitalso.commitInfo
 
 class Commit(val id: Int, val time: Long = System.currentTimeMillis()) {
-    val files = HashSet<CommittedFile>()
+    val _files = HashSet<CommittedFile>()
+
+    val files: Set<CommittedFile>
+        get() = _files
 
     fun addFile(file: CommittedFile) {
-        files.add(file)
+        _files.add(file)
     }
 
 
