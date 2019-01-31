@@ -40,7 +40,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
     private fun getPredictedCommittedFiles(root: VirtualFile, isAmend: Boolean, threshold: Double): List<CommittedFile> {
         val repository = IDEARepositoryInfo(root, dataGetter)
 
-        val filesFromRoot = PanelProcessor.files(panel)
+        val filesFromRoot = panel.files()
                 .filter { VcsUtil.getVcsRootFor(project, it) == root }
                 .toMutableList()
         if (isAmend) {
@@ -86,9 +86,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
                 return ReturnResult.COMMIT
             }
 
-            val predictedFiles = getPredictedFiles(PanelProcessor.isAmend(panel), userStorage.threshold)
-
-            // prediction is empty
+            val predictedFiles = getPredictedFiles(panel.isAmend(), userStorage.threshold)
             if (predictedFiles.isEmpty()) {
                 return ReturnResult.COMMIT
             }
