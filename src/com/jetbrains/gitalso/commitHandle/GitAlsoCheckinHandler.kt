@@ -1,5 +1,6 @@
 package com.jetbrains.gitalso.commitHandle
 
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.CheckinProjectPanel
 import com.intellij.openapi.vcs.changes.ChangeListManager
@@ -23,6 +24,10 @@ import com.jetbrains.gitalso.repository.IDEARepositoryInfo
 import java.util.function.Consumer
 
 class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val dataManager: VcsLogData, private val dataGetter: IndexDataGetter) : CheckinHandler() {
+    companion object {
+        private val LOG = Logger.getInstance(GitAlsoCheckinHandler::class.java)
+    }
+
     private val project: Project = panel.project
     private val LOG = com.intellij.openapi.diagnostic.Logger.getInstance(GitAlsoCheckinHandler::class.java)
     private val changeListManager = ChangeListManager.getInstance(project)
