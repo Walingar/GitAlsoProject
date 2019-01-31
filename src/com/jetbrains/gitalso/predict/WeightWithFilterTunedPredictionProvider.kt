@@ -66,7 +66,7 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.3,
                 votes.add(Pair(currentFile, currentVote))
                 candidates.putIfAbsent(currentFile, 0.0)
                 scores[Pair(file, currentFile)] = currentVote
-                candidates[currentFile] = candidates[currentFile]!! + currentVote
+                candidates.merge(currentFile, currentVote, Double::plus)
             }
         }
 
