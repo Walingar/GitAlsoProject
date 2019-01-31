@@ -1,7 +1,9 @@
 package com.jetbrains.gitalso.commitHandle
 
 import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.ThrowableComputable
 import com.intellij.openapi.vcs.CheckinProjectPanel
 import com.intellij.openapi.vcs.changes.ChangeListManager
 import com.intellij.openapi.vcs.changes.CommitExecutor
@@ -92,7 +94,18 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
                 return ReturnResult.COMMIT
             }
 
-            val predictedFiles = getPredictedFiles(panel.isAmend(), userStorage.threshold)
+            val isAmend = panel.isAmend()
+            val threshold = userStorage.threshold
+            val predictedFiles = ProgressManager.getInstance()
+                    .runProcessWithProgressSynchronously(
+                            ThrowableComputable<List<PredictedFile>, Exception> {
+                                getPredictedFiles(isAmend, threshold)
+                            },
+                            "GitAlso Plugin",
+                            true,
+                            project
+                    )
+
             if (predictedFiles.isEmpty()) {
                 return ReturnResult.COMMIT
             }
