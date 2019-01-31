@@ -37,9 +37,7 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.3,
                     continue
                 }
                 val currentRate = min(1.0, commitSize / fileCommit.files.size.toDouble())
-                candidates.putIfAbsent(secondFile, VoteProvider(m))
-
-                candidates[secondFile]!!.vote(currentRate)
+                candidates.getOrPut(secondFile) { VoteProvider(m) }.vote(currentRate)
             }
         }
 
