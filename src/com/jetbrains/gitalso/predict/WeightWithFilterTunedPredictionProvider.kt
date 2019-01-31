@@ -7,20 +7,20 @@ import kotlin.math.min
 class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.3, private val m: Double = 3.2, private val commitSize: Double = 8.0) {
 
     private class VoteProvider(private val m: Double) {
-        var result = 0.0
         private var votesCounter = 0.0
         private var votesSum = 0.0
 
         private fun R() = if (votesCounter != 0.0) votesSum / votesCounter else 0.0
 
-        fun vote(rate: Double, weight: Double) {
-
-            votesCounter += weight
-            votesSum += rate
-
+        fun result(): Double {
             val R = R()
             val v = votesCounter
-            result = (v / (m + v)) * R + (m / (m + v)) * 0.25
+            return (v / (m + v)) * R + (m / (m + v)) * 0.25
+        }
+
+        fun vote(rate: Double, weight: Double) {
+            votesCounter += weight
+            votesSum += rate
         }
     }
 
@@ -44,12 +44,7 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.3,
             }
         }
 
-        val answer = HashMap<CommittedFile, Double>()
-        for ((key, value) in candidates) {
-            answer[key] = value.result
-        }
-
-        return answer
+        return candidates.mapValues { it.value.result() }
     }
 
 
