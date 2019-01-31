@@ -81,6 +81,5 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.3,
         return filteredCandidates
                 .map { it.first }
                 .take(maxPredictedFileCount)
-                .filter { it.path.virtualFile != null }
-    }
+        }
 }
