@@ -4,7 +4,9 @@ import com.jetbrains.gitalso.commitInfo.Commit
 import com.jetbrains.gitalso.commitInfo.CommittedFile
 import kotlin.math.min
 
-class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.3, private val m: Double = 3.2, private val commitSize: Double = 8.0) {
+class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.3) {
+    private val m: Double = 3.2
+    private val commitSize: Double = 8.0
 
     private class VoteProvider(private val m: Double) {
         private var votesCounter = 0.0
@@ -13,9 +15,8 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.3,
         private fun R() = if (votesCounter != 0.0) votesSum / votesCounter else 0.0
 
         fun result(): Double {
-            val R = R()
             val v = votesCounter
-            return (v / (m + v)) * R + (m / (m + v)) * 0.25
+            return (v / (m + v)) * R() + (m / (m + v)) * 0.25
         }
 
         fun vote(rate: Double) {
