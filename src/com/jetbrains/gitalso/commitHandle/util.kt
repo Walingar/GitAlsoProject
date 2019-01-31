@@ -28,7 +28,7 @@ fun CheckinProjectPanel.getRootFiles(project: Project): Map<VirtualFile, Collect
     this.filePaths().forEach { file ->
         val fileRoot = VcsUtil.getVcsRootFor(project, file)
         if (fileRoot != null) {
-            rootFiles.getOrDefault(fileRoot, HashSet()).add(file)
+            rootFiles.getOrPut(fileRoot) { HashSet() }.add(file)
         }
     }
 
