@@ -13,7 +13,7 @@ import javax.swing.event.ChangeListener
 import javax.swing.event.DocumentEvent
 import javax.swing.event.DocumentListener
 
-class GitAlsoConfigurationPanel : ChangeListener, DocumentListener, Configurable {
+class GitAlsoConfigurationPanel : Configurable {
     companion object {
         private fun isFieldCorrect(field: JBTextField?): Boolean {
             if (field == null) {
@@ -34,13 +34,13 @@ class GitAlsoConfigurationPanel : ChangeListener, DocumentListener, Configurable
 
     private val thresholdField by lazy {
         JBTextField(reversedValue.toString()).apply {
-            document.addDocumentListener(this@GitAlsoConfigurationPanel)
+            document.addDocumentListener(FieldListener())
         }
     }
 
     private val thresholdSlider by lazy {
         JSlider(0, 100, (reversedValue * 100).toInt()).apply {
-            addChangeListener(this@GitAlsoConfigurationPanel)
+            addChangeListener(SliderListener())
             val table = Hashtable<Int, JLabel>()
             table[0] = JLabel("Never show")
             table[100] = JLabel("Always show")
@@ -51,36 +51,7 @@ class GitAlsoConfigurationPanel : ChangeListener, DocumentListener, Configurable
         }
     }
 
-
     override fun getDisplayName() = "GitAlso"
-
-    override fun stateChanged(e: ChangeEvent?) {
-        val newValue = getValueForField(thresholdSlider.value)
-        if (!textChanged && thresholdField.text != newValue) {
-            thresholdField.text = newValue
-        }
-    }
-
-
-    private fun sliderUpdate() {
-        textChanged = true
-        if (isFieldCorrect(thresholdField)) {
-            thresholdSlider.value = getValueForSlider(thresholdField.text)
-        }
-        textChanged = false
-    }
-
-    override fun changedUpdate(e: DocumentEvent?) {
-    }
-
-    override fun insertUpdate(e: DocumentEvent?) {
-        sliderUpdate()
-    }
-
-    override fun removeUpdate(e: DocumentEvent?) {
-        sliderUpdate()
-    }
-
 
     private fun getThresholdPanel() = panel {
         row("Adjust triggering level: ") {
@@ -95,6 +66,8 @@ class GitAlsoConfigurationPanel : ChangeListener, DocumentListener, Configurable
         }
     }
 
+    override fun createComponent() = createCenterPanel()
+
     override fun isModified(): Boolean {
         return isFieldCorrect(thresholdField) && reversedValue != thresholdField.text.toDouble()
     }
@@ -107,10 +80,38 @@ class GitAlsoConfigurationPanel : ChangeListener, DocumentListener, Configurable
         }
     }
 
-    override fun createComponent() = createCenterPanel()
-
     override fun reset() {
         thresholdSlider.value = (reversedValue * 100).toInt()
         thresholdField.text = reversedValue.toString()
+    }
+
+    private inner class SliderListener : ChangeListener {
+        override fun stateChanged(e: ChangeEvent?) {
+            val newValue = getValueForField(thresholdSlider.value)
+            if (!textChanged && thresholdField.text != newValue) {
+                thresholdField.text = newValue
+            }
+        }
+    }
+
+    private inner class FieldListener : DocumentListener {
+        private fun sliderUpdate() {
+            textChanged = true
+            if (isFieldCorrect(thresholdField)) {
+                thresholdSlider.value = getValueForSlider(thresholdField.text)
+            }
+            textChanged = false
+        }
+
+        override fun changedUpdate(e: DocumentEvent?) {
+        }
+
+        override fun insertUpdate(e: DocumentEvent?) {
+            sliderUpdate()
+        }
+
+        override fun removeUpdate(e: DocumentEvent?) {
+            sliderUpdate()
+        }
     }
 }
