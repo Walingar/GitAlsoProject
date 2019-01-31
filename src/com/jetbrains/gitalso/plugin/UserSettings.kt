@@ -25,7 +25,7 @@ class UserSettings : PersistentStateComponent<UserSettings.Companion.State> {
     var threshold: Double
         get() = currentState.threshold
         set(value) {
-            currentState.threshold = value
+            safeUpdateThreshold(value)
         }
 
     var isTurnedOn: Boolean
@@ -40,21 +40,20 @@ class UserSettings : PersistentStateComponent<UserSettings.Companion.State> {
 
     override fun getState() = currentState
 
-    fun resetState(storage: State) {
-        // TODO метод не используется
-        storage.step = 0.0
-        storage.threshold = 0.35
+    private fun safeUpdateThreshold(newValue: Double) {
+        val minThreshold = 0.15
+        val maxThreshold = 1.0
+        currentState.threshold = min(maxThreshold, max(minThreshold, newValue))
     }
 
     fun updateState(type: UserAction) {
         val gamma = 0.9
         val minimalStep = 0.05
         val chunksToBorderCount = 7
-        val minThreshold = 0.15
-        val maxThreshold = 1.0
+
 
         if (type == UserAction.CANCEL && currentState.step <= 0) {
-            currentState.threshold -= 0.005
+            safeUpdateThreshold(currentState.threshold - 0.005)
             currentState.lastAction = type
             return
         }
@@ -71,8 +70,6 @@ class UserSettings : PersistentStateComponent<UserSettings.Companion.State> {
                         currentState.step - minimalStep)
             }
         }
-        currentState.threshold = min(
-                max(currentState.threshold + currentState.step, minThreshold),
-                maxThreshold)
+        safeUpdateThreshold(currentState.threshold + currentState.step)
     }
 }
