@@ -1,5 +1,6 @@
 package com.jetbrains.gitalso.commitHandle
 
+import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.project.Project
@@ -18,7 +19,7 @@ import com.intellij.vcs.log.data.index.IndexDataGetter
 import com.intellij.vcs.log.util.VcsLogUtil.findBranch
 import com.jetbrains.gitalso.commitHandle.ui.GitAlsoDialog
 import com.jetbrains.gitalso.commitInfo.CommittedFile
-import com.jetbrains.gitalso.plugin.UserStorage
+import com.jetbrains.gitalso.plugin.UserSettings
 import com.jetbrains.gitalso.predict.PredictedChange
 import com.jetbrains.gitalso.predict.PredictedFile
 import com.jetbrains.gitalso.predict.PredictedFilePath
@@ -33,14 +34,15 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
 
     private val project: Project = panel.project
     private val changeListManager = ChangeListManager.getInstance(project)
+    private val userSettings = ServiceManager.getService(UserSettings::class.java)
 
     override fun getBeforeCheckinConfigurationPanel(): RefreshableOnComponent {
         return BooleanCommitOption(
                 panel,
                 "Predict forgotten files",
                 true,
-                { UserStorage.state.isTurnedOn },
-                Consumer { UserStorage.state.isTurnedOn = it }
+                { userSettings.isTurnedOn },
+                Consumer { userSettings.isTurnedOn = it }
         )
     }
 
@@ -92,7 +94,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
             }
 
             val isAmend = panel.isAmend()
-            val threshold = userStorage.threshold
+            val threshold = userSettings.threshold
             val rootFiles = panel.getRootFiles(project)
             val predictedFiles = ProgressManager.getInstance()
                     .runProcessWithProgressSynchronously(
@@ -112,10 +114,10 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
             dialog.show()
 
             return if (dialog.exitCode == 1) {
-                UserStorage.updateState(userStorage, UserStorage.UserAction.CANCEL)
+                userSettings.updateState(UserSettings.Companion.UserAction.CANCEL)
                 ReturnResult.CANCEL
             } else {
-                UserStorage.updateState(userStorage, UserStorage.UserAction.COMMIT)
+                userSettings.updateState(UserSettings.Companion.UserAction.COMMIT)
                 ReturnResult.COMMIT
             }
         } catch (e: Exception) {

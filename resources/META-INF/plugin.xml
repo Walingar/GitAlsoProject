@@ -45,12 +45,7 @@
         <vcsLogIndexService implementation="com.jetbrains.gitalso.repository.LogIndexService"/>
         <checkinHandlerFactory implementation="com.jetbrains.gitalso.commitHandle.GitAlsoCheckinHandlerFactory"/>
         <applicationConfigurable groupId="project.propVCSSupport.Mappings"
-                             instance="com.jetbrains.gitalso.plugin.config.GitAlsoConfigurationPanel"/>
+                                 instance="com.jetbrains.gitalso.plugin.config.GitAlsoConfigurationPanel"/>
+        <applicationService serviceImplementation="com.jetbrains.gitalso.plugin.UserSettings"/>
     </extensions>
-
-    <application-components>
-        <component>
-            <implementation-class>com.jetbrains.gitalso.plugin.UserStorage</implementation-class>
-        </component>
-    </application-components>
 </idea-plugin>
