@@ -18,6 +18,7 @@ import com.jetbrains.gitalso.commitHandle.ui.GitAlsoDialog
 import com.jetbrains.gitalso.commitInfo.CommittedFile
 import com.jetbrains.gitalso.plugin.UserStorage
 import com.jetbrains.gitalso.predict.PredictedChange
+import com.jetbrains.gitalso.predict.PredictedFile
 import com.jetbrains.gitalso.predict.PredictedFilePath
 import com.jetbrains.gitalso.predict.WeightWithFilterTunedPredictionProvider
 import com.jetbrains.gitalso.repository.IDEARepositoryInfo
@@ -66,23 +67,23 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
                 .commitPredict(repository.getCommit(filesFromRoot))
     }
 
-    private fun getPredictedFiles(isAmend: Boolean, threshold: Double) = mutableListOf<CommittedFile>()
-            .apply {
-                for (root in panel.roots) {
-                    if (!dataManager.index.isIndexed(root)) {
-                        continue
-                    }
-                    addAll(getPredictedCommittedFiles(root, isAmend, threshold))
-                }
+    private fun getPredictedFiles(isAmend: Boolean, threshold: Double): List<PredictedFile> {
+        val files = mutableListOf<CommittedFile>()
+        for (root in panel.roots) {
+            if (!dataManager.index.isIndexed(root)) {
+                continue
             }
-            .map {
-                val currentChange = changeListManager.getChange(it.path)
-                if (currentChange != null) {
-                    PredictedChange(currentChange)
-                } else {
-                    PredictedFilePath(it.path)
-                }
+            files.addAll(getPredictedCommittedFiles(root, isAmend, threshold))
+        }
+        return files.map {
+            val currentChange = changeListManager.getChange(it.path)
+            if (currentChange != null) {
+                PredictedChange(currentChange)
+            } else {
+                PredictedFilePath(it.path)
             }
+        }
+    }
 
     override fun beforeCheckin(executor: CommitExecutor?, additionalDataConsumer: PairConsumer<Any, Any>?): ReturnResult {
         try {
