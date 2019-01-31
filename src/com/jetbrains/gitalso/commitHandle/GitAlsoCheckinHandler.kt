@@ -50,7 +50,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
 
         val filesFromRoot = panel.files()
                 .filter { VcsUtil.getVcsRootFor(project, it) == root }
-                .toMutableList()
+                .toMutableSet()
         if (isAmend) {
             val ref = findBranch(dataManager.dataPack.refsModel, root, "HEAD")
             if (ref != null) {
