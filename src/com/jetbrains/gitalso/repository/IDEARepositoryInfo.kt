@@ -22,17 +22,14 @@ class IDEARepositoryInfo(private val root: VirtualFile, private val dataGetter: 
     private fun createCommittedFile(file: FilePath): CommittedFile {
         val commitHashes = getCommitHashesWithFile(file)
 
-        for (commitID in commitHashes) {
-            if (commitID in commits) {
+        for (commitId in commitHashes) {
+            if (commitId in commits) {
                 continue
             }
-            commits.add(commitID)
+            commits.add(commitId)
 
-            val commit = Commit(
-                    commitID,
-                    dataGetter.getAuthorTime(commitID) ?: 0
-            )
-            for (commitFile in dataGetter.getChangedPaths(commitID)) {
+            val commit = Commit(commitId, dataGetter.getCommitTime(commitId) ?: 0)
+            for (commitFile in dataGetter.getChangedPaths(commitId)) {
                 getCommittedFile(commitFile).committed(commit)
             }
         }
