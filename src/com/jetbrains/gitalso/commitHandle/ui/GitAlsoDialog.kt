@@ -1,6 +1,7 @@
 package com.jetbrains.gitalso.commitHandle.ui
 
 import com.intellij.openapi.actionSystem.ActionManager
+import com.intellij.openapi.actionSystem.DataProvider
 import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
@@ -12,13 +13,20 @@ import com.jetbrains.gitalso.predict.PredictedFile
 import javax.swing.Action
 import javax.swing.JPanel
 
-class GitAlsoDialog(private val project: Project, private val files: List<PredictedFile>) : DialogWrapper(project) {
-    override fun getDimensionServiceKey() = "com.jetbrains.gitalso.commitHandle.ui.GitAlsoDialog"
-
+class GitAlsoDialog(private val project: Project, private val files: List<PredictedFile>) : DialogWrapper(project), DataProvider {
     init {
         init()
         title = "GitAlso Plugin"
     }
+
+    private var tree: ChangesTree? = null
+
+    override fun getData(dataId: String) =
+            if (tree == null)
+                null
+            else
+                tree!!.getData(dataId)
+
 
     override fun getDimensionServiceKey() = "com.jetbrains.gitalso.commitHandle.ui.GitAlsoDialog"
 
@@ -40,9 +48,10 @@ class GitAlsoDialog(private val project: Project, private val files: List<Predic
 
     private fun createTreePanel() = panel {
         val predictionTreeChange = PredictedFilesTreeImpl(project, false, false, files)
+        tree = predictionTreeChange
         row {
             cell(true) {
-                createActionsPanel(predictionTreeChange)(growX)
+                createActionsPanel(predictionTreeChange)(growX, growY)
                 scrollPane(predictionTreeChange)
             }
         }
