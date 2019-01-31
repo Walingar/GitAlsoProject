@@ -32,7 +32,6 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
     }
 
     private val project: Project = panel.project
-    private val LOG = com.intellij.openapi.diagnostic.Logger.getInstance(GitAlsoCheckinHandler::class.java)
     private val changeListManager = ChangeListManager.getInstance(project)
 
     override fun getBeforeCheckinConfigurationPanel(): RefreshableOnComponent {
