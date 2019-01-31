@@ -1,7 +1,7 @@
 package com.jetbrains.gitalso.commitInfo
 
 class Commit(val id: Int, val time: Long = System.currentTimeMillis()) {
-    val _files = HashSet<CommittedFile>()
+    private val _files = HashSet<CommittedFile>()
 
     val files: Set<CommittedFile>
         get() = _files
