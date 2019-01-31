@@ -56,28 +56,18 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.3,
     fun commitPredict(commit: Commit, maxPredictedFileCount: Int = 5): List<CommittedFile> {
         val candidates = HashMap<CommittedFile, Double>()
 
-        val scores = HashMap<Pair<CommittedFile, CommittedFile>, Number>()
-
-
         for (file in commit.files) {
             val currentVotes = vote(file, commit)
             for ((currentFile, currentVote) in currentVotes) {
-                candidates.putIfAbsent(currentFile, 0.0)
-                scores[Pair(file, currentFile)] = currentVote
                 candidates.merge(currentFile, currentVote, Double::plus)
             }
         }
 
-        val sortedPrediction = candidates
+        return candidates
+                .filterValues { it / commit.files.size > minProb }
                 .toList()
-                .map { (key, value) -> key to value / commit.files.size }
-                .sortedBy { (_, value) -> value }
-                .reversed()
-
-        val filteredCandidates = sortedPrediction.filter { it.second > minProb }
-
-        return filteredCandidates
-                .map { it.first }
+                .sortedByDescending { it.second }
                 .take(maxPredictedFileCount)
-        }
+                .map { it.first }
+    }
 }
