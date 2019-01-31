@@ -20,6 +20,8 @@ class GitAlsoDialog(private val project: Project, private val files: List<Predic
         title = "GitAlso plugin"
     }
 
+    override fun getDimensionServiceKey() = "com.jetbrains.gitalso.commitHandle.ui.GitAlsoDialog"
+
     override fun createActions(): Array<Action> {
         val cancel = DialogWrapperExitAction("Cancel", 1)
         cancel.putValue(DEFAULT_ACTION, 0)
