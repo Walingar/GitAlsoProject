@@ -1,7 +1,7 @@
 package com.jetbrains.gitalso.predict
 
 import com.intellij.openapi.vcs.FilePath
-import com.jetbrains.gitalso.commitInfo.Commit
+import com.jetbrains.gitalso.commit.info.Commit
 import kotlin.math.min
 
 class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.3) {

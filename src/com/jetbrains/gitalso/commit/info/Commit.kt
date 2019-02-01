@@ -1,4 +1,4 @@
-package com.jetbrains.gitalso.commitInfo
+package com.jetbrains.gitalso.commit.info
 
 import com.intellij.openapi.vcs.FilePath
 

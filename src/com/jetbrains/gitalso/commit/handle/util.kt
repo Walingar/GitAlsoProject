@@ -1,4 +1,4 @@
-package com.jetbrains.gitalso.commitHandle
+package com.jetbrains.gitalso.commit.handle
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.CheckinProjectPanel

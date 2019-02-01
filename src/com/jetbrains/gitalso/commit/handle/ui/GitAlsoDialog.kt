@@ -1,4 +1,4 @@
-package com.jetbrains.gitalso.commitHandle.ui
+package com.jetbrains.gitalso.commit.handle.ui
 
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.DataProvider
@@ -33,7 +33,7 @@ class GitAlsoDialog(private val project: Project, private val files: List<Predic
                 tree!!.getData(dataId)
 
 
-    override fun getDimensionServiceKey() = "com.jetbrains.gitalso.commitHandle.ui.GitAlsoDialog"
+    override fun getDimensionServiceKey() = "com.jetbrains.gitalso.commit.handle.ui.GitAlsoDialog"
 
     override fun createActions(): Array<Action> {
         val cancel = DialogWrapperExitAction("Cancel", 1)

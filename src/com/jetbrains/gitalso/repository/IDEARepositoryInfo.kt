@@ -4,7 +4,7 @@ import com.intellij.openapi.vcs.FilePath
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.vcs.log.data.VcsLogStructureFilterImpl
 import com.intellij.vcs.log.data.index.IndexDataGetter
-import com.jetbrains.gitalso.commitInfo.Commit
+import com.jetbrains.gitalso.commit.info.Commit
 import java.util.*
 
 class IDEARepositoryInfo(private val root: VirtualFile, private val dataGetter: IndexDataGetter) {

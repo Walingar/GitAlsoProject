@@ -1,4 +1,4 @@
-package com.jetbrains.gitalso.commitHandle
+package com.jetbrains.gitalso.commit.handle
 
 import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.diagnostic.Logger
@@ -17,7 +17,7 @@ import com.intellij.util.PairConsumer
 import com.intellij.vcs.log.data.VcsLogData
 import com.intellij.vcs.log.data.index.IndexDataGetter
 import com.intellij.vcs.log.util.VcsLogUtil.findBranch
-import com.jetbrains.gitalso.commitHandle.ui.GitAlsoDialog
+import com.jetbrains.gitalso.commit.handle.ui.GitAlsoDialog
 import com.jetbrains.gitalso.plugin.UserSettings
 import com.jetbrains.gitalso.predict.PredictedChange
 import com.jetbrains.gitalso.predict.PredictedFile

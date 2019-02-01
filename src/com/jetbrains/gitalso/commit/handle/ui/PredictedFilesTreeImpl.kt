@@ -1,4 +1,4 @@
-package com.jetbrains.gitalso.commitHandle.ui
+package com.jetbrains.gitalso.commit.handle.ui
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vcs.changes.ui.ChangesTreeImpl
