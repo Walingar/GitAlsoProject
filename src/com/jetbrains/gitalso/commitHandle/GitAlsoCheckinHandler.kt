@@ -18,7 +18,6 @@ import com.intellij.vcs.log.data.VcsLogData
 import com.intellij.vcs.log.data.index.IndexDataGetter
 import com.intellij.vcs.log.util.VcsLogUtil.findBranch
 import com.jetbrains.gitalso.commitHandle.ui.GitAlsoDialog
-import com.jetbrains.gitalso.commitInfo.CommittedFile
 import com.jetbrains.gitalso.plugin.UserSettings
 import com.jetbrains.gitalso.predict.PredictedChange
 import com.jetbrains.gitalso.predict.PredictedFile
@@ -47,7 +46,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
     }
 
 
-    private fun getPredictedCommittedFiles(files: Collection<FilePath>, root: VirtualFile, isAmend: Boolean, threshold: Double): List<CommittedFile> {
+    private fun getPredictedCommittedFiles(files: Collection<FilePath>, root: VirtualFile, isAmend: Boolean, threshold: Double): List<FilePath> {
         val repository = IDEARepositoryInfo(root, dataGetter)
         val filesSet = files.toMutableSet()
         if (isAmend) {
@@ -69,7 +68,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
     }
 
     private fun getPredictedFiles(rootFiles: Map<VirtualFile, Collection<FilePath>>, isAmend: Boolean, threshold: Double): List<PredictedFile> {
-        val predictedCommittedFiles = mutableListOf<CommittedFile>()
+        val predictedCommittedFiles = mutableListOf<FilePath>()
         for ((root, files) in rootFiles) {
             if (!dataManager.index.isIndexed(root)) {
                 continue
@@ -77,11 +76,11 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
             predictedCommittedFiles.addAll(getPredictedCommittedFiles(files, root, isAmend, threshold))
         }
         return predictedCommittedFiles.map {
-            val currentChange = changeListManager.getChange(it.path)
+            val currentChange = changeListManager.getChange(it)
             if (currentChange != null) {
                 PredictedChange(currentChange)
             } else {
-                PredictedFilePath(it.path)
+                PredictedFilePath(it)
             }
         }
     }

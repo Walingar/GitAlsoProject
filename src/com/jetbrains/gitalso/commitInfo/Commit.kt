@@ -1,15 +1,16 @@
 package com.jetbrains.gitalso.commitInfo
 
-class Commit(val id: Int, val time: Long = System.currentTimeMillis()) {
-    private val _files = HashSet<CommittedFile>()
+import com.intellij.openapi.vcs.FilePath
 
-    val files: Set<CommittedFile>
+class Commit(val id: Int, val time: Long = System.currentTimeMillis()) {
+    private val _files = HashSet<FilePath>()
+
+    val files: Set<FilePath>
         get() = _files
 
-    fun addFile(file: CommittedFile) {
+    fun addFile(file: FilePath) {
         _files.add(file)
     }
-
 
     override fun toString() = id.toString()
 
