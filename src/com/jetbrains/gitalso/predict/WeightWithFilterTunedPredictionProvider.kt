@@ -47,7 +47,7 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.3)
     fun predictCommittedFiles(commit: Map<FilePath, Set<Commit>>, maxPredictedFileCount: Int = 5): List<FilePath> {
         val candidates = HashMap<FilePath, Double>()
 
-        for ((_, commits) in commit) {
+        for (commits in commit.values) {
             val currentVotes = vote(commits, commit.keys)
             for ((currentFile, currentVote) in currentVotes) {
                 candidates.merge(currentFile, currentVote, Double::plus)
