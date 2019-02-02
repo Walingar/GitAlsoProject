@@ -2,7 +2,7 @@ package com.jetbrains.gitalso.commit.info
 
 import com.intellij.openapi.vcs.FilePath
 
-class Commit(val id: Int, val time: Long = System.currentTimeMillis()) {
+class Commit(val id: Int, val time: Long) {
     private val _files = HashSet<FilePath>()
 
     val files: Set<FilePath>
