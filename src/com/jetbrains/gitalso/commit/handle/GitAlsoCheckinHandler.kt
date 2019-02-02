@@ -123,7 +123,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
                 ReturnResult.COMMIT
             }
         } catch (e: Exception) {
-            LOG.error("Unexpected problem with GitAlso prediction: $e")
+            LOG.error("Unexpected problem with GitAlso prediction", e)
             return ReturnResult.COMMIT
         }
     }
