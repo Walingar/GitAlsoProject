@@ -41,7 +41,7 @@ class UserSettings : PersistentStateComponent<UserSettings.Companion.State> {
     override fun getState() = currentState
 
     private fun safeUpdateThreshold(newValue: Double) {
-        val minThreshold = 0.15
+        val minThreshold = 0.0
         val maxThreshold = 1.0
         currentState.threshold = min(maxThreshold, max(minThreshold, newValue))
     }
