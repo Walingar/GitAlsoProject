@@ -62,9 +62,7 @@ class GitAlsoDialog(private val project: Project, private val files: List<Predic
     }
 
     private fun createForgottenFilesString() = buildString {
-        val modifiedFilesCount = files.filterIsInstance<PredictedChange>()
-                .filter { it.change.type == Type.MODIFICATION }
-                .size
+        val modifiedFilesCount = files.filterIsInstance<PredictedChange>().size
         val unmodifiedFilesCount = files.size - modifiedFilesCount
         if (modifiedFilesCount > 0) {
             append("commit ")
