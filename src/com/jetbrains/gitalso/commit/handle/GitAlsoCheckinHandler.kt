@@ -75,12 +75,16 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
             }
             predictedCommittedFiles.addAll(getPredictedCommittedFiles(files, root, isAmend, threshold))
         }
-        return predictedCommittedFiles.map {
+        return predictedCommittedFiles.mapNotNull {
             val currentChange = changeListManager.getChange(it)
             if (currentChange != null) {
                 PredictedChange(currentChange)
             } else {
-                PredictedFilePath(it)
+                if (it.virtualFile != null) {
+                    PredictedFilePath(it)
+                } else {
+                    null
+                }
             }
         }
     }
