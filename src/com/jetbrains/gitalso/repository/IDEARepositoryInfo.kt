@@ -8,6 +8,8 @@ import com.jetbrains.gitalso.commit.info.Commit
 import java.util.*
 
 class IDEARepositoryInfo(private val root: VirtualFile, private val dataGetter: IndexDataGetter) {
+    private val commits = HashMap<Int, Commit>()
+
     private fun getCommitHashesWithFile(file: FilePath): Collection<Int> {
         val structureFilter = VcsLogStructureFilterImpl(setOf(file))
         return dataGetter.filter(listOf(structureFilter))
@@ -15,13 +17,13 @@ class IDEARepositoryInfo(private val root: VirtualFile, private val dataGetter: 
 
     private fun createCommittedFile(file: FilePath): Set<Commit> {
         val commitsSet = HashSet<Commit>()
+        val commitHashes = getCommitHashesWithFile(file)
 
-        for (commitId in getCommitHashesWithFile(file)) {
-            commitsSet.add(Commit(
-                    commitId,
-                    dataGetter.getCommitTime(commitId) ?: 0,
-                    dataGetter.getChangedPaths(commitId)
-            ))
+        for (commitId in commitHashes) {
+            val commit = commits.getOrPut(commitId) {
+                Commit(commitId, dataGetter.getCommitTime(commitId) ?: 0, dataGetter.getChangedPaths(commitId))
+            }
+            commitsSet.add(commit)
         }
 
         return commitsSet
