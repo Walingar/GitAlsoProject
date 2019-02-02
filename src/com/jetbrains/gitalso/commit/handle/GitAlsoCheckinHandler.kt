@@ -87,8 +87,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
 
     override fun beforeCheckin(executor: CommitExecutor?, additionalDataConsumer: PairConsumer<Any, Any>?): ReturnResult {
         try {
-            val userStorage = UserStorage.state
-            if (!userStorage.isTurnedOn || panel.files.size > 25) {
+            if (!userSettings.isTurnedOn || panel.files.size > 25) {
                 return ReturnResult.COMMIT
             }
 
