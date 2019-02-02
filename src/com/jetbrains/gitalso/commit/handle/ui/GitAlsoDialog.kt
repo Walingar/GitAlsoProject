@@ -5,7 +5,6 @@ import com.intellij.openapi.actionSystem.DataProvider
 import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
-import com.intellij.openapi.vcs.changes.Change.Type
 import com.intellij.openapi.vcs.changes.ui.ChangesTree
 import com.intellij.openapi.vcs.changes.ui.TreeActionsToolbarPanel
 import com.intellij.ui.components.JBLabel
@@ -24,13 +23,8 @@ class GitAlsoDialog(private val project: Project, private val files: List<Predic
         title = "GitAlso Plugin"
     }
 
-    private var tree: ChangesTree? = null
-
-    override fun getData(dataId: String) =
-            if (tree == null)
-                null
-            else
-                tree!!.getData(dataId)
+    private lateinit var tree: ChangesTree
+    override fun getData(dataId: String) = tree.getData(dataId)
 
 
     override fun getDimensionServiceKey() = "com.jetbrains.gitalso.commit.handle.ui.GitAlsoDialog"
