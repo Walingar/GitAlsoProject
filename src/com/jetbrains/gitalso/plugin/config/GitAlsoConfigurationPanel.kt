@@ -12,25 +12,27 @@ import javax.swing.event.ChangeEvent
 import javax.swing.event.ChangeListener
 import javax.swing.event.DocumentEvent
 import javax.swing.event.DocumentListener
+import kotlin.math.roundToInt
 
 class GitAlsoConfigurationPanel : Configurable {
     companion object {
+        private const val LOWER_BOUND = 0
+        private const val UPPER_BOUND = 100
+
         private fun isFieldCorrect(field: JBTextField?): Boolean {
             if (field == null) {
                 return false
             }
-            val value = field.text.toDoubleOrNull() ?: return false
-            return value in 0.0..1.0
+            val value = field.text.toIntOrNull() ?: return false
+            return value in LOWER_BOUND..UPPER_BOUND
         }
 
-        private fun getValueForSlider(value: String) = (value.toDouble() * 100).toInt()
-
-        private fun getValueForField(value: Int) = (value.toDouble() / 100).toString()
+        private fun reverseThreshold(value: Int) = (UPPER_BOUND - value + LOWER_BOUND)
     }
 
     private val userSettings = ServiceManager.getService(UserSettings::class.java)
-    private var textChanged = false
-    private var reversedValue = 1.0 - userSettings.threshold
+    private var reversedValue = reverseThreshold(
+            (userSettings.threshold * UserSettings.THRESHOLD_PRECISION).roundToInt())
 
     private val thresholdField by lazy {
         JBTextField(reversedValue.toString()).apply {
@@ -39,14 +41,14 @@ class GitAlsoConfigurationPanel : Configurable {
     }
 
     private val thresholdSlider by lazy {
-        JSlider(0, 100, (reversedValue * 100).toInt()).apply {
+        JSlider(LOWER_BOUND, UPPER_BOUND, reversedValue).apply {
             addChangeListener(SliderListener())
             val table = Hashtable<Int, JLabel>()
-            table[0] = JLabel("Never show")
-            table[100] = JLabel("Always show")
+            table[LOWER_BOUND] = JLabel("Never show")
+            table[UPPER_BOUND] = JLabel("Always show")
             labelTable = table
             paintLabels = true
-            majorTickSpacing = 100
+            majorTickSpacing = UPPER_BOUND
             paintTicks = true
         }
     }
@@ -69,38 +71,36 @@ class GitAlsoConfigurationPanel : Configurable {
     override fun createComponent() = createCenterPanel()
 
     override fun isModified(): Boolean {
-        return isFieldCorrect(thresholdField) && reversedValue != thresholdField.text.toDouble()
+        return reversedValue != thresholdSlider.value && isFieldCorrect(thresholdField)
     }
 
     override fun apply() {
         if (isFieldCorrect(thresholdField)) {
-            val newValue = thresholdField.text.toDouble()
-            userSettings.threshold = 1.0 - newValue
+            val newValue = thresholdSlider.value
+            userSettings.threshold = reverseThreshold(newValue).toDouble() / UserSettings.THRESHOLD_PRECISION
             reversedValue = newValue
         }
     }
 
     override fun reset() {
-        thresholdSlider.value = (reversedValue * 100).toInt()
+        thresholdSlider.value = reversedValue
         thresholdField.text = reversedValue.toString()
     }
 
     private inner class SliderListener : ChangeListener {
         override fun stateChanged(e: ChangeEvent?) {
-            val newValue = getValueForField(thresholdSlider.value)
-            if (!textChanged && thresholdField.text != newValue) {
-                thresholdField.text = newValue
+            val newValue = thresholdSlider.value
+            if (thresholdField.text.toInt() != newValue) {
+                thresholdField.text = newValue.toString()
             }
         }
     }
 
     private inner class FieldListener : DocumentListener {
         private fun sliderUpdate() {
-            textChanged = true
             if (isFieldCorrect(thresholdField)) {
-                thresholdSlider.value = getValueForSlider(thresholdField.text)
+                thresholdSlider.value = thresholdField.text.toInt()
             }
-            textChanged = false
         }
 
         override fun changedUpdate(e: DocumentEvent?) {

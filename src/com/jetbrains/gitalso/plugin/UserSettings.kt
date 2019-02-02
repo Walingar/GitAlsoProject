@@ -9,6 +9,8 @@ import kotlin.math.min
 @State(name = "GitAlsoUserStorage", storages = [Storage(file = "gitalso.user.storage.xml")])
 class UserSettings : PersistentStateComponent<UserSettings.Companion.State> {
     companion object {
+        const val THRESHOLD_PRECISION = 100
+
         data class State(var lastAction: UserAction = UserAction.COMMIT,
                          var step: Double = 0.0,
                          var threshold: Double = 0.35,
@@ -23,7 +25,7 @@ class UserSettings : PersistentStateComponent<UserSettings.Companion.State> {
     private var currentState: UserSettings.Companion.State = State()
 
     var threshold: Double
-        get() = Math.round(currentState.threshold * 1000) / 1000.0
+        get() = Math.round(currentState.threshold * THRESHOLD_PRECISION).toDouble() / THRESHOLD_PRECISION
         set(value) {
             safeUpdateThreshold(value)
         }
