@@ -2,6 +2,7 @@ package com.jetbrains.gitalso.plugin.config
 
 import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.options.Configurable
+import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.components.JBTextField
 import com.intellij.ui.layout.panel
 import com.jetbrains.gitalso.plugin.UserSettings
@@ -40,6 +41,10 @@ class GitAlsoConfigurationPanel : Configurable {
         }
     }
 
+    private val pluginActivateCheckBox by lazy {
+        JBCheckBox("Enable plugin (requires restart)", userSettings.isPluginEnabled)
+    }
+
     private val thresholdSlider by lazy {
         JSlider(LOWER_BOUND, UPPER_BOUND, reversedValue).apply {
             addChangeListener(SliderListener())
@@ -64,14 +69,21 @@ class GitAlsoConfigurationPanel : Configurable {
 
     private fun createCenterPanel() = panel {
         row {
-            getThresholdPanel()()
+            cell(true) {
+                getThresholdPanel()()
+                pluginActivateCheckBox()
+            }
         }
     }
 
     override fun createComponent() = createCenterPanel()
 
     override fun isModified(): Boolean {
-        return reversedValue != thresholdSlider.value && isFieldCorrect(thresholdField)
+        if (!isFieldCorrect(thresholdField)) {
+            return false
+        }
+        return reversedValue != thresholdSlider.value ||
+                pluginActivateCheckBox.isSelected != userSettings.isPluginEnabled
     }
 
     override fun apply() {
@@ -79,6 +91,7 @@ class GitAlsoConfigurationPanel : Configurable {
             val newValue = thresholdSlider.value
             userSettings.threshold = reverseThreshold(newValue).toDouble() / UserSettings.THRESHOLD_PRECISION
             reversedValue = newValue
+            userSettings.isPluginEnabled = pluginActivateCheckBox.isSelected
         }
     }
 
