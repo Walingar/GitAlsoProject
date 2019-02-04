@@ -56,7 +56,7 @@ class PredictionProvider(private val minProb: Double = 0.3) {
      * @param maxPredictedFileCount maximum files to be predicted
      * @return list of forgotten files
      */
-    fun predictCommittedFiles(filesHistory: Map<FilePath, Set<Commit>>, maxPredictedFileCount: Int = 5): List<FilePath> {
+    fun predictForgottenFiles(filesHistory: Map<FilePath, Set<Commit>>, maxPredictedFileCount: Int = 5): List<FilePath> {
         val candidates = HashMap<FilePath, Double>()
 
         for (commits in filesHistory.values) {

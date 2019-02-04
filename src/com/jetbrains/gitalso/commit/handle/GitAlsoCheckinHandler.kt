@@ -64,7 +64,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
         }
 
         return PredictionProvider(minProb = threshold)
-                .predictCommittedFiles(repository.getFilesHistory(filesSet))
+                .predictForgottenFiles(repository.getFilesHistory(filesSet))
     }
 
     private fun getPredictedFiles(rootFiles: Map<VirtualFile, Collection<FilePath>>, isAmend: Boolean, threshold: Double): List<PredictedFile> {
