@@ -50,24 +50,24 @@ class PredictionProvider(private val minProb: Double = 0.3) {
     }
 
     /**
-     * Method makes a prediction about forgotten files, which are close to files from given [commit].
+     * Method makes a prediction about forgotten files, which are close to files from their [filesHistory].
      *
-     * @param commit map from file to its previous commits
+     * @param filesHistory map from file to its previous commits
      * @param maxPredictedFileCount maximum files to be predicted
      * @return list of forgotten files
      */
-    fun predictCommittedFiles(commit: Map<FilePath, Set<Commit>>, maxPredictedFileCount: Int = 5): List<FilePath> {
+    fun predictCommittedFiles(filesHistory: Map<FilePath, Set<Commit>>, maxPredictedFileCount: Int = 5): List<FilePath> {
         val candidates = HashMap<FilePath, Double>()
 
-        for (commits in commit.values) {
-            val currentVotes = vote(commits, commit.keys)
+        for (commits in filesHistory.values) {
+            val currentVotes = vote(commits, filesHistory.keys)
             for ((currentFile, currentVote) in currentVotes) {
                 candidates.merge(currentFile, currentVote, Double::plus)
             }
         }
 
         return candidates
-                .mapValues { it.value / commit.size }
+                .mapValues { it.value / filesHistory.size }
                 .filterValues { it > minProb }
                 .toList()
                 .sortedByDescending { it.second }
