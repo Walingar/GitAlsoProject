@@ -22,7 +22,7 @@ import com.jetbrains.gitalso.plugin.UserSettings
 import com.jetbrains.gitalso.predict.PredictedChange
 import com.jetbrains.gitalso.predict.PredictedFile
 import com.jetbrains.gitalso.predict.PredictedFilePath
-import com.jetbrains.gitalso.predict.WeightWithFilterTunedPredictionProvider
+import com.jetbrains.gitalso.predict.PredictionProvider
 import com.jetbrains.gitalso.repository.IDEARepositoryInfo
 import java.util.function.Consumer
 
@@ -63,7 +63,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
             return emptyList()
         }
 
-        return WeightWithFilterTunedPredictionProvider(minProb = threshold)
+        return PredictionProvider(minProb = threshold)
                 .predictCommittedFiles(repository.getCommit(filesSet))
     }
 

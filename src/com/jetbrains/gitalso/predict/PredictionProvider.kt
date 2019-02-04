@@ -9,7 +9,7 @@ import kotlin.math.min
  *
  * See <a href="README.md">README.md</a> to get more information about decision function used here.
  */
-class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.3) {
+class PredictionProvider(private val minProb: Double = 0.3) {
     private val m: Double = 3.2
     private val commitSize: Double = 8.0
 
