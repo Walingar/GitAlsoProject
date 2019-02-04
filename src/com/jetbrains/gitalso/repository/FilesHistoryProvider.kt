@@ -7,7 +7,7 @@ import com.intellij.vcs.log.data.index.IndexDataGetter
 import com.jetbrains.gitalso.commit.info.Commit
 import java.util.*
 
-class IDEARepositoryInfo(private val root: VirtualFile, private val dataGetter: IndexDataGetter) {
+class FilesHistoryProvider(private val root: VirtualFile, private val dataGetter: IndexDataGetter) {
     private val commits = HashMap<Int, Commit>()
 
     private fun getCommitHashesWithFile(file: FilePath): Collection<Int> {
@@ -15,7 +15,7 @@ class IDEARepositoryInfo(private val root: VirtualFile, private val dataGetter: 
         return dataGetter.filter(listOf(structureFilter))
     }
 
-    private fun createCommittedFile(file: FilePath): Set<Commit> {
+    private fun getFileHistory(file: FilePath): Set<Commit> {
         val commitsSet = HashSet<Commit>()
         val commitHashes = getCommitHashesWithFile(file)
 
@@ -29,10 +29,10 @@ class IDEARepositoryInfo(private val root: VirtualFile, private val dataGetter: 
         return commitsSet
     }
 
-    fun getCommit(files: Collection<FilePath>): Map<FilePath, Set<Commit>> {
+    fun getFilesHistory(files: Collection<FilePath>): Map<FilePath, Set<Commit>> {
         val currentCommit = HashMap<FilePath, Set<Commit>>()
         for (file in files) {
-            currentCommit[file] = createCommittedFile(file)
+            currentCommit[file] = getFileHistory(file)
         }
         return currentCommit
     }

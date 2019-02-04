@@ -23,7 +23,7 @@ import com.jetbrains.gitalso.predict.PredictedChange
 import com.jetbrains.gitalso.predict.PredictedFile
 import com.jetbrains.gitalso.predict.PredictedFilePath
 import com.jetbrains.gitalso.predict.PredictionProvider
-import com.jetbrains.gitalso.repository.IDEARepositoryInfo
+import com.jetbrains.gitalso.repository.FilesHistoryProvider
 import java.util.function.Consumer
 
 class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val dataManager: VcsLogData, private val dataGetter: IndexDataGetter) : CheckinHandler() {
@@ -47,7 +47,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
 
 
     private fun getPredictedCommittedFiles(files: Collection<FilePath>, root: VirtualFile, isAmend: Boolean, threshold: Double): List<FilePath> {
-        val repository = IDEARepositoryInfo(root, dataGetter)
+        val repository = FilesHistoryProvider(root, dataGetter)
         val filesSet = files.toMutableSet()
         if (isAmend) {
             val ref = findBranch(dataManager.dataPack.refsModel, root, "HEAD")
@@ -64,7 +64,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
         }
 
         return PredictionProvider(minProb = threshold)
-                .predictCommittedFiles(repository.getCommit(filesSet))
+                .predictCommittedFiles(repository.getFilesHistory(filesSet))
     }
 
     private fun getPredictedFiles(rootFiles: Map<VirtualFile, Collection<FilePath>>, isAmend: Boolean, threshold: Double): List<PredictedFile> {
