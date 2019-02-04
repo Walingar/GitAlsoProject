@@ -6,6 +6,7 @@ For current commit, we should predict files which might be forgotten to commit o
 ### Current solution
 #### Structure
 ![commit line](resources/doc/commitLine.png)
+
 Commits, where was no files from current commit, are not interesting for us.
 
 ![current commit](resources/doc/currentCommit.png)
@@ -32,15 +33,13 @@ We use a sort of Bayes Estimator formula for votings:
 
 #### How does voting work
 We take a file from current commit and get *k*(20) last commits where it was.
-
 For example, we take *file A*. And get commits: *commit A*, *commit B*.
-
 After that, each of these commits votes for the files contains in it (excluding files from current commit)
-
 In our example *commit A* votes for *file D*, and *commit B* votes for *file D*, *file F*.
 
 
 The vote is calculating by the formula:
+
 *min(1.0, commit_size / size)*, where
 * *commits_size* - the maximum number of files in the voting commit, needed to get the largest voice = 8.0
 * *size* - number of files in the voting commit
