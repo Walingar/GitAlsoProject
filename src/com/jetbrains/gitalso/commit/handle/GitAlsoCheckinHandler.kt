@@ -46,7 +46,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
     }
 
 
-    private fun getPredictedCommittedFiles(files: Collection<FilePath>, root: VirtualFile, isAmend: Boolean, threshold: Double): List<FilePath> {
+    private fun getPredictedFilePaths(files: Collection<FilePath>, root: VirtualFile, isAmend: Boolean, threshold: Double): List<FilePath> {
         val repository = FilesHistoryProvider(root, dataGetter)
         val filesSet = files.toMutableSet()
         if (isAmend) {
@@ -73,7 +73,7 @@ class GitAlsoCheckinHandler(private val panel: CheckinProjectPanel, private val 
             if (!dataManager.index.isIndexed(root)) {
                 continue
             }
-            predictedCommittedFiles.addAll(getPredictedCommittedFiles(files, root, isAmend, threshold))
+            predictedCommittedFiles.addAll(getPredictedFilePaths(files, root, isAmend, threshold))
         }
         return predictedCommittedFiles.mapNotNull {
             val currentChange = changeListManager.getChange(it)
