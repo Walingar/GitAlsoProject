@@ -4,6 +4,11 @@ import com.intellij.openapi.vcs.FilePath
 import com.jetbrains.gitalso.commit.info.Commit
 import kotlin.math.min
 
+/**
+ * This class provides a prediction about forgotten (to commit or modify) files, based on the VCS history of given files.
+ *
+ * See <a href="README.md">README.md</a> to get more information about decision function used here.
+ */
 class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.3) {
     private val m: Double = 3.2
     private val commitSize: Double = 8.0
@@ -44,6 +49,13 @@ class WeightWithFilterTunedPredictionProvider(private val minProb: Double = 0.3)
         return candidates.mapValues { it.value.result() }
     }
 
+    /**
+     * Method makes a prediction about forgotten files, which are close to files from given [commit].
+     *
+     * @param commit map from file to its previous commits
+     * @param maxPredictedFileCount maximum files to be predicted
+     * @return list of forgotten files
+     */
     fun predictCommittedFiles(commit: Map<FilePath, Set<Commit>>, maxPredictedFileCount: Int = 5): List<FilePath> {
         val candidates = HashMap<FilePath, Double>()
 
