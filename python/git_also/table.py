@@ -10,7 +10,6 @@ def print_table(min_prob, n, count, table):
 def create_table(types):
     table = ""
 
-    # table += "Максимально можно предсказать = {:d} \n".format(max_truth)
     table += "| truth\\prediction | nothing | fileA | fileB |\n"
     table += "| --- | --- | --- | --- |\n"
     table += "| nothing | {:d} | {:d} | - |\n".format(types["score('', '')"], types["score('', A)"])
