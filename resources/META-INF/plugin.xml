@@ -1,0 +1,51 @@
+<idea-plugin>
+    <id>com.jetbrains.gitalso</id>
+    <name>GitAlso</name>
+    <version>0.3.0</version>
+    <vendor email="walingar@mail.ru" url="http://www.jetbrains.com">JetBrains</vendor>
+
+    <description><![CDATA[
+        This plugin can predict the full set of files in the commit given only a part of it. <br>
+        In other words, GitAlso predicts files which developer might have forgotten to modify or to add to VCS.<br><br>
+
+        It is easier to understand by example. <br>
+        When you are committing a file (<i>ExceptionHandler.java</i>),
+            the system knows which files are usually committed with this one
+            and reminds you to add forgotten files (<i>ExceptionHandlerTest.java</i>, <i>ExceptionHandlerFactory.java</i>) to this commit
+            or to modify them.<br><br>
+    ]]></description>
+
+    <change-notes><![CDATA[
+        0.3.0 <br>
+        <ul>
+            <li> Add personalization in predictions.</li>
+            <li> Add checkbox in commit dialog.</li>
+            <li> Increase calculation speed.</li>
+        </ul>
+        0.2.0 <br>
+        <ul>
+            <li> Update user interface.</li>
+            <li> Add some prediction quality improvements.</li>
+        </ul>
+        
+        0.1.01 <br>
+        <ul>
+            <li> Fix bug when plugin did not allow the user to make a commit in dumb mode.</li>
+            <li> Updated description.</li>
+        </ul>
+    ]]>
+    </change-notes>
+
+    <idea-version since-build="183.3647"/>
+
+    <depends>com.intellij.modules.vcs</depends>
+    <depends>Git4Idea</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <vcsLogIndexService implementation="com.jetbrains.gitalso.repository.LogIndexService"/>
+        <checkinHandlerFactory implementation="com.jetbrains.gitalso.commit.handle.GitAlsoCheckinHandlerFactory"/>
+        <applicationConfigurable groupId="project.propVCSSupport.Mappings"
+                                 provider="com.jetbrains.gitalso.plugin.config.GitAlsoConfigurationProvider"/>
+        <applicationService serviceImplementation="com.jetbrains.gitalso.plugin.UserSettings"/>
+    </extensions>
+</idea-plugin>
